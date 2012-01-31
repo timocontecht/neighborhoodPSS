@@ -1,0 +1,70 @@
+package org.visico.neighborhoodpss.client;
+
+import java.util.ArrayList;
+
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+
+public class MainTab extends TabLayoutPanel 
+{
+	static private MainTab instance = null;
+	
+	static public MainTab getInstance()
+	{
+		if (instance == null)
+			instance = new MainTab();
+		
+		return instance;
+	}
+	
+	private MainTab() 
+	{
+		super(20, Unit.PX);
+		panels = new ArrayList<ScenarioPanel>();
+		
+		// work around for bug in google maps - if not implemented tiles of the map are gray
+		this.addSelectionHandler(new SelectionHandler<Integer>() 
+		{
+			public void onSelection(final SelectionEvent<Integer> event) 
+			{
+				Scheduler s = Scheduler.get();
+				if(event.getSelectedItem()!=0) // this is the scenario selection tab
+				{
+					s.scheduleDeferred(new ScheduledCommand() 
+					{
+				          public void execute() 
+				          {
+				        	  panels.get(event.getSelectedItem() - 1).getMap().getMap().checkResizeAndCenter();
+				          }
+				     });	
+				}
+			}
+		});
+		
+		draw();
+	}
+	
+	public void draw()
+	{
+		HierarchyPanel panel = HierarchyPanel.getInstance();
+		add(panel);
+	}
+	
+	public void addScenario(int scenarioId)
+	{
+		ScenarioPanel dock = new ScenarioPanel(0);
+		panels.add(dock);
+		add(dock);
+	}
+	
+	
+	
+	ArrayList<ScenarioPanel> panels;
+
+	
+}
