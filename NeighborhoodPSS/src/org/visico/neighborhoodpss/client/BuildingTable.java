@@ -1,12 +1,13 @@
 package org.visico.neighborhoodpss.client;
 
+
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 
 public class BuildingTable extends ScrollPanel 
 {
-	private static BuildingTable instance = null;
+/*	private static BuildingTable instance = null;
 	
 	public static BuildingTable getInstance()
 	{
@@ -16,8 +17,8 @@ public class BuildingTable extends ScrollPanel
 		return instance;
 		
 	}
-	
-	private BuildingTable()
+	*/
+	public BuildingTable()
 	{
 		setSize("500px", "150px");
 		
@@ -31,7 +32,7 @@ public class BuildingTable extends ScrollPanel
 	public void draw()
 	{
 		buildingGrid.clear();
-		buildingGrid.resize(Building.buildings.size() + 1, 3);
+		buildingGrid.resize(BuildingPolygon.buildings.size() + 1, 3);
 		
 		buildingGrid.getRowFormatter().addStyleName(0, "BuildingTableHeader");
 		buildingGrid.setText(0, 0, "Number");
@@ -40,11 +41,11 @@ public class BuildingTable extends ScrollPanel
 		
 		
 		
-		for (int i=0; i<Building.buildings.size(); i++)
+		for (int i=0; i<BuildingPolygon.buildings.size(); i++)
 		{
 			buildingGrid.setText(i+1, 0, Integer.toString(i+1));
-			buildingGrid.setText(i+1, 1, Double.toString(Building.buildings.get(i).getArea()) + "m2");
-			buildingGrid.setText(i+1, 2, Building.buildings.get(i).getType());
+			buildingGrid.setText(i+1, 1, Double.toString(BuildingPolygon.buildings.get(i).getArea()) + "m2");
+			buildingGrid.setText(i+1, 2, BuildingPolygon.buildings.get(i).getType());
 			buildingGrid.getRowFormatter().addStyleName(i+1, "BuildingTableRow");
 		}
 	}

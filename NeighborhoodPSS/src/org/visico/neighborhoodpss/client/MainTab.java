@@ -2,6 +2,8 @@ package org.visico.neighborhoodpss.client;
 
 import java.util.ArrayList;
 
+import org.visico.neighborhoodpss.shared.Scenario;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Unit;
@@ -52,14 +54,15 @@ public class MainTab extends TabLayoutPanel
 	public void draw()
 	{
 		HierarchyPanel panel = HierarchyPanel.getInstance();
-		add(panel);
+		add(panel, "Scenarios");
 	}
 	
-	public void addScenario(int scenarioId)
+	public void addScenario(Scenario scenario)
 	{
-		ScenarioPanel dock = new ScenarioPanel(0);
+		ScenarioPanel dock = new ScenarioPanel(scenario);
+		dock.setTitle(scenario.name() + " " + scenario.label());
 		panels.add(dock);
-		add(dock);
+		add(dock, dock.getTitle());
 	}
 	
 	

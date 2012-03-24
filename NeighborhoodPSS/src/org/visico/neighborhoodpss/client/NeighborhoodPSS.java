@@ -24,7 +24,8 @@ import com.google.gwt.visualization.client.visualizations.corechart.Options;
 public class NeighborhoodPSS implements EntryPoint 
 {
 	// GWT module entry point method.
-	  public void onModuleLoad() {
+	  public void onModuleLoad() 
+	  {
 	   /*
 	    * Asynchronously loads the Maps API.
 	    *
@@ -44,7 +45,7 @@ public class NeighborhoodPSS implements EntryPoint
 		      public void run() 
 		      {
 		    	  //initialize the panel
-		    	 IndicatorPanel panel = IndicatorPanel.getInstance();
+		    	 IndicatorPanel panel = new IndicatorPanel();
 		    	  
 			  }
 	   };
@@ -52,42 +53,17 @@ public class NeighborhoodPSS implements EntryPoint
 	   
 	  }
 	  
-	  private Options createOptions() {
-		    Options options = Options.create();
-		    options.setWidth(400);
-		    options.setHeight(240);
-		    
-		    options.setTitle("My Daily Activities");
-		    return options;
-		  }
+	  
 
-	  private void buildUi() {
-	    // Open a map centered on Cawker City, KS USA
+	  private void buildUi() 
+	  {
+	    MainTab panel = MainTab.getInstance();
 	    
-
-	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
 	    
-	    dock.addNorth(UserPanel.getInstance(), 120);
-	    dock.addWest(ModePanel.getInstance(), 150);
-	    dock.addSouth(DataPanel.getInstance(), 200);
-	    dock.add(Map.getInstance().getMap());
-	    
-
 	    // Add the map to the HTML host page
-	    RootLayoutPanel.get().add(dock);
+	    RootLayoutPanel.get().add(panel);
 	  }	
 	  
-	  private AbstractDataTable createTable() {
-		    DataTable data = DataTable.create();
-		    data.addColumn(ColumnType.STRING, "Task");
-		    data.addColumn(ColumnType.NUMBER, "Hours per Day");
-		    data.addRows(2);
-		    data.setValue(0, 0, "Work");
-		    data.setValue(0, 1, 14);
-		    data.setValue(1, 0, "Sleep");
-		    data.setValue(1, 1, 10);
-		    return data;
-		  }
-		
+	  		
 	  
 }

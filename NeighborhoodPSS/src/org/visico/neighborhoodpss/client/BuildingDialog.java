@@ -1,5 +1,6 @@
 package org.visico.neighborhoodpss.client;
 
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -10,15 +11,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class BuildingDialog extends DialogBox implements ClickHandler
 {
-	public BuildingDialog(Building b)
+	public BuildingDialog(BuildingPolygon b, ScenarioPanel p)
 	{
 		VerticalPanel panel = new VerticalPanel();
 		panel.add (new Label("Select the Industry Type:"));
 		
 		type = new ListBox();
-		for (int i=0; i<Building.industryTypes.size(); i++)
+		for (int i=0; i<BuildingPolygon.industryTypes.size(); i++)
 		{
-			type.addItem(Building.industryTypes.get(i));
+			type.addItem(BuildingPolygon.industryTypes.get(i));
 		}
 		panel.add(type);
 		
@@ -29,6 +30,7 @@ public class BuildingDialog extends DialogBox implements ClickHandler
 		add(panel);
 		
 		building = b;
+		scenarioPanel = p;
 	}
 	
 	public String type()
@@ -43,9 +45,11 @@ public class BuildingDialog extends DialogBox implements ClickHandler
 	{
 		BuildingDialog.this.hide(true);
 		building.setType(type());
-		Building.buildings.add(building);
-		BuildingTable.getInstance().draw();
+		BuildingPolygon.buildings.add(building);
+		scenarioPanel.updateData();
+		
 	}
 	
-	private Building building = null;
+	private BuildingPolygon building = null;
+	private ScenarioPanel scenarioPanel = null;
 }

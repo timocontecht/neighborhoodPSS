@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/timo/code/gwt-google-apis/maps/build/lib/gwt-maps.jar"/>
-	<classpathentry kind="lib" path="/home/timo/code/gwt-google-apis/gwt-visualization-1.1.2/gwt-visualization.jar"/>
+	<classpathentry kind="lib" path="/home/timo/code/networkPSS/NeighborhoodPSS/war/WEB-INF/lib/gwt-visualization.jar"/>
+	<classpathentry kind="lib" path="/home/timo/code/networkPSS/NeighborhoodPSS/war/WEB-INF/lib/gwt-maps.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

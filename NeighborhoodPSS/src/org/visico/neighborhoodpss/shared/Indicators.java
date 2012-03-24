@@ -1,12 +1,12 @@
 package org.visico.neighborhoodpss.shared;
 
-import org.visico.neighborhoodpss.client.Building;
+import org.visico.neighborhoodpss.client.BuildingPolygon;
 
 public class Indicators 
 {
 	static public int knowledgeTransfer()
 	{
-		int size = Building.buildings.size();
+		int size = BuildingPolygon.buildings.size();
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 610 * 5;
@@ -17,8 +17,8 @@ public class Indicators
 		{
 			for (int j=i+1; j<size; j++)
 			{
-				Building a = Building.buildings.get(i);
-				Building b = Building.buildings.get(j);
+				BuildingPolygon a = BuildingPolygon.buildings.get(i);
+				BuildingPolygon b = BuildingPolygon.buildings.get(j);
 				int atype = typeInt(a.getType());
 				int btype = typeInt(b.getType());
 				double cluster = CLUSTER[atype][btype];
@@ -29,6 +29,54 @@ public class Indicators
 		}
 		
 		return (int)(value / max * 100);
+	}
+	
+	static public int MarketD()
+	{
+		int size = BuildingPolygon.buildings.size();
+		
+		double value = 0;
+		double max = max_area / EM_SQ * 4;
+		
+		for (int i=0; i<size; i++)
+		{
+			BuildingPolygon a = BuildingPolygon.buildings.get(i);
+			value = value + a.getArea() / EM_SQ * MARKET_D[typeInt(a.getType())];
+		}
+		
+		return (int) (value/max*100);
+	}
+	
+	static public int MarketNL()
+	{
+		int size = BuildingPolygon.buildings.size();
+		
+		double value = 0;
+		double max = max_area / EM_SQ * 13;
+		
+		for (int i=0; i<size; i++)
+		{
+			BuildingPolygon a = BuildingPolygon.buildings.get(i);
+			value = value + a.getArea() / EM_SQ * MARKET_NL[typeInt(a.getType())];
+		}
+		
+		return (int) (value/max*100);
+	}
+	
+	static public int MarketWorld()
+	{
+		int size = BuildingPolygon.buildings.size();
+		
+		double value = 0;
+		double max = max_area / EM_SQ * 50;
+		
+		for (int i=0; i<size; i++)
+		{
+			BuildingPolygon a = BuildingPolygon.buildings.get(i);
+			value = value + a.getArea() / EM_SQ * MARKET_WORLD[typeInt(a.getType())];
+		}
+		
+		return (int) (value/max*100);
 	}
 	
 	static private int typeInt(String type)
@@ -49,20 +97,7 @@ public class Indicators
 			return -1;
 	}
 	
-	static public int MarketD()
-	{
-		return 30;
-	}
 	
-	static public int MarketNL()
-	{
-		return 80;
-	}
-	
-	static public int MarketWorld()
-	{
-		return 100;
-	}
 	
 	private static int [][] CLUSTER = 
 		{
@@ -74,8 +109,16 @@ public class Indicators
 			{ 610,	610,	610,	610,	590,	  0,	450}
 		};
 	
-	private static int [] MARKET_D =
-		{};
+	private static double [] MARKET_D =
+		{3,	2,	0.5,	4,	2,	1, 1.5};
+	
+	private static double[] MARKET_NL =
+		{4,	9,	10,	10,	0,	6,	13,	9};
+	
+	private static double[] MARKET_WORLD =
+		{18,	50,	17,	17,	20,	20,	20};
+	
+	
 	
 	// employees per square meter
 	private static double EM_SQ = 40;
