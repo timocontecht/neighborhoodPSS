@@ -22,15 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ModePanel extends VerticalPanel implements ClickHandler
 {
-/*	static private ModePanel instance = null;
-	
-	static public ModePanel getInstance()
-	{
-		if (instance == null)
-			instance = new ModePanel();
-		return instance;
-	}
-	*/
+
 	public ModePanel(ScenarioPanel p)
 	{
 		scenarioPanel = p;

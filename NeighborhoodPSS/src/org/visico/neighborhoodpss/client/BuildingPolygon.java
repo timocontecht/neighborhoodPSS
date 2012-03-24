@@ -38,6 +38,8 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler
 		addPolygonEndLineHandler(this);
 	}
 	
+	
+	
 	public void setType(String t) 
 	{
 		type = t;
@@ -84,4 +86,16 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler
 	private Building building; 
 	
 	ScenarioPanel scenarioPanel = null;
+
+	public void setScenario(Building b) 
+	{
+		building = b;
+		
+		for (int i=0; i<b.getLatPoints().size(); i++)
+		{
+			this.insertVertex(i, LatLng.newInstance(b.getLatPoints().get(i), b.getLongPoints().get(i)));
+		}
+		
+		this.setType(b.getType());
+	}
 }

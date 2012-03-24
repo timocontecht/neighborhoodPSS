@@ -26,7 +26,6 @@ public class Indicators
 				double cluster = CLUSTER[atype][btype];
 				double employees = (double)(a.getArea() / EM_SQ + b.getArea() / EM_SQ);
 				value = value +  employees * cluster;
-				
 			}
 		}
 		

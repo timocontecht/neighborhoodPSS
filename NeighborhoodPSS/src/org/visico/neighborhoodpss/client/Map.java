@@ -9,15 +9,7 @@ import com.google.gwt.maps.client.overlay.Marker;
 
 public class Map implements MapClickHandler
 {
-/*	static private Map instance = null;
-	
-	static public Map getInstance()
-	{
-		if (instance == null)
-			instance = new Map();
-		return instance;
-	}
-	*/
+
 	public Map()
 	{
 		LatLng gaxel = LatLng.newInstance(52.01997, 6.79255);

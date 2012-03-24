@@ -29,6 +29,13 @@ public class ScenarioPanel extends DockLayoutPanel
 	    MapWidget mw = map.getMap();
 	    add(mw);
 	    
+	    for (int i=0; i<scenario.getBuildings().size(); i++)
+	    {
+	    	BuildingPolygon bldgPlg = new BuildingPolygon();
+	    	mw.addOverlay(bldgPlg);
+	    	bldgPlg.setScenario(scenario.getBuildings().get(i));
+	    }
+	    map.getMap().checkResizeAndCenter();
 	}
 	
 	public Map getMap()
