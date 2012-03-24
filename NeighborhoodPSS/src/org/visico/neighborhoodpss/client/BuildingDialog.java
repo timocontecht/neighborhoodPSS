@@ -29,7 +29,7 @@ public class BuildingDialog extends DialogBox implements ClickHandler
 		
 		add(panel);
 		
-		building = b;
+		buildingPlg = b;
 		scenarioPanel = p;
 	}
 	
@@ -44,12 +44,13 @@ public class BuildingDialog extends DialogBox implements ClickHandler
 	public void onClick(ClickEvent event) 
 	{
 		BuildingDialog.this.hide(true);
-		building.setType(type());
-		BuildingPolygon.buildings.add(building);
+		buildingPlg.setType(type());
+		BuildingPolygon.buildings.add(buildingPlg);
+		scenarioPanel.addBuilding(buildingPlg);
 		scenarioPanel.updateData();
 		
 	}
 	
-	private BuildingPolygon building = null;
+	private BuildingPolygon buildingPlg = null;
 	private ScenarioPanel scenarioPanel = null;
 }

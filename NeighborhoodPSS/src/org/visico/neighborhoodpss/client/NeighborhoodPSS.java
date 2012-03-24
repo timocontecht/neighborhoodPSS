@@ -45,7 +45,7 @@ public class NeighborhoodPSS implements EntryPoint
 		      public void run() 
 		      {
 		    	  //initialize the panel
-		    	 IndicatorPanel panel = new IndicatorPanel();
+		    	 IndicatorPanel panel = new IndicatorPanel(null);
 		    	  
 			  }
 	   };

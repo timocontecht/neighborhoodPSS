@@ -1,5 +1,8 @@
 package org.visico.neighborhoodpss.client;
 
+import java.util.ArrayList;
+
+import org.visico.neighborhoodpss.shared.Building;
 import org.visico.neighborhoodpss.shared.Scenario;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -14,14 +17,13 @@ public class ScenarioPanel extends DockLayoutPanel
 		scenario = s;
 		this.setTitle("Scenarios");
 		draw();
-		
 	}
 	
 	public void draw()
 	{
 		map = new Map();
 		modePanel = new ModePanel(this);
-		dataPanel = new DataPanel();
+		dataPanel = new DataPanel(this);
 	    addWest(modePanel, 150);
 	    addSouth(dataPanel, 250);
 	    MapWidget mw = map.getMap();
@@ -44,8 +46,29 @@ public class ScenarioPanel extends DockLayoutPanel
 		return scenario;
 	}
 	
+	public void addBuilding(BuildingPolygon p)
+	{
+		buildings.add(p);
+	}
+	
+	public ArrayList<BuildingPolygon> getBuildingPlgs()
+	{
+		return buildings;
+	}
+	
+	public ArrayList<Building> getBuildings()
+	{
+		ArrayList<Building> buildings = new ArrayList<Building>();
+		for (int i=0; i < getBuildingPlgs().size(); i++)
+		{
+			buildings.add(getBuildingPlgs().get(i).setBuilding());
+		}
+		return buildings;
+	}
+	
 	private Map map; 
 	private ModePanel modePanel;
 	private DataPanel dataPanel;
+	private ArrayList<BuildingPolygon>buildings = new ArrayList<BuildingPolygon>();
 	private Scenario scenario;
 }

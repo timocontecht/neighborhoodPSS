@@ -14,13 +14,15 @@ public class DataPanel extends TabPanel
 		return instance;
 	}
 */
-	public DataPanel()
+	public DataPanel(ScenarioPanel p)
 	{
 		this.setWidth("20px");
+		scenarioPanel = p;
 		buildingTable = new BuildingTable();
-		indicatorPanel = new IndicatorPanel();
+		indicatorPanel = new IndicatorPanel(p);
 		add(buildingTable, "Buildings");
 	    add(indicatorPanel, "Inidcators");
+	    
 
 	    // Show the 'bar' tab initially.
 	    selectTab(0);
@@ -34,4 +36,5 @@ public class DataPanel extends TabPanel
 	
 	BuildingTable buildingTable;
 	IndicatorPanel indicatorPanel;
+	ScenarioPanel scenarioPanel;
 }

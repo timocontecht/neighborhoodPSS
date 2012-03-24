@@ -1,12 +1,14 @@
 package org.visico.neighborhoodpss.shared;
 
+import java.util.ArrayList;
+
 import org.visico.neighborhoodpss.client.BuildingPolygon;
 
 public class Indicators 
 {
-	static public int knowledgeTransfer()
+	static public int knowledgeTransfer(ArrayList<Building> buildings)
 	{
-		int size = BuildingPolygon.buildings.size();
+		int size = buildings.size();
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 610 * 5;
@@ -17,8 +19,8 @@ public class Indicators
 		{
 			for (int j=i+1; j<size; j++)
 			{
-				BuildingPolygon a = BuildingPolygon.buildings.get(i);
-				BuildingPolygon b = BuildingPolygon.buildings.get(j);
+				Building a = buildings.get(i);
+				Building b = buildings.get(j);
 				int atype = typeInt(a.getType());
 				int btype = typeInt(b.getType());
 				double cluster = CLUSTER[atype][btype];
@@ -31,48 +33,48 @@ public class Indicators
 		return (int)(value / max * 100);
 	}
 	
-	static public int MarketD()
+	static public int MarketD(ArrayList<Building> buildings)
 	{
-		int size = BuildingPolygon.buildings.size();
+		int size = buildings.size();
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 4;
 		
 		for (int i=0; i<size; i++)
 		{
-			BuildingPolygon a = BuildingPolygon.buildings.get(i);
+			Building a = buildings.get(i);
 			value = value + a.getArea() / EM_SQ * MARKET_D[typeInt(a.getType())];
 		}
 		
 		return (int) (value/max*100);
 	}
 	
-	static public int MarketNL()
+	static public int MarketNL(ArrayList<Building> buildings)
 	{
-		int size = BuildingPolygon.buildings.size();
+		int size = buildings.size();
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 13;
 		
 		for (int i=0; i<size; i++)
 		{
-			BuildingPolygon a = BuildingPolygon.buildings.get(i);
+			Building a = buildings.get(i);
 			value = value + a.getArea() / EM_SQ * MARKET_NL[typeInt(a.getType())];
 		}
 		
 		return (int) (value/max*100);
 	}
 	
-	static public int MarketWorld()
+	static public int MarketWorld(ArrayList<Building> buildings)
 	{
-		int size = BuildingPolygon.buildings.size();
+		int size = buildings.size();
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 50;
 		
 		for (int i=0; i<size; i++)
 		{
-			BuildingPolygon a = BuildingPolygon.buildings.get(i);
+			Building a = buildings.get(i);
 			value = value + a.getArea() / EM_SQ * MARKET_WORLD[typeInt(a.getType())];
 		}
 		

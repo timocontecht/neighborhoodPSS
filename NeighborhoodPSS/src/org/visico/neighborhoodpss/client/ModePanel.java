@@ -61,13 +61,14 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 			building.setScenarioPanel(scenarioPanel);	
 			scenarioPanel.getMap().getMap().addOverlay(building);
 			building.setDrawingEnabled();
+			Scenario scenario = scenarioPanel.scenario();
+			
 		}
 		
 		if (event.getSource() == close_btn)
 		{
 			Scenario scenario = scenarioPanel.scenario();
-			
-			// TODO add all the created buildings before removing
+			scenario.setBuildings(scenarioPanel.getBuildings());
 			scenarioPanel.removeFromParent();
 		}
 	}
