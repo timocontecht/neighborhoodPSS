@@ -1,5 +1,6 @@
 package org.visico.neighborhoodpss.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /** shared class to wrap the building polygon class. This allows saving buildings without polygons,
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * @author timo
  *
  */
-public class Building
+public class Building implements Serializable
 {
 	public void setPoints(ArrayList<Double> lat, ArrayList<Double> lon)
 	{

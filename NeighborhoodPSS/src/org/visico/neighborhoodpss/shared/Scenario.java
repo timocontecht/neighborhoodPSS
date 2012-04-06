@@ -1,8 +1,9 @@
 package org.visico.neighborhoodpss.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Scenario implements Cloneable
+public class Scenario implements Cloneable, Serializable
 {
 	public Scenario (String n)
 	{
