@@ -65,9 +65,6 @@ public class MainTab extends TabLayoutPanel
 		add(dock, dock.getTitle());
 	}
 	
-	
-	
 	ArrayList<ScenarioPanel> panels;
-
 	
 }

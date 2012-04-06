@@ -17,6 +17,7 @@ public class ScenarioTree extends Tree
 		TreeItem root = new TreeItem(new ScenarioComposite(scenario));
 		addChildren(root, scenario);
 		this.addItem(root);
+		root.setState(true);
 	}
 	
 	private void addChildren(TreeItem rootTreeItem, Scenario rootScenario)
@@ -27,6 +28,7 @@ public class ScenarioTree extends Tree
 			TreeItem childItem = new TreeItem(new ScenarioComposite(childScenario));
 			rootTreeItem.addItem(childItem);
 			addChildren(childItem, childScenario);
+			childItem.setState(true);
 		}
 	}
 	

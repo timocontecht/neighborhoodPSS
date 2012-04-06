@@ -58,9 +58,6 @@ public class NeighborhoodPSS implements EntryPoint
 	  private void buildUi() 
 	  {
 	    MainTab panel = MainTab.getInstance();
-	    
-	    
-	    // Add the map to the HTML host page
 	    RootLayoutPanel.get().add(panel);
 	  }	
 	  

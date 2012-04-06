@@ -26,12 +26,13 @@ public class ScenarioComposite extends Composite implements ClickHandler
 		view = new Button("View");
 		view.addClickHandler(this);
 		branch = new Button("Branch");
-		delete = new Button("Delete");
-		info = new Button("Info");
+		branch.addClickHandler(this);
+		//delete = new Button("Delete");
+		//info = new Button("Info");
 		hp.add(view);
 		hp.add(branch);
-		hp.add(delete);
-		hp.add(info);
+		//hp.add(delete);
+		//hp.add(info);
 		
 		initWidget(vp);
 	}
@@ -44,6 +45,11 @@ public class ScenarioComposite extends Composite implements ClickHandler
 			MainTab.getInstance().addScenario(scenario);
 		}
 		
+		if (event.getSource() == branch)
+		{
+			Scenario s = this.scenario.createChild();
+			HierarchyPanel.getInstance().draw();
+		}
 	}
 
 	private Button view;

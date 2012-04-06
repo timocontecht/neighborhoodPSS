@@ -1,14 +1,19 @@
 package org.visico.neighborhoodpss.client;
 
+import java.util.ArrayList;
+
 import org.visico.neighborhoodpss.shared.Scenario;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class HierarchyPanel extends ScrollPanel
+public class HierarchyPanel extends ScrollPanel implements ClickHandler
 {
 	static private HierarchyPanel instance = null;
 	
@@ -21,6 +26,7 @@ public class HierarchyPanel extends ScrollPanel
 	
 	private HierarchyPanel()
 	{
+		parentScenarios = new ArrayList<Scenario>();
 		draw();
 	}
 	
@@ -28,24 +34,23 @@ public class HierarchyPanel extends ScrollPanel
 	{
 		try 
 		{
+			
+			this.clear();
+			
 			VerticalPanel p = new VerticalPanel();
-			//TODO: here are a number of dummy scenarios
-			Scenario one = new Scenario("Timo 1");
-			Scenario two = one.createChild();
-			Scenario three = one.createChild();
-			Scenario four = one.createChild();
-			Scenario fourchild = four.createChild();
-			Scenario five = new Scenario("Timo 2");
 			
-			ScenarioTree oneTree;
-			ScenarioTree fiveTree;
+			for (int i=0; i<parentScenarios.size(); i++)
+			{
+				ScenarioTree st = new ScenarioTree(parentScenarios.get(i));
+				p.add(st);
+			}
 			
-			oneTree = new ScenarioTree(one);
-			fiveTree = new ScenarioTree(five);	    
-		    p.add(oneTree);
-		    p.add(fiveTree);
+			addRoot = new Button("Add Root Scenario");
+		    addRoot.addClickHandler(this);
+		    p.add(addRoot);
 		    
 		    this.add(p);
+		    
 		} 
 		catch (Exception e) 
 		{
@@ -54,5 +59,23 @@ public class HierarchyPanel extends ScrollPanel
 	    
 	}
 	
+	ArrayList<Scenario> parentScenarios;
+	Button addRoot;
+
+	@Override
+	public void onClick(ClickEvent event) 
+	{
+		
+		ScenarioDialog dlg = new ScenarioDialog(this);
+		dlg.show();
+		
+		
+	} 
+	
+	public void addParentScenario(Scenario s)
+	{
+		parentScenarios.add(s);
+		draw();
+	}
 	
 }
