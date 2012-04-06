@@ -35,7 +35,7 @@ public class ScenarioPanel extends DockLayoutPanel
 	    	mw.addOverlay(bldgPlg);
 	    	bldgPlg.setScenario(scenario.getBuildings().get(i));
 	    }
-	    map.getMap().checkResizeAndCenter();
+	    
 	}
 	
 	public Map getMap()
