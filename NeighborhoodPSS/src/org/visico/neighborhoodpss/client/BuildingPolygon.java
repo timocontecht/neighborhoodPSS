@@ -5,10 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.visico.neighborhoodpss.shared.Building;
-
-
 import com.google.gwt.maps.client.event.PolygonEndLineHandler;
-import com.google.gwt.maps.client.event.PolygonEndLineHandler.PolygonEndLineEvent;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Polygon;
 
@@ -91,9 +88,9 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler
 	{
 		building = b;
 		
-		for (int i=0; i<b.getLatPoints().size(); i++)
+		for (int i=0; i<b.getPointsLat().size(); i++)
 		{
-			this.insertVertex(i, LatLng.newInstance(b.getLatPoints().get(i), b.getLongPoints().get(i)));
+			this.insertVertex(i, LatLng.newInstance(b.getPointsLat().get(i), b.getPointsLong().get(i)));
 		}
 		
 		this.setType(b.getType());

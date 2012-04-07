@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.client;
 
-import java.util.ArrayList;
+
+import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.Scenario;
 
@@ -13,6 +14,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("scenario")
 public interface ScenarioService extends RemoteService 
 {
-	String saveScenarios(ArrayList<Scenario> scenarios) throws IllegalArgumentException;
+	String saveScenarios(Set<Scenario> scenarios) throws IllegalArgumentException;
 	
 }

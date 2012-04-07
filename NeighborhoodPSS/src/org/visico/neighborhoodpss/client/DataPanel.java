@@ -1,6 +1,5 @@
 package org.visico.neighborhoodpss.client;
 
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.TabPanel;
 
 public class DataPanel extends TabPanel 

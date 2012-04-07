@@ -9,7 +9,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 public class MainTab extends TabLayoutPanel 
@@ -60,7 +59,7 @@ public class MainTab extends TabLayoutPanel
 	public void addScenario(Scenario scenario)
 	{
 		ScenarioPanel dock = new ScenarioPanel(scenario);
-		dock.setTitle(scenario.name() + " " + scenario.label());
+		dock.setTitle(scenario.getName() + " " + scenario.label());
 		panels.add(dock);
 		add(dock, dock.getTitle());
 	}

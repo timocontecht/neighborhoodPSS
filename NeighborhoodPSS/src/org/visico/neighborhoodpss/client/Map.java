@@ -1,11 +1,11 @@
 package org.visico.neighborhoodpss.client;
 
-import com.google.gwt.maps.client.InfoWindowContent;
+
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Marker;
+
 
 public class Map implements MapClickHandler
 {

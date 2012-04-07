@@ -1,9 +1,10 @@
 package org.visico.neighborhoodpss.server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.visico.neighborhoodpss.client.ScenarioService;
-import org.visico.neighborhoodpss.shared.FieldVerifier;
 import org.visico.neighborhoodpss.shared.Scenario;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -24,26 +25,27 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	 * 
 	 * @param html the html string to escape
 	 * @return the escaped string
-	 */
+	
 	private String escapeHtml(String html) {
 		if (html == null) {
 			return null;
 		}
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
-	}
+	} */
 
 	@Override
-	public String saveScenarios(ArrayList<Scenario> scenarios)
+	public String saveScenarios(Set<Scenario> scenarios)
 			throws IllegalArgumentException 
 	{
 		String test = "Timo";
 		test = test + " & Natasha";
 		
-		for (int i=0; i<scenarios.size(); i++)
+		Iterator<Scenario> it = scenarios.iterator();
+		while (it.hasNext())
 		{
-			Scenario parent = scenarios.get(i);
-			ArrayList<Scenario> children = parent.children();
+			//Scenario parent = scenarios.get(i);
+			//Set<Scenario> children = parent.getChildren();
 		}
 		
 		

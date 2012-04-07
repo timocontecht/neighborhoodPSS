@@ -11,6 +11,13 @@ import java.util.ArrayList;
  */
 public class Building implements Serializable
 {
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6838190883337046022L;
+	
 	public void setPoints(ArrayList<Double> lat, ArrayList<Double> lon)
 	{
 		pointsLat = lat;
@@ -23,41 +30,42 @@ public class Building implements Serializable
 		pointsLong.add(lon);
 	}
 	
-	public ArrayList<Double> getLatPoints()
-	{
+	
+	
+	public ArrayList<Double> getPointsLat() {
 		return pointsLat;
 	}
-	
-	public ArrayList<Double> getLongPoints()
-	{
+
+	public void setPointsLat(ArrayList<Double> pointsLat) {
+		this.pointsLat = pointsLat;
+	}
+
+	public ArrayList<Double> getPointsLong() {
 		return pointsLong;
 	}
-	
-	public void setType(String t)
-	{
-		type = t;
+
+	public void setPointsLong(ArrayList<Double> pointsLong) {
+		this.pointsLong = pointsLong;
 	}
-	
-	public String type()
-	{
+
+	public String getType() {
 		return type;
 	}
-	
-	public String getType()
-	{
-		return type;
+
+	public void setType(String type) {
+		this.type = type;
 	}
-	
-	public double getArea()
-	{
+
+	public double getArea() {
 		return area;
 	}
-	
-	public void setArea(double a)
-	{
-		area = a;
+
+	public void setArea(double area) {
+		this.area = area;
 	}
-	
+
+
+
 	private ArrayList<Double> pointsLat = new ArrayList<Double>();
 	private ArrayList<Double> pointsLong = new ArrayList<Double>();
 	

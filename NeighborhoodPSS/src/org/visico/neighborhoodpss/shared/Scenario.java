@@ -1,14 +1,22 @@
 package org.visico.neighborhoodpss.shared;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+
 
 public class Scenario implements Cloneable, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 732022436294521332L;
+	
 	public Scenario (String n)
 	{
-		buildings = new ArrayList<Building>();
-		children = new ArrayList<Scenario>();
+		buildings = new HashSet<Building>();
+		children = new HashSet<Scenario>();
 		label = "";
 		name = n;
 	}
@@ -18,36 +26,71 @@ public class Scenario implements Cloneable, Serializable
 		
 	}
 	
-	public String name()
-	{
+	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getName() {
 		return name;
 	}
-	
-	public void setName(String n)
-	{
-		name = n;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	
-	public String description()
-	{
+
+	public String getDescription() {
 		return description;
 	}
-	
-	public void setDescription(String d)
-	{
-		description = d;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	
-	public void setBuildings(ArrayList<Building> b)
-	{
-		buildings = b;
+
+	public int getId() {
+		return id;
 	}
-	
-	public ArrayList<Building> getBuildings()
-	{
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Scenario getParent() {
+		return parent;
+	}
+
+	public void setParent(Scenario parent) {
+		this.parent = parent;
+	}
+
+	public Long getId_db() {
+		return id_db;
+	}
+
+	public void setId_db(Long id_db) {
+		this.id_db = id_db;
+	}
+
+	public Set<Scenario> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<Scenario> children) {
+		this.children = children;
+	}
+
+	public Set<Building> getBuildings() {
 		return buildings;
 	}
-	
+
+	public void setBuildings(Set<Building> buildings) {
+		this.buildings = buildings;
+	}
+
 	public void addBuilding(Building b)
 	{
 		buildings.add(b);
@@ -58,7 +101,7 @@ public class Scenario implements Cloneable, Serializable
 		return label;
 	}
 	
-	private void addChild(Scenario child)
+	public void addChild(Scenario child)
 	{
 		children.add(child);
 	}
@@ -71,10 +114,7 @@ public class Scenario implements Cloneable, Serializable
 			return true;
 	}
 	
-	public ArrayList<Scenario> children()
-	{
-		return children;
-	}
+	
 	
 	public Scenario createChild()
 	{
@@ -97,17 +137,19 @@ public class Scenario implements Cloneable, Serializable
 		}
 		
 		
-		child.name = this.name();
+		child.name = this.getName();
 		child.description = this.description;
 		child.id = this.id;
 		child.parent = this;
-		child.children = new ArrayList<Scenario>();
-		child.buildings = new ArrayList<Building>();
+		child.children = new HashSet<Scenario>();
+		child.buildings = new HashSet<Building>();
 		child.buildings.addAll(this.buildings);
 		
 		this.children.add(child);
 		return child;
 	}
+	
+	
 	
 	// label is automatically created
 	private String label;
@@ -115,7 +157,8 @@ public class Scenario implements Cloneable, Serializable
 	private String description;
 	private int id;
 	private Scenario parent; 
+	private Long id_db;
 	
-	private ArrayList<Scenario> children;
-	private ArrayList<Building> buildings;
+	private Set<Scenario> children;
+	private Set<Building> buildings;
 }

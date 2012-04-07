@@ -1,9 +1,13 @@
 package org.visico.neighborhoodpss.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.Building;
 import org.visico.neighborhoodpss.shared.Scenario;
+
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.maps.client.MapWidget;
@@ -29,11 +33,12 @@ public class ScenarioPanel extends DockLayoutPanel
 	    MapWidget mw = map.getMap();
 	    add(mw);
 	    
-	    for (int i=0; i<scenario.getBuildings().size(); i++)
+	    Iterator<Building> it = scenario.getBuildings().iterator();
+	    while (it.hasNext())
 	    {
 	    	BuildingPolygon bldgPlg = new BuildingPolygon();
 	    	mw.addOverlay(bldgPlg);
-	    	bldgPlg.setScenario(scenario.getBuildings().get(i));
+	    	bldgPlg.setScenario(it.next());
 	    }
 	    
 	}
@@ -63,9 +68,9 @@ public class ScenarioPanel extends DockLayoutPanel
 		return buildings;
 	}
 	
-	public ArrayList<Building> getBuildings()
+	public Set<Building> getBuildings()
 	{
-		ArrayList<Building> buildings = new ArrayList<Building>();
+		HashSet<Building> buildings = new HashSet<Building>();
 		for (int i=0; i < getBuildingPlgs().size(); i++)
 		{
 			buildings.add(getBuildingPlgs().get(i).setBuilding());

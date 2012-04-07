@@ -1,6 +1,9 @@
 package org.visico.neighborhoodpss.client;
 
-import java.util.ArrayList;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.Scenario;
 
@@ -11,11 +14,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
@@ -32,7 +32,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	private HierarchyPanel()
 	{
 		super(Unit.EM);
-		parentScenarios = new ArrayList<Scenario>();
+		parentScenarios = new HashSet<Scenario>();
 		draw();
 	}
 	
@@ -50,9 +50,10 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 			p.add(s);
 			VerticalPanel scenarioPanel = new VerticalPanel();
 			
-			for (int i=0; i<parentScenarios.size(); i++)
+			Iterator<Scenario> it = parentScenarios.iterator();
+			while(it.hasNext())
 			{
-				ScenarioTree st = new ScenarioTree(parentScenarios.get(i));
+				ScenarioTree st = new ScenarioTree(it.next());
 				scenarioPanel.add(st);
 			}
 			
@@ -77,7 +78,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	    
 	}
 	
-	ArrayList<Scenario> parentScenarios;
+	Set<Scenario> parentScenarios;
 	Button addRoot;
 	Button saveSession;
 

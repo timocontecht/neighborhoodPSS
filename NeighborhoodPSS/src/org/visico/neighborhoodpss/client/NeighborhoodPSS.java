@@ -4,19 +4,10 @@ package org.visico.neighborhoodpss.client;
 
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.maps.client.Maps;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.visualization.client.AbstractDataTable;
-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.Selection;
 import com.google.gwt.visualization.client.VisualizationUtils;
-import com.google.gwt.visualization.client.events.SelectHandler;
 import com.google.gwt.visualization.client.visualizations.corechart.BarChart;
-import com.google.gwt.visualization.client.visualizations.corechart.Options;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -45,7 +36,8 @@ public class NeighborhoodPSS implements EntryPoint
 		      public void run() 
 		      {
 		    	  //initialize the panel
-		    	 IndicatorPanel panel = new IndicatorPanel(null);
+		    	 @SuppressWarnings("unused")
+				 IndicatorPanel panel = new IndicatorPanel(null);
 		    	  
 			  }
 	   };

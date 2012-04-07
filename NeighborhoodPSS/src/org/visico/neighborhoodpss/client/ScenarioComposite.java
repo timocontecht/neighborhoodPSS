@@ -20,7 +20,7 @@ public class ScenarioComposite extends Composite implements ClickHandler
 		HorizontalPanel hp = new HorizontalPanel();
 		
 		vp.add(new Label(s.label()));
-		vp.add(new Label(s.name()));
+		vp.add(new Label(s.getName()));
 		vp.add(hp);
 		
 		view = new Button("View");
@@ -47,15 +47,15 @@ public class ScenarioComposite extends Composite implements ClickHandler
 		
 		if (event.getSource() == branch)
 		{
-			Scenario s = this.scenario.createChild();
+			this.scenario.createChild();
 			HierarchyPanel.getInstance().draw();
 		}
 	}
 
 	private Button view;
 	private Button branch;
-	private Button delete;
-	private Button info;
+	//private Button delete;
+	//private Button info;
 	
 	private Scenario scenario;
 }
