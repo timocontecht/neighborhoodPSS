@@ -6,19 +6,13 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>org.visico.neighborhoodpss.server.GreetingServiceImpl</servlet-class>
-  </servlet>
+
   <servlet>
     <servlet-name>scenarioServlet</servlet-name>
     <servlet-class>org.visico.neighborhoodpss.server.ScenarioServiceImpl</servlet-class>
   </servlet>
   
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/neighborhoodpss/greet</url-pattern>
-  </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>scenarioServlet</servlet-name>
     <url-pattern>/neighborhoodpss/scenario</url-pattern>

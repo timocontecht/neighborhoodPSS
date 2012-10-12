@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.visico.neighborhoodpss.server.Building;
+
 
 
 public class ScenarioDTO implements Cloneable, Serializable

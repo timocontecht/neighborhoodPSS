@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.hibernate.Session;
 import org.visico.neighborhoodpss.client.ScenarioService;
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
+import com.google.gwt.dev.util.collect.HashSet;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -35,20 +37,68 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	} */
 
 	@Override
-	public String saveScenarios(Set<Scenario> scenarios)
+	public Set<ScenarioDTO> saveScenarios(Set<ScenarioDTO> scenarios)
 			throws IllegalArgumentException 
 	{
-		String test = "Timo";
-		test = test + " & Natasha";
 		
+		createAndSaveScenarioObjects(scenarios);
+		return scenarios;
+	}
+	
+	private void createAndSaveScenarioObjects(Set<ScenarioDTO> scenarios_dto)
+	{
+		Set<Scenario> scenarios = createScenarioObjects(scenarios_dto);
+		persistScenarios(scenarios);
+	}
+	
+	private void persistScenarios(Set<Scenario> scenarios) 
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    session.beginTransaction();
+	    
 		Iterator<Scenario> it = scenarios.iterator();
 		while (it.hasNext())
 		{
-			//Scenario parent = scenarios.get(i);
-			//Set<Scenario> children = parent.getChildren();
+			Scenario s = it.next();
+			session.saveOrUpdate(s);
+			s.getDto_object().setId(s.getId());
 		}
 		
+		session.getTransaction().commit();
+	}
+
+	/** function to convert all ScenarioDTO objects into normal Scenario objects for persistence
+	 * 
+	 * @param scenarios A Set of all root parents of the existing scenarios
+	 * @return A Set of all scenarios with assigned parent ids for persistence
+	 */
+	private Set<Scenario> createScenarioObjects(Set<ScenarioDTO> scenarios)
+	{
+		HashSet<Scenario> objects = new HashSet<Scenario>();
 		
-		return "Scenarios Saved";
+		Iterator<ScenarioDTO> it = scenarios.iterator();
+		while (it.hasNext())
+		{
+			ScenarioDTO parent = it.next();
+			objects.addAll(Scenario.createFromParentDTO(parent));
+		}
+			
+		return objects;
+	}
+	
+	public void persistBuildings(Set<Building> buildings)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    session.beginTransaction();
+	    
+		Iterator<Building> it = buildings.iterator();
+		while (it.hasNext())
+		{
+			Building b = it.next();
+			session.saveOrUpdate(b);
+			//TODO: b.getDto_object().setId(b.getId());
+		}
+		
+		session.getTransaction().commit();
 	}
 }

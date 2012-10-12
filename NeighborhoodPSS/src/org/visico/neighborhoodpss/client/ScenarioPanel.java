@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.shared.Building;
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.server.Building;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 
 public class ScenarioPanel extends DockLayoutPanel
 {	
-	public ScenarioPanel(Scenario s) 
+	public ScenarioPanel(ScenarioDTO s) 
 	{
 		super(Unit.PX);
 		scenario = s;
@@ -53,7 +53,7 @@ public class ScenarioPanel extends DockLayoutPanel
 		dataPanel.updateData();
 	}
 	
-	public Scenario scenario()
+	public ScenarioDTO scenario()
 	{
 		return scenario;
 	}
@@ -82,5 +82,5 @@ public class ScenarioPanel extends DockLayoutPanel
 	private ModePanel modePanel;
 	private DataPanel dataPanel;
 	private ArrayList<BuildingPolygon>buildings = new ArrayList<BuildingPolygon>();
-	private Scenario scenario;
+	private ScenarioDTO scenario;
 }

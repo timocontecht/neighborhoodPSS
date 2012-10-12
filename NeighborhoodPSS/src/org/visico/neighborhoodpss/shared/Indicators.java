@@ -4,6 +4,8 @@ package org.visico.neighborhoodpss.shared;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.visico.neighborhoodpss.server.Building;
+
 
 
 public class Indicators 

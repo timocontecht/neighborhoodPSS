@@ -3,7 +3,7 @@ package org.visico.neighborhoodpss.client;
 
 import java.util.Set;
 
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -11,6 +11,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * The async counterpart of <code>GreetingService</code>.
  */
 public interface ScenarioServiceAsync {
-	void saveScenarios(Set<Scenario> parentScenarios, AsyncCallback<String> callback)
+	void saveScenarios(Set<ScenarioDTO> parentScenarios, AsyncCallback< Set<ScenarioDTO> > callback)
 			throws IllegalArgumentException;
 }

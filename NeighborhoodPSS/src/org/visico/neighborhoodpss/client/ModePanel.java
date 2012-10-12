@@ -1,7 +1,7 @@
 package org.visico.neighborhoodpss.client;
 
 
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -45,7 +45,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		
 		if (event.getSource() == close_btn)
 		{
-			Scenario scenario = scenarioPanel.scenario();
+			ScenarioDTO scenario = scenarioPanel.scenario();
 			scenario.setBuildings(scenarioPanel.getBuildings());
 			scenarioPanel.removeFromParent();
 		}

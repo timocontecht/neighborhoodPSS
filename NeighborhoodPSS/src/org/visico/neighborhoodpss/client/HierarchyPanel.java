@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -32,7 +32,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	private HierarchyPanel()
 	{
 		super(Unit.EM);
-		parentScenarios = new HashSet<Scenario>();
+		parentScenarios = new HashSet<ScenarioDTO>();
 		draw();
 	}
 	
@@ -50,7 +50,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 			p.add(s);
 			VerticalPanel scenarioPanel = new VerticalPanel();
 			
-			Iterator<Scenario> it = parentScenarios.iterator();
+			Iterator<ScenarioDTO> it = parentScenarios.iterator();
 			while(it.hasNext())
 			{
 				ScenarioTree st = new ScenarioTree(it.next());
@@ -78,7 +78,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	    
 	}
 	
-	Set<Scenario> parentScenarios;
+	Set<ScenarioDTO> parentScenarios;
 	Button addRoot;
 	Button saveSession;
 
@@ -94,7 +94,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 		{
 			ScenarioServiceAsync service = GWT.create(ScenarioService.class);
 			
-			AsyncCallback<String> callback = new AsyncCallback<String>()
+			AsyncCallback<Set<ScenarioDTO>> callback = new AsyncCallback<Set<ScenarioDTO>>()
 			{
 
 				@Override
@@ -105,10 +105,12 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 				}
 
 				@Override
-				public void onSuccess(String result) 
+				public void onSuccess(Set<ScenarioDTO> result) 
 				{
-					Window.alert(result);
+					Window.alert("Saved scenarios!");
 					
+					// need to overwrite scnearios to get id from server for database persistence
+					parentScenarios = result;
 				}
 			};
 			
@@ -117,7 +119,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 		}
 	} 
 	
-	public void addParentScenario(Scenario s)
+	public void addParentScenario(ScenarioDTO s)
 	{
 		parentScenarios.add(s);
 		draw();

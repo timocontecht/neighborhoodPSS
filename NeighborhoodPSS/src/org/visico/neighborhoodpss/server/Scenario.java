@@ -5,13 +5,37 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.shared.Building;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
+import javax.persistence.*;
+import org.hibernate.annotations.Index;
 
 
+@Entity
+@Table(name="SCENARIO")
 public class Scenario implements Cloneable, Serializable
 {
+	
+	// label is automatically created
+	@Id
+	@GeneratedValue
+	private int id;
+	@Column
+	private String label;
+	@Column
+	private String name;
+	@Column
+	private String description;
+	@ManyToOne
+	private Scenario parent; 
+	@Transient
+	private Set<Building> buildings;
+	
+	@Transient
+	private ScenarioDTO dto_object;
+	@Transient
+	private Set<Scenario> children;
+		
 	/**
 	 * 
 	 */
@@ -131,10 +155,12 @@ public class Scenario implements Cloneable, Serializable
 		this.description = description;
 	}
 
+	
 	public int getId() {
 		return id;
 	}
 
+	
 	public void setId(int id) {
 		this.id = id;
 		this.dto_object.setId(id);
@@ -225,13 +251,7 @@ public class Scenario implements Cloneable, Serializable
 	
 	
 	
-	// label is automatically created
-	private String label;
-	private String name;
-	private String description;
-	private int id;
-	private Scenario parent; 
-	private ScenarioDTO dto_object;
+	
 	
 	
 	public ScenarioDTO getDto_object() {
@@ -243,7 +263,5 @@ public class Scenario implements Cloneable, Serializable
 	}
 
 
-
-	private Set<Scenario> children;
-	private Set<Building> buildings;
+	
 }

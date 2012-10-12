@@ -1,7 +1,7 @@
 package org.visico.neighborhoodpss.client;
 
 
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,7 +42,7 @@ public class ScenarioDialog extends DialogBox implements ClickHandler
 	@Override
 	public void onClick(ClickEvent event) 
 	{
-		Scenario scenario = new Scenario(text());
+		ScenarioDTO scenario = new ScenarioDTO(text());
 		ScenarioDialog.this.hide(true);
 		hierarchyPanel.addParentScenario(scenario);
 	}

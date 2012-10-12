@@ -1,6 +1,6 @@
 package org.visico.neighborhoodpss.client;
 
-import org.visico.neighborhoodpss.shared.Scenario;
+import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ScenarioComposite extends Composite implements ClickHandler
 {
-	public ScenarioComposite(Scenario s)
+	public ScenarioComposite(ScenarioDTO s)
 	{
 		scenario = s;
 		
@@ -57,5 +57,5 @@ public class ScenarioComposite extends Composite implements ClickHandler
 	//private Button delete;
 	//private Button info;
 	
-	private Scenario scenario;
+	private ScenarioDTO scenario;
 }
