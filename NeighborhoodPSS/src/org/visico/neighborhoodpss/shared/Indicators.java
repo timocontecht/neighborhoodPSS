@@ -4,24 +4,24 @@ package org.visico.neighborhoodpss.shared;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.server.Building;
+import org.visico.neighborhoodpss.shared.BuildingDTO;
 
 
 
 public class Indicators 
 {
-	static public int knowledgeTransfer(Set<Building> buildings)
+	static public int knowledgeTransfer(Set<BuildingDTO> buildings)
 	{
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 610 * 5;
 		
 		
-		Iterator<Building> it = buildings.iterator();
-		Building a = it.next();
+		Iterator<BuildingDTO> it = buildings.iterator();
+		BuildingDTO a = it.next();
 		while (it.hasNext())
 		{
-			Building b = it.next();
+			BuildingDTO b = it.next();
 			int atype = typeInt(a.getType());
 			int btype = typeInt(b.getType());
 			double cluster = CLUSTER[atype][btype];
@@ -33,46 +33,46 @@ public class Indicators
 		return (int)(value / max * 100);
 	}
 	
-	static public int MarketD(Set<Building> buildings)
+	static public int MarketD(Set<BuildingDTO> buildings)
 	{
 		
 		double value = 0;
 		double max = max_area / EM_SQ * 4;
 		
-		Iterator<Building> it = buildings.iterator();
+		Iterator<BuildingDTO> it = buildings.iterator();
 		while (it.hasNext())
 		{
-			Building a = it.next();
+			BuildingDTO a = it.next();
 			value = value + a.getArea() / EM_SQ * MARKET_D[typeInt(a.getType())];
 		}
 		
 		return (int) (value/max*100);
 	}
 	
-	static public int MarketNL(Set<Building> buildings)
+	static public int MarketNL(Set<BuildingDTO> buildings)
 	{
 		double value = 0;
 		double max = max_area / EM_SQ * 13;
 		
-		Iterator<Building> it = buildings.iterator();
+		Iterator<BuildingDTO> it = buildings.iterator();
 		while (it.hasNext())
 		{
-			Building a = it.next();
+			BuildingDTO a = it.next();
 			value = value + a.getArea() / EM_SQ * MARKET_NL[typeInt(a.getType())];
 		}
 		
 		return (int) (value/max*100);
 	}
 	
-	static public int MarketWorld(Set<Building> buildings)
+	static public int MarketWorld(Set<BuildingDTO> buildings)
 	{
 		double value = 0;
 		double max = max_area / EM_SQ * 50;
 		
-		Iterator<Building> it = buildings.iterator();
+		Iterator<BuildingDTO> it = buildings.iterator();
 		while (it.hasNext())
 		{
-			Building a = it.next();
+			BuildingDTO a = it.next();
 			value = value + a.getArea() / EM_SQ * MARKET_WORLD[typeInt(a.getType())];
 		}
 		

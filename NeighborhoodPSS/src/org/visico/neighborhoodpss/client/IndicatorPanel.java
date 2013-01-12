@@ -56,10 +56,10 @@ public class IndicatorPanel extends VerticalPanel
 	*/
 	public void draw()
 	{
-		 data.setValue(0, 1, Indicators.knowledgeTransfer(scenarioPanel.getBuildings()));
-	     data.setValue(1, 1, Indicators.MarketD(scenarioPanel.getBuildings()));
-	     data.setValue(2, 1, Indicators.MarketNL(scenarioPanel.getBuildings()));
-	     data.setValue(3, 1, Indicators.MarketWorld(scenarioPanel.getBuildings()));
+		 data.setValue(0, 1, Indicators.knowledgeTransfer(scenarioPanel.getBuildingDTOs()));
+	     data.setValue(1, 1, Indicators.MarketD(scenarioPanel.getBuildingDTOs()));
+	     data.setValue(2, 1, Indicators.MarketNL(scenarioPanel.getBuildingDTOs()));
+	     data.setValue(3, 1, Indicators.MarketWorld(scenarioPanel.getBuildingDTOs()));
 	     
 	     BarFormat.Options bfo = BarFormat.Options.create();
 	     bfo.setWidth(300);

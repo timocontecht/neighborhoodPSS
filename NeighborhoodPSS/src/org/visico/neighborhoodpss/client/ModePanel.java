@@ -46,7 +46,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		if (event.getSource() == close_btn)
 		{
 			ScenarioDTO scenario = scenarioPanel.scenario();
-			scenario.setBuildings(scenarioPanel.getBuildings());
+			scenario.setBuilingDTOs(scenarioPanel.getBuildingDTOs());
 			scenarioPanel.removeFromParent();
 		}
 	}

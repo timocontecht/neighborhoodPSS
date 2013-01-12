@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.server.tests;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -31,7 +31,7 @@ public class DTOConversion {
 		//    |
 		//    c1
 		
-		CaseProject casep = new CaseProject();
+		CaseProject casep = new CaseProject(1);
 		
 		// prepare the test, check the labels
 		Iterator<ScenarioDTO> it = casep.getScenarios_parents_dto().iterator();

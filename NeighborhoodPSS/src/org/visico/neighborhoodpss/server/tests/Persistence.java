@@ -1,56 +1,70 @@
 package org.visico.neighborhoodpss.server.tests;
 
-import static org.junit.Assert.*;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.FileInputStream;
+import java.sql.SQLException;
 
-import org.hibernate.Session;
+import org.dbunit.Assertion;
+import org.dbunit.DBTestCase;
+import org.dbunit.PropertiesBasedJdbcDatabaseTester;
+import org.dbunit.dataset.DefaultDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.SortedTable;
+import org.dbunit.dataset.xml.XmlDataSet;
 import org.junit.Test;
-import org.visico.neighborhoodpss.server.Building;
-import org.visico.neighborhoodpss.server.HibernateUtil;
-import org.visico.neighborhoodpss.server.Scenario;
 import org.visico.neighborhoodpss.server.ScenarioServiceImpl;
 
-public class Persistence {
+public class Persistence extends DBTestCase{
 
-	@Test
-	public void test() 
+	public Persistence(String name)
 	{
+		super(name);
 		
+		System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "com.mysql.jdbc.Driver" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:mysql://localhost/NEIGHBORHOODPSS" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "NHPSSUSER" );
+        System.setProperty( PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "RESU#2008_2010" );
 	}
 	
 	@Test
-	public void persistSecnarios()
+	public void testPersistScenarios() throws SQLException, Exception
 	{
-		CaseProject casep = new CaseProject();
+		//String[] idCols = {"id"};
+		
+		CaseProject casep = new CaseProject(0);
 		ScenarioServiceImpl impl = new ScenarioServiceImpl();
-		impl.saveScenarios(casep.getScenarios_parents_dto());
+		impl.saveProject(casep.getP());
+		//IDataSet expected = new XmlDataSet(new FileInputStream("full.xml"));
+		//IDataSet databaseDataSet = getConnection().createDataSet();
 		
-		impl.saveScenarios(casep.getScenarios_parents_dto());
-		// TODO: build in junit db tests
-	}
-	
-	@Test
-	public void persistBuilding()
-	{
-		Set<Building> buildings = new HashSet<Building>();
+		/* fix this, somehow it does not work ... at the moment only manual testing
+		 * Assertion.assertEqualsIgnoreCols(
+				new SortedTable(expected.getTable("SCENARIO")), 
+				new SortedTable(databaseDataSet.getTable("SCENARIO")), 
+				idCols);
+		Assertion.assertEqualsIgnoreCols(expected, databaseDataSet, "BUILDING", idCols);
+		Assertion.assertEqualsIgnoreCols(expected, databaseDataSet, "BUILDING_COORDINATE", idCols);
+		*/
 		
-		Building b = new Building();
-		b.addVertex(0.0, 0.0);
-		b.addVertex(1.0, 0.0);
-		b.addVertex(1.0, 1.0);
-		b.addVertex(0.0, 1.0);
+		casep.updateCase();
+		impl.saveProject(casep.getP());
+		//expected = new XmlDataSet(new FileInputStream("update.xml"));
+		//databaseDataSet = getConnection().createDataSet();
 		
-		b.setType("Construction");
-		
-		buildings.add(b);
-		
-		ScenarioServiceImpl impl = new ScenarioServiceImpl();
-		impl.persistBuildings(buildings);
-		
+		/*Assertion.assertEqualsIgnoreCols(expected, databaseDataSet, "SCENARIO", idCols);
+		//Assertion.assertEqualsIgnoreCols(expected, databaseDataSet, "BUILDING", idCols);
+		//Assertion.assertEqualsIgnoreCols(expected, databaseDataSet, "BUILDING_COORDINATE", idCols);
+		*/
 	}
 	
 
+	@Override
+	protected IDataSet getDataSet() throws Exception 
+	{
+		
+		return new DefaultDataSet();
+	}
+	
+	
+	
 }

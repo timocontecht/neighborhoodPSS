@@ -2,6 +2,7 @@ package org.visico.neighborhoodpss.server;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,10 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.visico.neighborhoodpss.shared.BuildingDTO;
+import org.visico.neighborhoodpss.shared.GeoPointDTO;
 
 
 
@@ -44,12 +47,39 @@ public class Building implements Serializable
 	@JoinColumn(name="building_id")
 	private List<GeoPoint> points = new ArrayList<GeoPoint>();
 	
+	@Transient
+	private BuildingDTO dto_object;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6838190883337046022L;
 	
 	
+	public Building(BuildingDTO b) 
+	{
+		
+		this.dto_object = b;
+		this.setArea(b.getArea());
+		this.setId(b.getId());
+		
+		ArrayList<GeoPoint> pts = new ArrayList<GeoPoint>();
+		Iterator<GeoPointDTO> it = b.getPoints().iterator();
+		while (it.hasNext())
+		{
+			pts.add(new GeoPoint(it.next()));
+		}
+		
+		this.setPoints(pts);
+		this.setType(b.getType());
+		
+	}
+
+	public Building() 
+	{
+
+	}
+	
+/*
 	public void addVertex(double lat, double lon)
 	{
 		GeoPoint pt = new GeoPoint();
@@ -57,7 +87,7 @@ public class Building implements Serializable
 		pt.setLongitude(lon);
 		
 		points.add(pt);
-	}
+	}*/
 	
 	public List<GeoPoint> getPoints() {
 		return points;
@@ -91,7 +121,16 @@ public class Building implements Serializable
 	
 	public void setId(int id) {
 		this.id = id;
-		//TODO: this.dto_object.setId(id);
+	}
+
+	public void update_dtoIds() {
+		this.dto_object.setId(this.id);
+		Iterator<GeoPoint> pit = this.points.iterator();
+		while(pit.hasNext())
+		{
+			GeoPoint pt = pit.next();
+			pt.update_dtoIds();
+		}
 	}
 	
 }

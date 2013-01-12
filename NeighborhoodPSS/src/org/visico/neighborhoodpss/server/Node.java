@@ -8,12 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.visico.neighborhoodpss.shared.GeoPointDTO;
+import org.visico.neighborhoodpss.shared.NodeDTO;
 
 @Entity
-@Table(name="BUILDING_COORDINATE")
-public class GeoPoint implements Serializable
+@Table(name="NODE")
+public class Node implements Serializable
 {
 	/**
 	 * 
@@ -30,22 +29,31 @@ public class GeoPoint implements Serializable
 	@Column
 	private double latitude;
 	
-	@Transient
-	private GeoPointDTO dto_object;
+	@Column
+	private double inflow;
 	
-	public GeoPoint()
+	@Column
+	private double outflow;
+	
+	
+
+	@Transient
+	private NodeDTO dto_object;
+	
+	public Node()
 	{
 		
 	}
 	
-	public GeoPoint(GeoPointDTO pt) 
+	public Node(NodeDTO n) 
 	{
-		this.dto_object = pt;
-		this.setId(pt.getId());
-		this.setLatitude(pt.getLatitude());
-		this.setLongitude(pt.getLongitude());
+		this.dto_object = n;
+		this.setId(n.getId());
+		this.setLatitude(n.getLatitude());
+		this.setLongitude(n.getLongitude());
+		this.setInflow(n.getInflow());
+		this.setOutflow(n.getOutflow());
 	}
-	
 	
 	public int getId() {
 		return id;
@@ -67,12 +75,24 @@ public class GeoPoint implements Serializable
 		this.latitude = latitude;
 	}
 
+	public double getInflow() {
+		return inflow;
+	}
+
+	public void setInflow(double inflow) {
+		this.inflow = inflow;
+	}
+
+	public double getOutflow() {
+		return outflow;
+	}
+
+	public void setOutflow(double outflow) {
+		this.outflow = outflow;
+	}
 	public void update_dtoIds() 
 	{
 		this.dto_object.setId(this.id);
-		
 	}
-	
-	
 	
 }

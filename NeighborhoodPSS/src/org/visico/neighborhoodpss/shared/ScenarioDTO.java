@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.server.Building;
+import org.visico.neighborhoodpss.shared.BuildingDTO;
 
 
 
@@ -18,8 +18,6 @@ public class ScenarioDTO implements Cloneable, Serializable
 	
 	public ScenarioDTO (String n)
 	{
-		buildings = new HashSet<Building>();
-		children = new HashSet<ScenarioDTO>();
 		label = "";
 		name = n;
 	}
@@ -80,17 +78,31 @@ public class ScenarioDTO implements Cloneable, Serializable
 		this.children = children;
 	}
 
-	public Set<Building> getBuildings() {
-		return buildings;
+	public Set<NetworkDTO> getNetworkDTOs() {
+		return NetworkDTOs;
 	}
 
-	public void setBuildings(Set<Building> buildings) {
-		this.buildings = buildings;
+	public void setNetworkDTOSs(Set<NetworkDTO> networkDTOs) {
+		NetworkDTOs = networkDTOs;
 	}
 
-	public void addBuilding(Building b)
+
+	public Set<BuildingDTO> getBuildingDTOs() {
+		return BuildingDTOs;
+	}
+
+	public void setBuilingDTOs(Set<BuildingDTO> BuildingDTOs) {
+		this.BuildingDTOs = BuildingDTOs;
+	}
+
+	public void addBuilingDTO(BuildingDTO b)
 	{
-		buildings.add(b);
+		BuildingDTOs.add(b);
+	}
+	
+	public void addNetworkDTO(NetworkDTO n)
+	{
+		NetworkDTOs.add(n);
 	}
 	
 	public String label()
@@ -122,6 +134,10 @@ public class ScenarioDTO implements Cloneable, Serializable
 	
 	protected ScenarioDTO clone()
 	{
+		// do not clone id - id is assigned by a database
+				// the clone should not have yet an id to signify 
+				// that it is not yet in the db and has to created
+				// instead of updated
 		ScenarioDTO child = new ScenarioDTO();
 		
 		if (parent == null)
@@ -136,11 +152,23 @@ public class ScenarioDTO implements Cloneable, Serializable
 		
 		child.name = this.getName();
 		child.description = this.description;
-		child.id = this.id;
+		//child.id = this.id;
 		child.parent = this;
-		child.children = new HashSet<ScenarioDTO>();
-		child.buildings = new HashSet<Building>();
-		child.buildings.addAll(this.buildings);
+		
+		// need to clone the buildings and networks as well
+		Iterator<BuildingDTO> bit = this.BuildingDTOs.iterator();
+		while (bit.hasNext())
+		{
+			BuildingDTO b = bit.next();
+			child.BuildingDTOs.add(b.clone());
+		}
+		
+		Iterator<NetworkDTO> nit = this.NetworkDTOs.iterator();
+		while (nit.hasNext())
+		{
+			NetworkDTO n = nit.next();
+			child.NetworkDTOs.add(n.clone());
+		}
 		
 		this.children.add(child);
 		return child;
@@ -155,6 +183,7 @@ public class ScenarioDTO implements Cloneable, Serializable
 	private ScenarioDTO parent; 
 	
 	
-	private Set<ScenarioDTO> children;
-	private Set<Building> buildings;
+	private Set<ScenarioDTO> children = new HashSet<ScenarioDTO>();;
+	private Set<BuildingDTO> BuildingDTOs = new HashSet<BuildingDTO>();
+	private Set<NetworkDTO> NetworkDTOs = new HashSet<NetworkDTO>();
 }

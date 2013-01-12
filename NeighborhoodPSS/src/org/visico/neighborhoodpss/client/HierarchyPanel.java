@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.visico.neighborhoodpss.shared.BuildingDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.core.client.GWT;
@@ -46,7 +47,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 			
 			VerticalPanel p = new VerticalPanel();
 			ScrollPanel s = new ScrollPanel();
-			s.setSize("50em", "50em");
+			s.setSize("40em", "40em");
 			p.add(s);
 			VerticalPanel scenarioPanel = new VerticalPanel();
 			
@@ -123,6 +124,22 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	{
 		parentScenarios.add(s);
 		draw();
+	}
+
+	public void printScenarios() 
+	{
+		Iterator<ScenarioDTO> it = parentScenarios.iterator();
+		while (it.hasNext())
+		{
+			ScenarioDTO next = it.next();
+			Iterator<BuildingDTO> bit = next.getBuildingDTOs().iterator();
+			 while (bit.hasNext())
+			 {
+				 System.out.println(bit.next().getType());
+			 }
+		
+		}
+		
 	}
 	
 }

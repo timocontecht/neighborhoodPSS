@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.visico.neighborhoodpss.server.Building;
+import org.visico.neighborhoodpss.shared.BuildingDTO;
 
 import com.google.gwt.maps.client.event.PolygonEndLineHandler;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -32,12 +32,21 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler
 	public BuildingPolygon() 
 	{
 		super(new LatLng[0], "0000FF", 1, 1.0, "0000FF", 0.1);
-		building = new Building();
+		building = new BuildingDTO();
 		addPolygonEndLineHandler(this);
 	}
 	
 	
 	
+	public BuildingPolygon(BuildingDTO next) 
+	{
+		super(new LatLng[0], "0000FF", 1, 1.0, "0000FF", 0.1);
+		building = new BuildingDTO();
+		addPolygonEndLineHandler(this);
+	}
+
+
+
 	public void setType(String t) 
 	{
 		type = t;
@@ -63,13 +72,14 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler
 		scenarioPanel = p;
 	}
 	
-	public Building getBuilding()
+	public BuildingDTO getBuilding()
 	{
 		return building;
 	}
 	
-	public Building setBuilding()
+	public BuildingDTO setBuilding()
 	{
+		building.getPoints().clear();
 		for (int i=0; i<this.getVertexCount(); i++)
 		{
 			LatLng vertex = this.getVertex(i);
@@ -81,11 +91,11 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler
 		return building;
 	}
 	
-	private Building building; 
+	private BuildingDTO building; 
 	
 	ScenarioPanel scenarioPanel = null;
 
-	public void setScenario(Building b) 
+	public void setScenario(BuildingDTO b) 
 	{
 		building = b;
 		

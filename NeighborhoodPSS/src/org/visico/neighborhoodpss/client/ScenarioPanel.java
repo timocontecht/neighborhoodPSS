@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.server.Building;
+import org.visico.neighborhoodpss.shared.BuildingDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 
@@ -33,12 +33,14 @@ public class ScenarioPanel extends DockLayoutPanel
 	    MapWidget mw = map.getMap();
 	    add(mw);
 	    
-	    Iterator<Building> it = scenario.getBuildings().iterator();
+	    Iterator<BuildingDTO> it = scenario.getBuildingDTOs().iterator();
 	    while (it.hasNext())
 	    {
-	    	BuildingPolygon bldgPlg = new BuildingPolygon();
+	    	BuildingDTO b = it.next();
+	    	BuildingPolygon bldgPlg = new BuildingPolygon(b);
 	    	mw.addOverlay(bldgPlg);
-	    	bldgPlg.setScenario(it.next());
+	    	bldgPlg.setScenario(b);
+	    	buildingPlgs.add(bldgPlg);
 	    }
 	    
 	}
@@ -60,27 +62,27 @@ public class ScenarioPanel extends DockLayoutPanel
 	
 	public void addBuilding(BuildingPolygon p)
 	{
-		buildings.add(p);
+		buildingPlgs.add(p);
 	}
 	
 	public ArrayList<BuildingPolygon> getBuildingPlgs()
 	{
-		return buildings;
+		return buildingPlgs;
 	}
 	
-	public Set<Building> getBuildings()
+	public Set<BuildingDTO> getBuildingDTOs()
 	{
-		HashSet<Building> buildings = new HashSet<Building>();
+		HashSet<BuildingDTO> BuildingDTOs = new HashSet<BuildingDTO>();
 		for (int i=0; i < getBuildingPlgs().size(); i++)
 		{
-			buildings.add(getBuildingPlgs().get(i).setBuilding());
+			BuildingDTOs.add(getBuildingPlgs().get(i).setBuilding());
 		}
-		return buildings;
+		return BuildingDTOs;
 	}
 	
 	private Map map; 
 	private ModePanel modePanel;
 	private DataPanel dataPanel;
-	private ArrayList<BuildingPolygon>buildings = new ArrayList<BuildingPolygon>();
+	private ArrayList<BuildingPolygon> buildingPlgs = new ArrayList<BuildingPolygon>();
 	private ScenarioDTO scenario;
 }

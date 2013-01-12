@@ -1,11 +1,13 @@
 package org.visico.neighborhoodpss.server;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.Set;
 
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.visico.neighborhoodpss.client.ScenarioService;
+import org.visico.neighborhoodpss.shared.ProjectDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.dev.util.collect.HashSet;
@@ -19,30 +21,20 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 		ScenarioService 
 {
 
-	
-
-	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html the html string to escape
-	 * @return the escaped string
-	
-	private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-				.replaceAll(">", "&gt;");
-	} */
 
 	@Override
 	public Set<ScenarioDTO> saveScenarios(Set<ScenarioDTO> scenarios)
 			throws IllegalArgumentException 
 	{
-		
 		createAndSaveScenarioObjects(scenarios);
 		return scenarios;
+	}
+	
+	@Override
+	public ProjectDTO saveProject(ProjectDTO project)
+	{
+		persistProject(new Project(project));
+		return project;
 	}
 	
 	private void createAndSaveScenarioObjects(Set<ScenarioDTO> scenarios_dto)
@@ -60,8 +52,16 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 		while (it.hasNext())
 		{
 			Scenario s = it.next();
-			session.saveOrUpdate(s);
-			s.getDto_object().setId(s.getId());
+			
+			try
+			{
+				session.saveOrUpdate(s);
+				s.update_dtoIds();
+			}
+			catch (NonUniqueObjectException e) 
+			{
+				session.merge(s);
+			}
 		}
 		
 		session.getTransaction().commit();
@@ -82,7 +82,6 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 			ScenarioDTO parent = it.next();
 			objects.addAll(Scenario.createFromParentDTO(parent));
 		}
-			
 		return objects;
 	}
 	
@@ -96,7 +95,25 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 		{
 			Building b = it.next();
 			session.saveOrUpdate(b);
-			//TODO: b.getDto_object().setId(b.getId());
+			
+		}
+		
+		session.getTransaction().commit();
+	}
+	
+	public void persistProject(Project p)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    session.beginTransaction();
+	    
+	    try
+		{
+			session.saveOrUpdate(p);
+			p.update_dtoIds();
+		}
+		catch (NonUniqueObjectException e) 
+		{
+			session.merge(p);
 		}
 		
 		session.getTransaction().commit();

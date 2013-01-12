@@ -5,10 +5,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.visico.neighborhoodpss.shared.BuildingDTO;
+import org.visico.neighborhoodpss.shared.NetworkDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import javax.persistence.*;
-import org.hibernate.annotations.Index;
+
+
 
 
 @Entity
@@ -26,15 +29,36 @@ public class Scenario implements Cloneable, Serializable
 	private String name;
 	@Column
 	private String description;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Scenario parent; 
-	@Transient
-	private Set<Building> buildings;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="scenario_id")
+	private Set<Building> buildings = new HashSet<Building>();
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="scenario_id")
+	private Set<Network> networks = new HashSet<Network>();
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="parent_id")
+	private Set<Scenario> children = new HashSet<Scenario>();
+		
+	
+	public Set<Network> getNetworks() {
+		return networks;
+	}
+
+
+
+	public void setNetworks(Set<Network> networks) {
+		this.networks = networks;
+	}
+
+
+
 	@Transient
 	private ScenarioDTO dto_object;
-	@Transient
-	private Set<Scenario> children;
+	
 		
 	/**
 	 * 
@@ -52,17 +76,19 @@ public class Scenario implements Cloneable, Serializable
 		
 		Scenario p = new Scenario(parentScenario);
 		scenarios.add(p);
+		
 		Iterator<ScenarioDTO> it = parentScenario.getChildren().iterator();
 		while (it.hasNext())
 		{
 			ScenarioDTO child = it.next();
 			scenarios.addAll(createDTO(child, p));
-			
 		}
 		
 		return scenarios;
 	}
 	
+	
+
 	/** Recursive function to generate all children DTOs from the scenario hierarchy.
 	 * 
 	 * @param parent_dto
@@ -89,8 +115,6 @@ public class Scenario implements Cloneable, Serializable
 	
 	public Scenario (String n)
 	{
-		buildings = new HashSet<Building>();
-		children = new HashSet<Scenario>();
 		label = "";
 		name = n;
 	}
@@ -105,14 +129,16 @@ public class Scenario implements Cloneable, Serializable
 	 * 
 	 * @param s_dto
 	 */
-	private Scenario(ScenarioDTO s_dto)
+	public Scenario(ScenarioDTO s_dto)
 	{
+		
 		this.label = s_dto.label();
 		this.name = s_dto.getName();
 		this.description = s_dto.getDescription();
 		this.id = s_dto.getId();
 		this.dto_object = s_dto;
-		//TODO convert buildings from DTO to object		
+		
+		copyDependentObjects(s_dto);
 	}
 	
 	/**
@@ -127,9 +153,32 @@ public class Scenario implements Cloneable, Serializable
 		this.id = s_dto.getId();
 		this.parent = parent;
 		this.dto_object = s_dto;
-		//TODO convert buildings from DTO to object		
+		copyDependentObjects(s_dto);	
+		
 	}
 	
+	private void copyDependentObjects(ScenarioDTO s_dto)
+	{
+		Iterator<BuildingDTO> itb = s_dto.getBuildingDTOs().iterator();
+		while (itb.hasNext())
+		{
+			BuildingDTO b = itb.next();
+			this.addBuilding(new Building(b));
+		}
+		
+		Iterator<NetworkDTO> itn = s_dto.getNetworkDTOs().iterator();
+		while (itn.hasNext())
+		{
+			NetworkDTO n = itn.next();
+			this.addNetwork(new Network(n));
+		}
+		
+		Iterator<ScenarioDTO> its = s_dto.getChildren().iterator();
+		while (its.hasNext())
+		{
+			this.addChild(new Scenario(its.next()));
+		}
+	}
 	
 	public String getLabel() {
 		return label;
@@ -163,7 +212,6 @@ public class Scenario implements Cloneable, Serializable
 	
 	public void setId(int id) {
 		this.id = id;
-		this.dto_object.setId(id);
 	}
 
 	public Scenario getParent() {
@@ -194,6 +242,11 @@ public class Scenario implements Cloneable, Serializable
 	public void addBuilding(Building b)
 	{
 		buildings.add(b);
+	}
+	
+	public void addNetwork (Network n)
+	{
+		networks.add(n);
 	}
 	
 	public String label()
@@ -244,14 +297,12 @@ public class Scenario implements Cloneable, Serializable
 		child.children = new HashSet<Scenario>();
 		child.buildings = new HashSet<Building>();
 		child.buildings.addAll(this.buildings);
+		child.networks = new HashSet<Network>();
+		child.networks.addAll(this.networks);
 		
 		this.children.add(child);
 		return child;
 	}
-	
-	
-	
-	
 	
 	
 	public ScenarioDTO getDto_object() {
@@ -260,6 +311,28 @@ public class Scenario implements Cloneable, Serializable
 
 	public void setDto_object(ScenarioDTO dto_object) {
 		this.dto_object = dto_object;
+	}
+
+
+
+	public void update_dtoIds() 
+	{
+		this.dto_object.setId(this.id);
+		
+		Iterator<Building> bit = buildings.iterator();
+		while(bit.hasNext())
+		{
+			Building b = bit.next();
+			b.update_dtoIds();
+		}
+		
+		Iterator<Network> nit = networks.iterator();
+		while(nit.hasNext())
+		{
+			Network n = nit.next();
+			n.update_dtoIds();
+		}
+		
 	}
 
 
