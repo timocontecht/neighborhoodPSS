@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.server;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.hibernate.Session;
 import org.visico.neighborhoodpss.client.ScenarioService;
 import org.visico.neighborhoodpss.shared.ProjectDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.UserDTO;
 
 import com.google.gwt.dev.util.collect.HashSet;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -117,5 +119,17 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 		}
 		
 		session.getTransaction().commit();
+	}
+
+	@Override
+	public ArrayList<ProjectDTO> getProjects(UserDTO user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDTO login(String text, String text2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

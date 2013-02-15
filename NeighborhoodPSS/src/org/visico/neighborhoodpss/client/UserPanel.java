@@ -2,9 +2,18 @@ package org.visico.neighborhoodpss.client;
 
 
 
+import java.util.ArrayList;
+
+import org.visico.neighborhoodpss.shared.ProjectDTO;
+import org.visico.neighborhoodpss.shared.UserDTO;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -32,17 +41,16 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 	{
 		this.clear();
 		drawLoginTable();
-		//drawProjectTable();
+		drawProjectTable();
 	}
 	
 	private void drawLoginTable()
 	{
 		loginTable = new FlexTable();
 		
-	/*	User u = MainPanel.getInstance().getUser();
 		if (u == null)
 		{
-		*/
+		
 			loginTable = new FlexTable();
 			loginTable.setText(0, 0, "Username:");
 		    userNameTB = new TextBox();
@@ -58,7 +66,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 		    final Button loginBtn = new Button("Login");
 		    loginBtn.addClickHandler(this);
 		    loginTable.setWidget(2, 1, loginBtn);
-		    /*
+		    
 		}
 		else
 		{
@@ -78,23 +86,22 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 			});
 			loginTable.setWidget(2,0, logout_btn);
 			
-		}*/
+		}
 		add(loginTable);
 		
 	}
 	
-	/*private void drawProjectTable()
+	private void drawProjectTable()
 	{
-		User u = MainPanel.getInstance().getUser();
 		if (u != null)
 		{
 			projectTable = new FlexTable();
 			
-			UtilityDSSServiceAsync service = GWT.create(UtilityDSSService.class);
+			ScenarioServiceAsync service = GWT.create(ScenarioServiceAsync.class);
 			
 			try 
 			{
-				service.getProjects(MainPanel.getInstance().getUser(), new AsyncCallback<ArrayList<Project>>()
+				service.getProjects(MainPanel.getInstance().getUser(), new AsyncCallback<ArrayList<ProjectDTO>>()
 				{
 						public void onFailure(Throwable caught) 
 						{
@@ -104,14 +111,12 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 							dialogBox.center();
 						}
 	
-						public void onSuccess(ArrayList<Project> result) 
+						public void onSuccess(ArrayList<ProjectDTO> result) 
 						{
 							for (int i=0; i<result.size(); i++)
 							{
-								Project p = result.get(i);
+								ProjectDTO p = result.get(i);
 								projectTable.setText(i,0, p.getName());
-								projectTable.setText(i,1, p.getLocation());
-								projectTable.setText(i,2, p.getDescription());
 								projectTable.setWidget(i,3, new Button("Open"));
 							}
 						}
@@ -126,24 +131,25 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 			} 
 		}
 		
-	}*/
+	}
 	
 	private TextBox userNameTB;
 	private PasswordTextBox passwordTB;
 	//private CheckBox rememberMeCB;
 	private FlexTable loginTable;
-	//private FlexTable projectTable;
+	private FlexTable projectTable;
+	private UserDTO u;
 	
 	
 	
 	@Override
 	public void onClick(ClickEvent event) 
 	{
-/*		UtilityDSSServiceAsync service = GWT.create(UtilityDSSService.class);
+		ScenarioServiceAsync service = GWT.create(ScenarioServiceAsync.class);
 
 		try 
 		{
-			service.login(userNameTB.getText(), passwordTB.getText(), new AsyncCallback<User>() 
+			service.login(userNameTB.getText(), passwordTB.getText(), new AsyncCallback<UserDTO>() 
 			{
 					public void onFailure(Throwable caught) 
 					{
@@ -153,16 +159,18 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 						dialogBox.center();
 					}
 
-					public void onSuccess(User result) 
+					public void onSuccess(UserDTO result) 
 					{
 						if (result == null)
 							Window.alert("Login failed. Please verify your user name and password!");
 						else
 						{
-							MainPanel.getInstance().setUser(result);
+							u = result;
 							refresh();
 						}
 					}
+
+					
 			});
 		} 
 		catch (IllegalArgumentException e) 
@@ -170,7 +178,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		*/
+		
 	}
 	
 }

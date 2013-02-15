@@ -1,10 +1,12 @@
 package org.visico.neighborhoodpss.client;
 
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.ProjectDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.UserDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -16,4 +18,7 @@ public interface ScenarioServiceAsync {
 			throws IllegalArgumentException;
 	void saveProject(ProjectDTO project, AsyncCallback<ProjectDTO> callback)
 			throws IllegalArgumentException;
+	void getProjects(UserDTO user,
+			AsyncCallback<ArrayList<ProjectDTO>> asyncCallback);
+	void login(String text, String text2, AsyncCallback<UserDTO> asyncCallback);
 }
