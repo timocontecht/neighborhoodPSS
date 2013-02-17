@@ -24,11 +24,15 @@
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
 		
-		
 		<!--  Mapping files -->
 		<mapping class = "org.visico.neighborhoodpss.server.Scenario"/>
 		<mapping class = "org.visico.neighborhoodpss.server.Building"/>
 		<mapping class = "org.visico.neighborhoodpss.server.GeoPoint"/>
+		<mapping class = "org.visico.neighborhoodpss.server.Network"/>
+		<mapping class = "org.visico.neighborhoodpss.server.Node"/>
+		<mapping class = "org.visico.neighborhoodpss.server.Edge"/>
+		<mapping class = "org.visico.neighborhoodpss.server.Project"/>
+		<mapping class = "org.visico.neighborhoodpss.server.User"/>
 	
     </session-factory>
 

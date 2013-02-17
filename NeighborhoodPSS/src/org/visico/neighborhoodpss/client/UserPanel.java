@@ -97,7 +97,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 		{
 			projectTable = new FlexTable();
 			
-			ScenarioServiceAsync service = GWT.create(ScenarioServiceAsync.class);
+			ScenarioServiceAsync service = GWT.create(ScenarioService.class);
 			
 			try 
 			{
@@ -145,7 +145,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 	@Override
 	public void onClick(ClickEvent event) 
 	{
-		ScenarioServiceAsync service = GWT.create(ScenarioServiceAsync.class);
+		ScenarioServiceAsync service = GWT.create(ScenarioService.class);
 
 		try 
 		{

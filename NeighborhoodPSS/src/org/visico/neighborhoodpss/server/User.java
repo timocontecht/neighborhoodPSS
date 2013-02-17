@@ -60,6 +60,14 @@ public class User implements Serializable{
 		this.id = id;
 	}	
 	public UserDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new UserDTO();
+			dto_object.setId(this.id);
+			dto_object.setEmail(this.email);
+			dto_object.setName(this.name);
+			dto_object.setPassword(this.password);
+		}
 		return dto_object;
 	}
 	public void setDto_object(UserDTO dto_object) {

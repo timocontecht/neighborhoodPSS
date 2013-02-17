@@ -21,6 +21,6 @@ public interface ScenarioService extends RemoteService
 	Set<ScenarioDTO> saveScenarios(Set<ScenarioDTO> scenarios) throws IllegalArgumentException;
 	ProjectDTO saveProject(ProjectDTO project);
 	ArrayList<ProjectDTO> getProjects(UserDTO user);
-	UserDTO login(String text, String text2);
+	UserDTO login(String user, String password);
 	
 }

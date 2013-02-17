@@ -20,5 +20,5 @@ public interface ScenarioServiceAsync {
 			throws IllegalArgumentException;
 	void getProjects(UserDTO user,
 			AsyncCallback<ArrayList<ProjectDTO>> asyncCallback);
-	void login(String text, String text2, AsyncCallback<UserDTO> asyncCallback);
+	void login(String user, String password, AsyncCallback<UserDTO> asyncCallback);
 }

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.hibernate.NonUniqueObjectException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.visico.neighborhoodpss.client.ScenarioService;
 import org.visico.neighborhoodpss.shared.ProjectDTO;
@@ -128,8 +129,16 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public UserDTO login(String text, String text2) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserDTO login(String user, String password) 
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    session.beginTransaction();
+	    Query q = session.createQuery("from User u where u.name = :name");
+	    q.setString("name", user);
+	    User u = (User) q.uniqueResult();
+	    if (u.getPassword().equals(password))
+	    	return u.getDto_object();
+	    else
+	    	return null;
 	}
 }
