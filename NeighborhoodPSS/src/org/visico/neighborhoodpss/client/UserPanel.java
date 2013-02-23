@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -70,7 +71,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 		}
 		else
 		{
-			loginTable.setText(0,0, "loged in as");
+			loginTable.setText(0,0, "Logged in as");
 			loginTable.setText(1,0, u.getName());
 			
 			Button logout_btn = new Button("Log out");
@@ -86,6 +87,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 			});
 			loginTable.setWidget(2,0, logout_btn);
 			
+			
 		}
 		add(loginTable);
 		
@@ -95,13 +97,14 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 	{
 		if (u != null)
 		{
-			projectTable = new FlexTable();
+			projectList = new ListBox();
+			projectList.setVisibleItemCount(1);
 			
 			ScenarioServiceAsync service = GWT.create(ScenarioService.class);
 			
 			try 
 			{
-				service.getProjects(MainPanel.getInstance().getUser(), new AsyncCallback<ArrayList<ProjectDTO>>()
+				service.getProjects(u, new AsyncCallback<ArrayList<ProjectDTO>>()
 				{
 						public void onFailure(Throwable caught) 
 						{
@@ -113,16 +116,31 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 	
 						public void onSuccess(ArrayList<ProjectDTO> result) 
 						{
+							if (result == null)
+							{
+								Window.alert("Failed to load projects from server!");
+							}
 							for (int i=0; i<result.size(); i++)
 							{
 								ProjectDTO p = result.get(i);
-								projectTable.setText(i,0, p.getName());
-								projectTable.setWidget(i,3, new Button("Open"));
+								projectList.addItem(p.getName(), Integer.toString(p.getId()));
 							}
 						}
 				});
 				
-				add(projectTable);
+				add(projectList);
+				
+				Button selectProject = new Button("Open Project");
+				add(selectProject);
+				selectProject.addClickHandler(new ClickHandler()
+				{
+					@Override
+					public void onClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+						Window.alert("Open project");
+					}
+					
+				});
 			} 
 			catch (IllegalArgumentException e) 
 			{
@@ -137,7 +155,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 	private PasswordTextBox passwordTB;
 	//private CheckBox rememberMeCB;
 	private FlexTable loginTable;
-	private FlexTable projectTable;
+	private ListBox projectList;
 	private UserDTO u;
 	
 	
