@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.server;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
@@ -56,7 +57,7 @@ public class Project implements Cloneable, Serializable
 	Set<User> users = new HashSet<User>();
 	
 	@Transient
-	private ProjectDTO dto_object;
+	private ProjectDTO dto_object = null;
 	
 	public Project()
 	{
@@ -146,6 +147,24 @@ public class Project implements Cloneable, Serializable
 	}
 
 	public ProjectDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new ProjectDTO();
+			dto_object.setId(id);
+			dto_object.setLatitude(latitude);
+			dto_object.setLongitude(longitude);
+			dto_object.setName(name);
+			
+			for (Scenario s : getParentScenarios())
+			{
+				dto_object.addParentScenario(s.getDto_object());
+			}
+			
+			for (User u : getUsers())
+			{
+				dto_object.addUser(u.getDto_object());
+			}
+		}
 		return dto_object;
 	}
 
@@ -171,5 +190,14 @@ public class Project implements Cloneable, Serializable
 		}
 		
 		
+	}
+	
+	static ArrayList<ProjectDTO> getDTOList(ArrayList<Project> projects)
+	{
+		ArrayList<ProjectDTO> dtos = new ArrayList<ProjectDTO>();
+		for (Project p : projects)
+			dtos.add(p.getDto_object());
+		return dtos;
+			
 	}
 }

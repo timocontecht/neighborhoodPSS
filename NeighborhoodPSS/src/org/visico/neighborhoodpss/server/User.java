@@ -32,7 +32,7 @@ public class User implements Serializable{
 	private int id;
 	
 	@Transient
-	private UserDTO dto_object;
+	private UserDTO dto_object = null;
 	
 	
 	public String getName() {
@@ -70,6 +70,7 @@ public class User implements Serializable{
 		}
 		return dto_object;
 	}
+	
 	public void setDto_object(UserDTO dto_object) {
 		this.dto_object = dto_object;
 	}

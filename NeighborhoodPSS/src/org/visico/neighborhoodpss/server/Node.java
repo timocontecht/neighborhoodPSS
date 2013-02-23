@@ -38,7 +38,7 @@ public class Node implements Serializable
 	
 
 	@Transient
-	private NodeDTO dto_object;
+	private NodeDTO dto_object = null;
 	
 	public Node()
 	{
@@ -94,5 +94,23 @@ public class Node implements Serializable
 	{
 		this.dto_object.setId(this.id);
 	}
+
+	public NodeDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new NodeDTO();
+			dto_object.setId(this.getId());
+			dto_object.setLongitude(this.getLongitude());
+			dto_object.setLatitude(this.getLatitude());
+			dto_object.setInflow(this.getInflow());
+			dto_object.setOutflow(this.getOutflow());
+		}
+		return dto_object;
+	}
+
+	public void setDto_object(NodeDTO dto_object) {
+		this.dto_object = dto_object;
+	}
+	
 	
 }

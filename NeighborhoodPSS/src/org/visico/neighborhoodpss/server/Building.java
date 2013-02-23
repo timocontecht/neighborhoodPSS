@@ -48,7 +48,7 @@ public class Building implements Serializable
 	private List<GeoPoint> points = new ArrayList<GeoPoint>();
 	
 	@Transient
-	private BuildingDTO dto_object;
+	private BuildingDTO dto_object = null;
 	/**
 	 * 
 	 */
@@ -122,6 +122,8 @@ public class Building implements Serializable
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
 
 	public void update_dtoIds() {
 		this.dto_object.setId(this.id);
@@ -132,5 +134,25 @@ public class Building implements Serializable
 			pt.update_dtoIds();
 		}
 	}
+
+	public BuildingDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new BuildingDTO();
+			dto_object.setId(this.getId());
+			dto_object.setType(this.getType());
+			dto_object.setArea(this.getArea());
+			
+			for (GeoPoint p : points)
+				dto_object.addPoint(p.getDto_object());
+		}
+		return dto_object;
+	}
+
+	public void setDto_object(BuildingDTO dto_object) {
+		this.dto_object = dto_object;
+	}
+	
+	
 	
 }

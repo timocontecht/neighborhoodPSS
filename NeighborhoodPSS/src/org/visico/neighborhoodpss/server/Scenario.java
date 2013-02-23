@@ -57,7 +57,7 @@ public class Scenario implements Cloneable, Serializable
 
 
 	@Transient
-	private ScenarioDTO dto_object;
+	private ScenarioDTO dto_object = null;
 	
 		
 	/**
@@ -306,6 +306,25 @@ public class Scenario implements Cloneable, Serializable
 	
 	
 	public ScenarioDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new ScenarioDTO();
+			dto_object.setId(this.getId());
+			dto_object.setLabel(this.getLabel());
+			dto_object.setName(this.getName());
+			dto_object.setDescription(this.getDescription());
+			dto_object.setParent(this.getParent().dto_object);
+			
+			for (Building b : buildings)
+				dto_object.addBuilingDTO(b.getDto_object());
+			
+			for (Network n : networks)
+				dto_object.addNetworkDTO(n.getDto_object());
+			
+			for (Scenario c : children)
+				dto_object.addChild(c.getDto_object());
+		}
+		
 		return dto_object;
 	}
 

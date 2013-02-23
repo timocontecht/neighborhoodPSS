@@ -48,6 +48,11 @@ public class BuildingDTO implements Cloneable, Serializable
 	public void setPoints(ArrayList<GeoPointDTO> points) {
 		this.points = points;
 	}
+	
+	public void addPoint(GeoPointDTO p)
+	{
+		points.add(p);
+	}
 
 	public String getType() {
 		return industry;

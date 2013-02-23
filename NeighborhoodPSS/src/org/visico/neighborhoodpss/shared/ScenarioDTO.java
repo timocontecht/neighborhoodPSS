@@ -23,7 +23,7 @@ public class ScenarioDTO implements Cloneable, Serializable
 	}
 	
 
-	private ScenarioDTO()
+	public ScenarioDTO()
 	{
 		
 	}

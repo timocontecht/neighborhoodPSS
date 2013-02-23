@@ -124,8 +124,15 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public ArrayList<ProjectDTO> getProjects(UserDTO user) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    session.beginTransaction();
+	    Query q = session.createQuery("from Project p join fetch p.users u where u.id = :id");
+	    q.setInteger("id", user.getId());
+	    ArrayList<Project> p = (ArrayList<Project>) q.list();
+	    ArrayList<ProjectDTO> dtos = Project.getDTOList(p); 
+	    return dtos;
+		
 	}
 
 	@Override
@@ -136,7 +143,7 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	    Query q = session.createQuery("from User u where u.name = :name");
 	    q.setString("name", user);
 	    User u = (User) q.uniqueResult();
-	    if (u.getPassword().equals(password))
+	    if (u != null && u.getPassword().equals(password) )
 	    	return u.getDto_object();
 	    else
 	    	return null;

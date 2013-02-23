@@ -100,4 +100,13 @@ public class NetworkDTO implements Cloneable, Serializable
 		
 		return clone;
 	}
+
+	public void addNode(NodeDTO node) {
+		nodes.add(node);
+		
+	}
+
+	public void addEdge(EdgeDTO edge) {
+		edges.add(edge);
+	}
 }

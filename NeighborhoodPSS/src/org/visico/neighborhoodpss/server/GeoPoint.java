@@ -31,7 +31,7 @@ public class GeoPoint implements Serializable
 	private double latitude;
 	
 	@Transient
-	private GeoPointDTO dto_object;
+	private GeoPointDTO dto_object = null;
 	
 	public GeoPoint()
 	{
@@ -72,6 +72,24 @@ public class GeoPoint implements Serializable
 		this.dto_object.setId(this.id);
 		
 	}
+
+	public GeoPointDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new GeoPointDTO();
+			dto_object.setId(this.getId());
+			dto_object.setLatitude(this.getLatitude());
+			dto_object.setLongitude(this.getLongitude());
+		}
+		
+		return dto_object;
+	}
+
+	public void setDto_object(GeoPointDTO dto_object) {
+		this.dto_object = dto_object;
+	}
+	
+	
 	
 	
 	

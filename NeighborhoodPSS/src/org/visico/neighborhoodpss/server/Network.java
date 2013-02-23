@@ -39,7 +39,7 @@ public class Network implements Cloneable, Serializable
 	
 	
 	@Transient
-	private NetworkDTO dto_object;
+	private NetworkDTO dto_object = null;
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="network_id")
@@ -130,6 +130,27 @@ public class Network implements Cloneable, Serializable
 			Edge e = eit.next();
 			e.update_dtoIds();
 		}
-		
 	}
+
+	public NetworkDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new NetworkDTO();
+			dto_object.setId(this.getId());
+			dto_object.setName(this.getName());
+			
+			for (Node n : nodes)
+				dto_object.addNode(n.getDto_object());
+			
+			for (Edge e : edges)
+				dto_object.addEdge(e.getDto_object());
+		}
+		return dto_object;
+	}
+
+	public void setDto_object(NetworkDTO dto_object) {
+		this.dto_object = dto_object;
+	}
+	
+	
 }

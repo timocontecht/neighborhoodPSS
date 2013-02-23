@@ -35,7 +35,7 @@ public class Edge implements Serializable
 	double capacity;
 	
 	@Transient
-	private EdgeDTO dto_object;
+	private EdgeDTO dto_object = null;
 
 	public Edge ()
 	{
@@ -84,6 +84,14 @@ public class Edge implements Serializable
 	}
 
 	public EdgeDTO getDto_object() {
+		if (dto_object == null)
+		{
+			dto_object = new EdgeDTO();
+			dto_object.setId(this.getId());
+			dto_object.setStart_node(this.getStart_node().getDto_object());
+			dto_object.setEnd_node(this.getEnd_node().getDto_object());
+			dto_object.setCapacity(this.getCapacity());
+		}
 		return dto_object;
 	}
 
