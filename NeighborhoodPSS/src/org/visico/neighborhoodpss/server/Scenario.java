@@ -313,7 +313,9 @@ public class Scenario implements Cloneable, Serializable
 			dto_object.setLabel(this.getLabel());
 			dto_object.setName(this.getName());
 			dto_object.setDescription(this.getDescription());
-			dto_object.setParent(this.getParent().dto_object);
+			
+			if (this.parent != null)
+				dto_object.setParent(this.getParent().dto_object);
 			
 			for (Building b : buildings)
 				dto_object.addBuilingDTO(b.getDto_object());
