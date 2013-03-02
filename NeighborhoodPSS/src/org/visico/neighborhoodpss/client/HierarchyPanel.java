@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.BuildingDTO;
+import org.visico.neighborhoodpss.shared.ProjectDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.core.client.GWT;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -37,39 +39,52 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 		draw();
 	}
 	
+	public void setProject(ProjectDTO project)
+	{
+		this.project = project;
+		parentScenarios.clear();
+		parentScenarios.addAll(project.getParent_scenarios());
+		draw();
+	}
+	
 	public void draw()
 	{
 		try 
 		{
-			
 			this.clear();
 			
-			
-			VerticalPanel p = new VerticalPanel();
-			ScrollPanel s = new ScrollPanel();
-			s.setSize("40em", "40em");
-			p.add(s);
-			VerticalPanel scenarioPanel = new VerticalPanel();
-			
-			Iterator<ScenarioDTO> it = parentScenarios.iterator();
-			while(it.hasNext())
+			if (project == null)
 			{
-				ScenarioTree st = new ScenarioTree(it.next());
-				scenarioPanel.add(st);
+				this.add(new Label("Please log in and select a project to start sketch planning!"));
 			}
-			
-			s.add(scenarioPanel);
-			
-			addRoot = new Button("Add Root Scenario");
-		    addRoot.addClickHandler(this);
-		    p.add(addRoot);
-		    
-		    this.addWest(p, 50);
-		    
-		    saveSession = new Button("Save Session");
-		    saveSession.setSize("50em", "10em");
-		    saveSession.addClickHandler(this);
-		    this.addSouth(saveSession, 20);
+			else
+			{
+				VerticalPanel p = new VerticalPanel();
+				ScrollPanel s = new ScrollPanel();
+				s.setSize("40em", "40em");
+				p.add(s);
+				VerticalPanel scenarioPanel = new VerticalPanel();
+				
+				Iterator<ScenarioDTO> it = parentScenarios.iterator();
+				while(it.hasNext())
+				{
+					ScenarioTree st = new ScenarioTree(it.next());
+					scenarioPanel.add(st);
+				}
+				
+				s.add(scenarioPanel);
+				
+				addRoot = new Button("Add Root Scenario");
+			    addRoot.addClickHandler(this);
+			    p.add(addRoot);
+			    
+			    this.addWest(p, 50);
+			    
+			    saveSession = new Button("Save Session");
+			    saveSession.setSize("50em", "10em");
+			    saveSession.addClickHandler(this);
+			    this.addSouth(saveSession, 20);
+			}
 		    
 		} 
 		catch (Exception e) 
@@ -95,7 +110,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 		{
 			ScenarioServiceAsync service = GWT.create(ScenarioService.class);
 			
-			AsyncCallback<Set<ScenarioDTO>> callback = new AsyncCallback<Set<ScenarioDTO>>()
+			AsyncCallback<ProjectDTO> callback = new AsyncCallback<ProjectDTO>()
 			{
 
 				@Override
@@ -106,16 +121,16 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 				}
 
 				@Override
-				public void onSuccess(Set<ScenarioDTO> result) 
+				public void onSuccess(ProjectDTO result) 
 				{
 					Window.alert("Saved scenarios!");
 					
 					// need to overwrite scnearios to get id from server for database persistence
-					parentScenarios = result;
+					project = result;
 				}
 			};
 			
-			service.saveScenarios(parentScenarios, callback);
+			service.saveProject(this.getProject(), callback);
 			
 		}
 	} 
@@ -123,6 +138,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	public void addParentScenario(ScenarioDTO s)
 	{
 		parentScenarios.add(s);
+		project.addParentScenario(s);
 		draw();
 	}
 
@@ -141,5 +157,11 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 		}
 		
 	}
+	
+	public ProjectDTO getProject() {
+		return project;
+	}
+
+	private ProjectDTO project; 
 	
 }

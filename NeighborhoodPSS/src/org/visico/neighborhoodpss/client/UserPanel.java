@@ -120,10 +120,15 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 							{
 								Window.alert("Failed to load projects from server!");
 							}
-							for (int i=0; i<result.size(); i++)
+							else
 							{
-								ProjectDTO p = result.get(i);
-								projectList.addItem(p.getName(), Integer.toString(p.getId()));
+								projects = new ArrayList<ProjectDTO>();
+								for (int i=0; i<result.size(); i++)
+								{
+									ProjectDTO p = result.get(i);
+									projects.add(p);
+									projectList.addItem(p.getName(), Integer.toString(i));
+								}
 							}
 						}
 				});
@@ -136,8 +141,8 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 				{
 					@Override
 					public void onClick(ClickEvent event) {
-						// TODO Auto-generated method stub
-						Window.alert("Open project");
+						int selection = Integer.parseInt(projectList.getValue(projectList.getSelectedIndex()));
+						HierarchyPanel.getInstance().setProject(projects.get(selection));
 					}
 					
 				});
@@ -157,6 +162,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 	private FlexTable loginTable;
 	private ListBox projectList;
 	private UserDTO u;
+	private ArrayList<ProjectDTO> projects;
 	
 	
 	

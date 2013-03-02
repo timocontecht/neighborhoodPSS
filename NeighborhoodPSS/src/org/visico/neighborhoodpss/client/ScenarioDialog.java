@@ -43,6 +43,7 @@ public class ScenarioDialog extends DialogBox implements ClickHandler
 	public void onClick(ClickEvent event) 
 	{
 		ScenarioDTO scenario = new ScenarioDTO(text());
+		hierarchyPanel.getProject().addParentScenario(scenario);
 		ScenarioDialog.this.hide(true);
 		hierarchyPanel.addParentScenario(scenario);
 	}
