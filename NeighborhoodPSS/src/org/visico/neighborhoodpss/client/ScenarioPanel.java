@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.BuildingDTO;
+import org.visico.neighborhoodpss.shared.NetworkDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 
@@ -17,7 +18,7 @@ public class ScenarioPanel extends DockLayoutPanel
 {	
 	public ScenarioPanel(ScenarioDTO s) 
 	{
-		super(Unit.PX);
+		super(Unit.EX);
 		scenario = s;
 		this.setTitle("Scenarios");
 		draw();
@@ -28,8 +29,8 @@ public class ScenarioPanel extends DockLayoutPanel
 		map = new Map();
 		modePanel = new ModePanel(this);
 		dataPanel = new DataPanel(this);
-	    addWest(modePanel, 150);
-	    addSouth(dataPanel, 250);
+	    addWest(modePanel, 35);
+	    addSouth(dataPanel, 25);
 	    MapWidget mw = map.getMap();
 	    add(mw);
 	    
@@ -41,6 +42,16 @@ public class ScenarioPanel extends DockLayoutPanel
 	    	mw.addOverlay(bldgPlg);
 	    	bldgPlg.setScenario(b);
 	    	buildingPlgs.add(bldgPlg);
+	    }
+	    
+	    Iterator<NetworkDTO> nit = scenario.getNetworkDTOs().iterator();
+	    while (nit.hasNext())
+	    {
+	    	NetworkDTO n = nit.next();
+	    	NetworkPolygon netPlg = new NetworkPolygon(n);
+	    	mw.addOverlay(netPlg);
+	    	netPlg.setScenario(n);
+	    	networkPlgs.add(netPlg);
 	    }
 	    
 	}
@@ -58,6 +69,27 @@ public class ScenarioPanel extends DockLayoutPanel
 	public ScenarioDTO scenario()
 	{
 		return scenario;
+	}
+	
+	public void addNetwork(NetworkPolygon networkPlg) 
+	{
+		networkPlgs.add(networkPlg);
+		
+	}
+	
+	public ArrayList<NetworkPolygon> getNetworkPlgs()
+	{
+		return networkPlgs;
+	}
+	
+	public Set<NetworkDTO> getNetworkDTOs()
+	{
+		HashSet<NetworkDTO> networkDTOs = new HashSet<NetworkDTO>();
+		for (int i=0; i < getNetworkPlgs().size(); i++)
+		{
+			networkDTOs.add(getNetworkPlgs().get(i).setNetwork());
+		}
+		return networkDTOs;
 	}
 	
 	public void addBuilding(BuildingPolygon p)
@@ -80,9 +112,21 @@ public class ScenarioPanel extends DockLayoutPanel
 		return BuildingDTOs;
 	}
 	
+	
+	public ModePanel getModePanel() {
+		return modePanel;
+	}
+
+	public void setModePanel(ModePanel modePanel) {
+		this.modePanel = modePanel;
+	}
+
+
 	private Map map; 
 	private ModePanel modePanel;
 	private DataPanel dataPanel;
 	private ArrayList<BuildingPolygon> buildingPlgs = new ArrayList<BuildingPolygon>();
+	private ArrayList<NetworkPolygon> networkPlgs = new ArrayList<NetworkPolygon>();
 	private ScenarioDTO scenario;
+	
 }

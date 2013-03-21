@@ -82,7 +82,7 @@ public class ScenarioDTO implements Cloneable, Serializable
 		return NetworkDTOs;
 	}
 
-	public void setNetworkDTOSs(Set<NetworkDTO> networkDTOs) {
+	public void setNetworkDTOs(Set<NetworkDTO> networkDTOs) {
 		NetworkDTOs = networkDTOs;
 	}
 

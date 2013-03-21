@@ -25,7 +25,7 @@ public class MainTab extends TabLayoutPanel
 	
 	private MainTab() 
 	{
-		super(20, Unit.PX);
+		super(5, Unit.EM);
 		panels = new ArrayList<ScenarioPanel>();
 		
 		// work around for bug in google maps - if not implemented tiles of the map are gray
@@ -53,7 +53,10 @@ public class MainTab extends TabLayoutPanel
 	public void draw()
 	{
 		HierarchyPanel panel = HierarchyPanel.getInstance();
-		add(panel, "Scenarios");
+		//add(panel, "Scenarios");
+		addScenario(new ScenarioDTO());
+		
+		
 	}
 	
 	public void addScenario(ScenarioDTO scenario)
