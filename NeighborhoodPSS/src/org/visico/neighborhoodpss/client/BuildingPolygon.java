@@ -20,7 +20,7 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler, P
 {
 
 	public static ArrayList<BuildingPolygon>buildings = new ArrayList<BuildingPolygon>();
-	public static HashSet<BuildingPolygon>selected = new HashSet<BuildingPolygon>();
+	private static HashSet<BuildingPolygon>selected = new HashSet<BuildingPolygon>();
 	
 	PolyStyleOptions op = PolyStyleOptions.getInstance();
 
@@ -123,22 +123,46 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler, P
 		this.setType(b.getType());
 	}
 	
+	
+	public static HashSet<BuildingPolygon> getSelected() {
+		return selected;
+	}
+
+
+
 	public void select()
 	{
-		String color = "#FF6666";
-		op.setColor(color);
-		this.setFillStyle(op);
+		setColor(true);
 		selected.add(this);
 		scenarioPanel.getModePanel().getEditBuilding().selectedBuildings(selected);
 	}
 	
 	public void unselect()
 	{
-		String color = "#0000FF";
-		op.setColor(color);
-		this.setFillStyle(op);
+		setColor(false);
 		selected.remove(this);
 		scenarioPanel.getModePanel().getEditBuilding().selectedBuildings(selected);
+	}
+	
+	public void setColor(boolean isSelected)
+	{
+		String color;
+		if (isSelected)
+			color = "#FF6666";
+		else
+			color = "#0000FF";
+		op.setColor(color);
+		this.setFillStyle(op);
+	}
+	
+	public static void unselectAll()
+	{
+		for (BuildingPolygon p:selected)
+		{
+			p.setColor(false);
+		}
+		selected.clear();
+		
 	}
 
 	@Override

@@ -59,19 +59,28 @@ public class EditBuildingPanel extends VerticalPanel implements ClickHandler
 		// set the right mode
 		if (event.getSource() == building_btn)
 		{
-			final BuildingPolygon building = new BuildingPolygon();
-			building.setScenarioPanel(scenarioPanel);	
-			building.setType(type_lb.getItemText(type_lb.getSelectedIndex()));
-			scenarioPanel.getMap().getMap().addOverlay(building);
-			building.setDrawingEnabled();
+			if (BuildingPolygon.getSelected().isEmpty())
+			{
+				final BuildingPolygon building = new BuildingPolygon();
+				building.setScenarioPanel(scenarioPanel);	
+				building.setType(type_lb.getItemText(type_lb.getSelectedIndex()));
+				scenarioPanel.getMap().getMap().addOverlay(building);
+				building.setDrawingEnabled();
+			}
+			else
+			{
+				for (BuildingPolygon p:BuildingPolygon.getSelected())
+				{
+					p.setType(type_lb.getItemText(type_lb.getSelectedIndex()));
+				}
+				scenarioPanel.updateData();
+			}
 		}
 		
 		if (event.getSource() == unselect_btn)
 		{
-			for (BuildingPolygon p:BuildingPolygon.selected)
-			{
-				p.unselect();
-			}
+			BuildingPolygon.unselectAll();
+			selectedBuildings(BuildingPolygon.getSelected());
 		}
 		
 	}
