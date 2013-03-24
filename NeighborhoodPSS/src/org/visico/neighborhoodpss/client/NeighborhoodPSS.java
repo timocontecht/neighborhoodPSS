@@ -57,7 +57,7 @@ public class NeighborhoodPSS implements EntryPoint
 		RootLayoutPanel.get().add(thePanel);
 	    
 		final Image visico_img = new Image();
-	    visico_img.setUrl("VISICO.jpg");
+	    visico_img.setUrl("res/VISICO.jpg");
 	    final HorizontalPanel logopanel = new HorizontalPanel();
 	    logopanel.add(visico_img);
 	    logopanel.add(UserPanel.getInstance());

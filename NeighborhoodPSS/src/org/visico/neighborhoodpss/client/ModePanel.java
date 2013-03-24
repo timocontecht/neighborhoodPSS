@@ -1,6 +1,8 @@
 package org.visico.neighborhoodpss.client;
 
 
+import java.util.HashSet;
+
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -54,7 +56,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		panel.setSize("20em", "40em");
 		editBuildingTab = new EditBuildingPanel(scenarioPanel);
 		panel.add(editBuildingTab, "Edit Buildings");
-		panel.add(new EditNetworkPanel(), new HTML("Edit Networks"));
+		panel.add(new EditNetworkPanel(scenarioPanel), new HTML("Edit Networks"));
 	
 		add (panel);
 		
@@ -94,7 +96,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		{
 			ScenarioDTO scenario = scenarioPanel.scenario();
 			scenario.setBuilingDTOs(scenarioPanel.getBuildingDTOs());
-			scenario.setNetworkDTOs(scenarioPanel.getNetworkDTOs());
+			scenario.setNetworkDTOs(new HashSet(scenarioPanel.getNetworkDTOs()));
 			scenarioPanel.removeFromParent();
 		}
 	}

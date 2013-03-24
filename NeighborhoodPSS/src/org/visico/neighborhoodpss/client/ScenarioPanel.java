@@ -44,14 +44,12 @@ public class ScenarioPanel extends DockLayoutPanel
 	    	buildingPlgs.add(bldgPlg);
 	    }
 	    
-	    Iterator<NetworkDTO> nit = scenario.getNetworkDTOs().iterator();
-	    while (nit.hasNext())
+	    networks.addAll(scenario.getNetworkDTOs());
+	    
+	    for (NetworkDTO n : networks)
 	    {
-	    	NetworkDTO n = nit.next();
-	    	NetworkPolygon netPlg = new NetworkPolygon(n);
-	    	mw.addOverlay(netPlg);
-	    	netPlg.setScenario(n);
-	    	networkPlgs.add(netPlg);
+	    	//TODO: here add physical nodes and edges
+	    	
 	    }
 	    
 	}
@@ -70,26 +68,11 @@ public class ScenarioPanel extends DockLayoutPanel
 	{
 		return scenario;
 	}
-	
-	public void addNetwork(NetworkPolygon networkPlg) 
+
+	public ArrayList<NetworkDTO> getNetworkDTOs()
 	{
-		networkPlgs.add(networkPlg);
 		
-	}
-	
-	public ArrayList<NetworkPolygon> getNetworkPlgs()
-	{
-		return networkPlgs;
-	}
-	
-	public Set<NetworkDTO> getNetworkDTOs()
-	{
-		HashSet<NetworkDTO> networkDTOs = new HashSet<NetworkDTO>();
-		for (int i=0; i < getNetworkPlgs().size(); i++)
-		{
-			networkDTOs.add(getNetworkPlgs().get(i).setNetwork());
-		}
-		return networkDTOs;
+		return networks;
 	}
 	
 	public void addBuilding(BuildingPolygon p)
@@ -102,6 +85,12 @@ public class ScenarioPanel extends DockLayoutPanel
 		return buildingPlgs;
 	}
 	
+	public void addNetwork (NetworkDTO nw)
+	{
+		networks.add(nw);
+	}
+
+
 	public Set<BuildingDTO> getBuildingDTOs()
 	{
 		HashSet<BuildingDTO> BuildingDTOs = new HashSet<BuildingDTO>();
@@ -126,7 +115,7 @@ public class ScenarioPanel extends DockLayoutPanel
 	private ModePanel modePanel;
 	private DataPanel dataPanel;
 	private ArrayList<BuildingPolygon> buildingPlgs = new ArrayList<BuildingPolygon>();
-	private ArrayList<NetworkPolygon> networkPlgs = new ArrayList<NetworkPolygon>();
+	private ArrayList<NetworkDTO> networks = new ArrayList<NetworkDTO>();
 	private ScenarioDTO scenario;
 	
 }
