@@ -39,7 +39,6 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler, P
 
 	public BuildingPolygon() 
 	{
-		
 		super(new LatLng[0], "0000FF", 1, 1.0, "0000FF", 0.1);
 		String color = "#0000FF";
 		op.setColor(color);
@@ -48,7 +47,6 @@ public class BuildingPolygon extends Polygon implements PolygonEndLineHandler, P
 		building = new BuildingDTO();
 		addPolygonEndLineHandler(this);
 	}
-	
 	
 	
 	public BuildingPolygon(BuildingDTO next) 

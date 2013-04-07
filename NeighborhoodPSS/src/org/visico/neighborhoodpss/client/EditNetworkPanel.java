@@ -11,10 +11,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.geom.Point;
+import com.google.gwt.maps.client.geom.Size;
 import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.maps.client.overlay.Overlay;
+
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -26,6 +29,9 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 {
 	private ScenarioPanel scenarioPanel;
 	
+	private static MarkerOptions options = MarkerOptions.newInstance();
+	  
+	
 	private final TextBox networkName_tb = new TextBox();
 	private final Button addNetworkBtn = new Button("Add Network");
 	private final ListBox network_lb = new ListBox();
@@ -35,13 +41,19 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	private final ToggleButton addNode_btn = new ToggleButton("Add Node");
 	
 	private final TextBox capacity_tb = new TextBox();
-	private final Button addEdge_btn = new Button("Add Edge");
+	private final ToggleButton addEdge_btn = new ToggleButton("Add Edge");
 	
 	private NetworkDTO activeNetwork = null;
+	
+	private boolean edgeCreationMode = false;
+	private boolean nodeCreationMode = false;
+	
+	private static NodeMarker firstPickedNode = null; 
 	
 	public EditNetworkPanel(ScenarioPanel scenarioPanel)
 	{
 		this.scenarioPanel = scenarioPanel;
+		scenarioPanel.getMap().getMap().addMapClickHandler(this);
 		draw();
 	}
 	
@@ -72,6 +84,7 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 		this.add(new Label("capacity edge"));
 		this.add(capacity_tb);
 		this.add(addEdge_btn);
+		addEdge_btn.addClickHandler(this);
 	}
 
 	@Override
@@ -87,11 +100,26 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 		{
 			if (addNode_btn.isDown())
 			{
-				scenarioPanel.getMap().getMap().addMapClickHandler(this);
+				nodeCreationMode = true;
+				edgeCreationMode = false;
+				addEdge_btn.setDown(false);
 			}
 			else
 			{
 				scenarioPanel.getMap().getMap().removeMapClickHandler(this);
+			}
+		}
+		else if (event.getSource() == addEdge_btn)
+		{
+			if (addEdge_btn.isDown())
+			{
+				edgeCreationMode = true;
+				nodeCreationMode = false;
+				addNode_btn.setDown(false);
+			}
+			else
+			{
+				edgeCreationMode = false;
 			}
 		}
 	}
@@ -106,24 +134,38 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	}
 
 	@Override
-	public void onClick(MapClickEvent event) {
+	public void onClick(MapClickEvent event) 
+	{
 		// TODO Auto-generated method stub
 		MapWidget sender = event.getSender();
         Overlay overlay = event.getOverlay();
         LatLng point = event.getLatLng();
 
-        if (overlay != null && overlay instanceof Marker) {
-          sender.removeOverlay(overlay);
-        } else {
-          try {
+        if (overlay instanceof Marker == false && nodeCreationMode) 
+        {
         	  Icon icon = Icon.newInstance("res/node.png");
-        	  MarkerOptions options = MarkerOptions.newInstance();
+        	  icon.setIconSize(Size.newInstance(8, 8));
+        	  icon.setIconAnchor(Point.newInstance(4, 4));
         	  options.setIcon(icon);
-        	  sender.addOverlay(new NodeMarker(point, options));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        	  sender.addOverlay(new NodeMarker(point, options, this));
+        	  
+		} 
+        
+        else if (overlay instanceof NodeMarker && edgeCreationMode)
+        {
+        	if (firstPickedNode == null)
+				firstPickedNode = (NodeMarker)overlay;
+			else
+			{
+				LatLng points[] = new LatLng[2];
+				points[0] = firstPickedNode.getLatLng(); points[1] = ((NodeMarker)overlay).getLatLng();
+				NetworkEdge edge = new NetworkEdge(points);
+				sender.addOverlay(edge);
+				firstPickedNode = null;
+			}
         }
+        
 	}
+
+
 }
