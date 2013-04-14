@@ -44,7 +44,7 @@ create table if not exists BUILDING
 	scenario_id INT REFERENCES SCENARIO.id
 );
 
-create table if not exists GEO_COORDINATE
+create table if not exists GEOCOORDINATE
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	latitude DOUBLE,
@@ -52,7 +52,14 @@ create table if not exists GEO_COORDINATE
 	building_id INT REFERENCES BUILDING.id
 );
 
-create table if not exists NETWORK
+create table if not exists GEONETWORK
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	name VARCHAR(250),
+	scenario_id INT REFERENCES SCENARIO.id
+);
+
+create table if not exists BUILDINGNETWORK
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	name VARCHAR(250),
@@ -69,11 +76,27 @@ create table if not exists NODE
 	outflow DOUBLE
 );
 
-create table if not exists EDGE
+create table if not exists GEOEDGE
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	network_id INT REFERENCES NETWORK.id,
+	network_id INT REFERENCES GEONETWORK.id,
 	start_node_id INT REFERENCES NODE.id,
 	end_node_id INT REFERENCES NODE.id,
 	capacity DOUBLE
+);
+
+create table if not exists BUILDINGEDGE
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	network_id INT REFERENCES BUILDINGNETWORK.id,
+	start_building_id INT REFERENCES BUILDING.id,
+	end_building_id INT REFERENCES BUILDING.id,
+	capacity DOUBLE
+);
+
+create table if not exists NETWORK_BUILDING
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	network_id INT REFERENCES BUILDINGNETWORK.id,
+	building_id INT REFERENCES BUILDING.id
 );
