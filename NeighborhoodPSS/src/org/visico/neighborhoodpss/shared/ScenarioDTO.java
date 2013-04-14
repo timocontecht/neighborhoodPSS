@@ -78,12 +78,16 @@ public class ScenarioDTO implements Cloneable, Serializable
 		this.children = children;
 	}
 
-	public Set<NetworkDTO> getNetworkDTOs() {
-		return NetworkDTOs;
+	public Set<GeoNetworkDTO> getNetworkDTOs() {
+		return GeoNetworkDTOs;
 	}
 
-	public void setNetworkDTOs(Set<NetworkDTO> networkDTOs) {
-		NetworkDTOs = networkDTOs;
+	public void setGeoNetworkDTOs(Set<GeoNetworkDTO> networkDTOs) {
+		GeoNetworkDTOs = networkDTOs;
+	}
+	
+	public void setBuildingNetworkDTOs(Set<BuildingNetworkDTO> networkDTOs) {
+		BuildingNetworkDTOs = networkDTOs;
 	}
 
 
@@ -100,9 +104,14 @@ public class ScenarioDTO implements Cloneable, Serializable
 		BuildingDTOs.add(b);
 	}
 	
-	public void addNetworkDTO(NetworkDTO n)
+	public void addGeoNetworkDTO(GeoNetworkDTO n)
 	{
-		NetworkDTOs.add(n);
+		GeoNetworkDTOs.add(n);
+	}
+	
+	public void addBuildingNetworkDTO(BuildingNetworkDTO n)
+	{
+		BuildingNetworkDTOs.add(n);
 	}
 	
 	public String label()
@@ -163,11 +172,18 @@ public class ScenarioDTO implements Cloneable, Serializable
 			child.BuildingDTOs.add(b.clone());
 		}
 		
-		Iterator<NetworkDTO> nit = this.NetworkDTOs.iterator();
+		Iterator<GeoNetworkDTO> nit = this.GeoNetworkDTOs.iterator();
 		while (nit.hasNext())
 		{
-			NetworkDTO n = nit.next();
-			child.NetworkDTOs.add(n.clone());
+			GeoNetworkDTO n = nit.next();
+			child.GeoNetworkDTOs.add(n.clone());
+		}
+		
+		Iterator<BuildingNetworkDTO> bnit = this.BuildingNetworkDTOs.iterator();
+		while (bnit.hasNext())
+		{
+			BuildingNetworkDTO n = bnit.next();
+			child.BuildingNetworkDTOs.add(n.clone());
 		}
 		
 		this.children.add(child);
@@ -185,5 +201,6 @@ public class ScenarioDTO implements Cloneable, Serializable
 	
 	private Set<ScenarioDTO> children = new HashSet<ScenarioDTO>();;
 	private Set<BuildingDTO> BuildingDTOs = new HashSet<BuildingDTO>();
-	private Set<NetworkDTO> NetworkDTOs = new HashSet<NetworkDTO>();
+	private Set<GeoNetworkDTO> GeoNetworkDTOs = new HashSet<GeoNetworkDTO>();
+	private Set<BuildingNetworkDTO> BuildingNetworkDTOs = new HashSet<BuildingNetworkDTO>();
 }
