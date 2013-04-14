@@ -6,8 +6,6 @@ public class EdgeDTO implements Cloneable, Serializable
 {
 
 	private int id;
-	private NodeDTO start_node;
-	private NodeDTO end_node;
 	private double capacity;
 	
 	/**
@@ -23,21 +21,7 @@ public class EdgeDTO implements Cloneable, Serializable
 		this.id = id;
 	}
 
-	public NodeDTO getStart_node() {
-		return start_node;
-	}
-
-	public void setStart_node(NodeDTO start_node) {
-		this.start_node = start_node;
-	}
-
-	public NodeDTO getEnd_node() {
-		return end_node;
-	}
-
-	public void setEnd_node(NodeDTO end_node) {
-		this.end_node = end_node;
-	}
+	
 
 	public double getCapacity() {
 		return capacity;
@@ -56,8 +40,6 @@ public class EdgeDTO implements Cloneable, Serializable
 		EdgeDTO edge = new EdgeDTO();
 		
 		edge.setCapacity(this.getCapacity());
-		edge.setEnd_node(this.getEnd_node().clone());
-		edge.setStart_node(this.getStart_node().clone());
 		
 		return edge;
 	}

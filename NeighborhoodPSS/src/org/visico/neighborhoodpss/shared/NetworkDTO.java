@@ -14,46 +14,8 @@ public class NetworkDTO implements Cloneable, Serializable
 	private String name;
 	private int id;
 	private ScenarioDTO scenario;
-	private List<NodeDTO> nodes = new ArrayList<NodeDTO>();
-	private List<EdgeDTO> edges = new ArrayList<EdgeDTO>();
 	
-	public void addNode(double lat, double lon, double inflow, double outflow)
-	{
-		NodeDTO nd = new NodeDTO();
-		nd.setLongitude(lon);
-		nd.setLatitude(lat);
-		nd.setInflow(inflow);
-		nd.setOutflow(outflow);
-		
-		nodes.add(nd);
-	}
-	
-	public void addEdge(NodeDTO start, NodeDTO end, double capacity)
-	{
-		EdgeDTO e = new EdgeDTO();
-		e.setCapacity(capacity);
-		e.setEnd_node(end);
-		e.setStart_node(start);
-		edges.add(e);
-	}
-	
-	public List<NodeDTO> getNodes() {
-		return nodes;
-	}
-	public void setNodes(List<NodeDTO> nodes) {
-		this.nodes = nodes;
-	}
-	
-	
-	public List<EdgeDTO> getEdges() {
-		return edges;
-	}
-
-	public void setEdges(List<EdgeDTO> edges) {
-		this.edges = edges;
-	}
-
-	public String getName() {
+		public String getName() {
 		return name;
 	}
 	public void setName(String name) {
@@ -83,30 +45,8 @@ public class NetworkDTO implements Cloneable, Serializable
 		clone.setName(this.getName());
 		clone.setScenario(this.getScenario());
 		
-		// need to clone the nodes and edges as well
-		Iterator<NodeDTO> nit = this.getNodes().iterator();
-		while (nit.hasNext())
-		{
-			NodeDTO n = nit.next();
-			clone.getNodes().add(n.clone());
-		}
-		
-		Iterator<EdgeDTO> eit = this.getEdges().iterator();
-		while (eit.hasNext())
-		{
-			EdgeDTO e = eit.next();
-			clone.getEdges().add(e.clone());
-		}
 		
 		return clone;
 	}
 
-	public void addNode(NodeDTO node) {
-		nodes.add(node);
-		
-	}
-
-	public void addEdge(EdgeDTO edge) {
-		edges.add(edge);
-	}
 }
