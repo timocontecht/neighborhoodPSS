@@ -14,9 +14,11 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.visico.neighborhoodpss.shared.BuildingDTO;
-import org.visico.neighborhoodpss.shared.EdgeDTO;
+import org.visico.neighborhoodpss.shared.BuildingEdgeDTO;
+import org.visico.neighborhoodpss.shared.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.GeoEdgeDTO;
 import org.visico.neighborhoodpss.shared.GeoPointDTO;
-import org.visico.neighborhoodpss.shared.NetworkDTO;
+import org.visico.neighborhoodpss.shared.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.NodeDTO;
 import org.visico.neighborhoodpss.shared.ProjectDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
@@ -88,9 +90,9 @@ public class CaseProject
 			b1.setType("Construction");
 			parent1.addBuilingDTO(b1);
 			
-			NetworkDTO n1 = new NetworkDTO();
+			GeoNetworkDTO n1 = new GeoNetworkDTO();
 			n1.setName("Traffic");
-			parent1.addNetworkDTO(n1);
+			parent1.addGeoNetworkDTO(n1);
 			
 			ScenarioDTO parent2 = new ScenarioDTO("Parent 2");
 			//parent2.setId(2);
@@ -103,9 +105,9 @@ public class CaseProject
 			b2.setType("Machinery");
 			parent2.addBuilingDTO(b2);
 			
-			NetworkDTO n2 = new NetworkDTO();
+			BuildingNetworkDTO n2 = new BuildingNetworkDTO();
 			n2.setName("Knowledge Exchange");
-			parent1.addNetworkDTO(n2);
+			parent1.addBuildingNetworkDTO(n2);
 			
 			ScenarioDTO child1_parent1 = parent1.createChild();
 			//child1_parent1.setId(3);
@@ -167,7 +169,7 @@ public class CaseProject
 			nd2.setLatitude(0.0); nd2.setLongitude(1.0); 
 			nd2.setInflow(0.0); nd2.setOutflow(0.0);
 			
-			EdgeDTO e = new EdgeDTO();
+			GeoEdgeDTO e = new GeoEdgeDTO();
 			e.setCapacity(10.0); 
 			e.setStart_node(nd1); e.setEnd_node(nd2);
 			
@@ -177,21 +179,32 @@ public class CaseProject
 			ArrayList<NodeDTO> nds = new ArrayList<NodeDTO>();
 			nds.add(nd1); nds.add(nd2);
 			
-			ArrayList<EdgeDTO> eds = new ArrayList<EdgeDTO>();
+			ArrayList<GeoEdgeDTO> eds = new ArrayList<GeoEdgeDTO>();
 			eds.add(e);
 			
 			BuildingDTO b1 = new BuildingDTO();
 			b1.setPoints(pts);
 			b1.setType("Construction");
 			
-			NetworkDTO n1 = new NetworkDTO();
+			BuildingDTO b2 = new BuildingDTO();
+			b1.setPoints(pts);
+			b1.setType("Construction");
+			
+			GeoNetworkDTO n1 = new GeoNetworkDTO();
 			n1.setName("Traffic");
 			n1.setNodes(nds);
 			n1.setEdges(eds);
 			
+			BuildingNetworkDTO n2 = new BuildingNetworkDTO();
+			n2.setName("Knowledge");
+			n2.addBuilding(b1);
+			n2.addBuilding(b2);
+			
+			
 			ScenarioDTO parent = new ScenarioDTO("Simple Test");
 			parent.addBuilingDTO(b1);
-			parent.addNetworkDTO(n1);
+			parent.addGeoNetworkDTO(n1);
+			parent.addBuildingNetworkDTO(n2);
 			p.addParentScenario(parent);
 			
 			ScenarioDTO child = parent.createChild();
@@ -251,27 +264,46 @@ public class CaseProject
 			nd2.setLatitude(0.0); nd2.setLongitude(1.0); 
 			nd2.setInflow(0.0); nd2.setOutflow(0.0);
 			
-			EdgeDTO e = new EdgeDTO();
+			GeoEdgeDTO e = new GeoEdgeDTO();
 			e.setStart_node(nd1); e.setEnd_node(nd2);
 			e.setCapacity(0.0);
 			
 			ArrayList<NodeDTO> nds = new ArrayList<NodeDTO>();
 			nds.add(nd1); nds.add(nd2);
 			
-			ArrayList<EdgeDTO> eds = new ArrayList<EdgeDTO>();
-			eds.add(e);
 			
 			BuildingDTO b = new BuildingDTO();
 			b.setPoints(pts);
 			b.setType("Chemical");
 			
-			NetworkDTO n = new NetworkDTO();
+			BuildingDTO b2 = new BuildingDTO();
+			b2.setPoints(pts);
+			b2.setType("Construction");
+			
+			ArrayList<GeoEdgeDTO> eds = new ArrayList<GeoEdgeDTO>();
+			eds.add(e);
+			ArrayList<BuildingEdgeDTO> beds = new ArrayList<BuildingEdgeDTO>();
+			BuildingEdgeDTO bed = new BuildingEdgeDTO();
+			bed.setStart_building(b);
+			bed.setEnd_building(b2);
+			beds.add(bed);
+			
+			
+			GeoNetworkDTO n = new GeoNetworkDTO();
 			n.setName("Newly Updated");
 			n.setNodes(nds);
 			n.setEdges(eds);
 			
+			
+			BuildingNetworkDTO bn = new BuildingNetworkDTO();
+			bn.setName("Newly Updated");
+			bn.addBuilding(b2); bn.addBuilding(b);
+			bn.setEdges(beds);
+			
 			parent.getChildren().iterator().next().addBuilingDTO(b);
-			parent.getChildren().iterator().next().addNetworkDTO(n);
+			parent.getChildren().iterator().next().addBuilingDTO(b2);
+			parent.getChildren().iterator().next().addGeoNetworkDTO(n);
+			parent.getChildren().iterator().next().addBuildingNetworkDTO(bn);
 			
 			// add a new child
 			ScenarioDTO child = parent.createChild();
