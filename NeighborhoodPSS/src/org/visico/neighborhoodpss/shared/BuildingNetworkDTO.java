@@ -51,7 +51,7 @@ public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Seriali
 	}
 
 	
-	public BuildingNetworkDTO clone()
+	public Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
@@ -64,14 +64,14 @@ public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Seriali
 		while (eit.hasNext())
 		{
 			BuildingEdgeDTO e = eit.next();
-			clone.getEdges().add(e.clone());
+			clone.getEdges().add((BuildingEdgeDTO) e.clone());
 		}
 		
 		Iterator<BuildingDTO> bit = this.getBuildings().iterator();
 		while (bit.hasNext())
 		{
 			BuildingDTO b = bit.next();
-			clone.getBuildings().add(b.clone());
+			clone.getBuildings().add((BuildingDTO) b.clone());
 		}
 		
 		return clone;

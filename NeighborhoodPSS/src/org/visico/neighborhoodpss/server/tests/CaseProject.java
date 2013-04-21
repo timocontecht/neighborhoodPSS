@@ -120,12 +120,9 @@ public class CaseProject
 			labels_dto.add(child2_parent1.label());
 			all_scenarios_dto.add(child2_parent1);
 			
-			
-			
 			ScenarioDTO child_child1_parent1 = child1_parent1.createChild();
 			labels_dto.add(child_child1_parent1.label());
 			all_scenarios_dto.add(child_child1_parent1);
-			
 			
 			ScenarioDTO child_parent2 = parent2.createChild();
 			labels_dto.add(child_parent2.label());
@@ -199,7 +196,6 @@ public class CaseProject
 			n2.setName("Knowledge");
 			n2.addBuilding(b1);
 			n2.addBuilding(b2);
-			
 			
 			ScenarioDTO parent = new ScenarioDTO("Simple Test");
 			parent.addBuilingDTO(b1);

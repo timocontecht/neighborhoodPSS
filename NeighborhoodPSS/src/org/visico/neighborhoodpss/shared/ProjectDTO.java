@@ -69,7 +69,7 @@ public class ProjectDTO  implements Cloneable, Serializable
 		this.users.add(user);
 	}
 	
-	protected ProjectDTO clone()
+	protected Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
@@ -85,13 +85,13 @@ public class ProjectDTO  implements Cloneable, Serializable
 		Iterator<ScenarioDTO> sit = this.getParent_scenarios().iterator();
 		while(sit.hasNext())
 		{
-			child.addParentScenario(sit.next().clone());
+			child.addParentScenario((ScenarioDTO) sit.next().clone());
 		}
 		
 		Iterator<UserDTO> uit = this.getUsers().iterator();
 		while(sit.hasNext())
 		{
-			child.addUser(uit.next().clone());
+			child.addUser((UserDTO) uit.next().clone());
 		}
 		
 		return child;

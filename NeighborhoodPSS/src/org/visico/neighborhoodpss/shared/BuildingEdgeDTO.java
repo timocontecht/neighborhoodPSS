@@ -29,7 +29,7 @@ public class BuildingEdgeDTO extends EdgeDTO implements Cloneable, Serializable
 	}
 
 
-	protected BuildingEdgeDTO clone()
+	protected Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
@@ -38,8 +38,8 @@ public class BuildingEdgeDTO extends EdgeDTO implements Cloneable, Serializable
 		BuildingEdgeDTO edge = (BuildingEdgeDTO)super.clone();
 		
 		edge.setCapacity(this.getCapacity());
-		edge.setEnd_building(this.getEnd_building().clone());
-		edge.setStart_building(this.getStart_building().clone());
+		edge.setEnd_building((BuildingDTO) this.getEnd_building().clone());
+		edge.setStart_building((BuildingDTO) this.getStart_building().clone());
 		
 		return edge;
 	}

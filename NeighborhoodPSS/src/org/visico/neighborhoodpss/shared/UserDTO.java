@@ -39,7 +39,7 @@ public class UserDTO implements Cloneable, Serializable
 		this.id = id;
 	}
 	
-	protected UserDTO clone()
+	protected Object clone()
 	{
 		// do not clone id - id is assigned by a database
 		// the clone should not have yet an id to signify 

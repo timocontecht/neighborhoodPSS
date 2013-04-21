@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.BuildingDTO;
-import org.visico.neighborhoodpss.shared.NetworkDTO;
+import org.visico.neighborhoodpss.shared.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 import javax.persistence.*;
@@ -37,21 +38,25 @@ public class Scenario implements Cloneable, Serializable
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="scenario_id")
-	private Set<Network> networks = new HashSet<Network>();
+	private Set<GeoNetwork> geonetworks = new HashSet<GeoNetwork>();
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="scenario_id")
+	private Set<BuildingNetwork> buildingnetworks = new HashSet<BuildingNetwork>();
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="parent_id")
 	private Set<Scenario> children = new HashSet<Scenario>();
 		
 	
-	public Set<Network> getNetworks() {
-		return networks;
+	public Set<GeoNetwork> getNetworks() {
+		return geonetworks;
 	}
 
 
 
-	public void setNetworks(Set<Network> networks) {
-		this.networks = networks;
+	public void setNetworks(Set<GeoNetwork> networks) {
+		this.geonetworks = networks;
 	}
 
 
@@ -166,11 +171,18 @@ public class Scenario implements Cloneable, Serializable
 			this.addBuilding(new Building(b));
 		}
 		
-		Iterator<NetworkDTO> itn = s_dto.getNetworkDTOs().iterator();
+		Iterator<GeoNetworkDTO> itn = s_dto.getNetworkDTOs().iterator();
 		while (itn.hasNext())
 		{
-			NetworkDTO n = itn.next();
-			this.addNetwork(new Network(n));
+			GeoNetworkDTO n = itn.next();
+			this.addGeoNetwork(new GeoNetwork(n));
+		}
+		
+		Iterator<BuildingNetworkDTO> itbn = s_dto.getBuildingNetworkDTOs().iterator();
+		while (itn.hasNext())
+		{
+			BuildingNetworkDTO n = itbn.next();
+			this.addBuildingNetwork(new BuildingNetwork(n));
 		}
 		
 		Iterator<ScenarioDTO> its = s_dto.getChildren().iterator();
@@ -244,9 +256,14 @@ public class Scenario implements Cloneable, Serializable
 		buildings.add(b);
 	}
 	
-	public void addNetwork (Network n)
+	public void addGeoNetwork (GeoNetwork n)
 	{
-		networks.add(n);
+		geonetworks.add(n);
+	}
+	
+	public void addBuildingNetwork (BuildingNetwork n)
+	{
+		buildingnetworks.add(n);
 	}
 	
 	public String label()
@@ -297,8 +314,10 @@ public class Scenario implements Cloneable, Serializable
 		child.children = new HashSet<Scenario>();
 		child.buildings = new HashSet<Building>();
 		child.buildings.addAll(this.buildings);
-		child.networks = new HashSet<Network>();
-		child.networks.addAll(this.networks);
+		child.geonetworks = new HashSet<GeoNetwork>();
+		child.geonetworks.addAll(this.geonetworks);
+		child.buildingnetworks = new HashSet<BuildingNetwork>();
+		child.buildingnetworks.addAll(this.buildingnetworks);
 		
 		this.children.add(child);
 		return child;
@@ -320,8 +339,14 @@ public class Scenario implements Cloneable, Serializable
 			for (Building b : buildings)
 				dto_object.addBuilingDTO(b.getDto_object());
 			
-			for (Network n : networks)
-				dto_object.addNetworkDTO(n.getDto_object());
+			for (GeoNetwork n : geonetworks)
+				dto_object.addGeoNetworkDTO(n.getDto_object());
+			
+			for (GeoNetwork n : geonetworks)
+				dto_object.addGeoNetworkDTO(n.getDto_object());
+			
+			for (BuildingNetwork n : buildingnetworks)
+				dto_object.addBuildingNetworkDTO(n.getDto_object());
 			
 			for (Scenario c : children)
 				dto_object.addChild(c.getDto_object());
@@ -347,10 +372,10 @@ public class Scenario implements Cloneable, Serializable
 			b.update_dtoIds();
 		}
 		
-		Iterator<Network> nit = networks.iterator();
+		Iterator<GeoNetwork> nit = geonetworks.iterator();
 		while(nit.hasNext())
 		{
-			Network n = nit.next();
+			GeoNetwork n = nit.next();
 			n.update_dtoIds();
 		}
 		

@@ -29,10 +29,14 @@
 		<mapping class = "org.visico.neighborhoodpss.server.Building"/>
 		<mapping class = "org.visico.neighborhoodpss.server.GeoPoint"/>
 		<mapping class = "org.visico.neighborhoodpss.server.Network"/>
+		<mapping class = "org.visico.neighborhoodpss.server.GeoNetwork"/>
+		<mapping class = "org.visico.neighborhoodpss.server.BuildingNetwork"/>
 		<mapping class = "org.visico.neighborhoodpss.server.Node"/>
 		<mapping class = "org.visico.neighborhoodpss.server.Edge"/>
 		<mapping class = "org.visico.neighborhoodpss.server.Project"/>
 		<mapping class = "org.visico.neighborhoodpss.server.User"/>
+		<mapping class = "org.visico.neighborhoodpss.server.GeoEdge"/>
+		<mapping class = "org.visico.neighborhoodpss.server.BuildingEdge"/>
 	
     </session-factory>
 

@@ -90,6 +90,22 @@ public class ScenarioDTO implements Cloneable, Serializable
 		BuildingNetworkDTOs = networkDTOs;
 	}
 
+	
+
+	public Set<GeoNetworkDTO> getGeoNetworkDTOs() {
+		return GeoNetworkDTOs;
+	}
+
+
+	public Set<BuildingNetworkDTO> getBuildingNetworkDTOs() {
+		return BuildingNetworkDTOs;
+	}
+
+
+	public void setBuildingDTOs(Set<BuildingDTO> buildingDTOs) {
+		BuildingDTOs = buildingDTOs;
+	}
+
 
 	public Set<BuildingDTO> getBuildingDTOs() {
 		return BuildingDTOs;
@@ -141,7 +157,7 @@ public class ScenarioDTO implements Cloneable, Serializable
 		return child;
 	}
 	
-	protected ScenarioDTO clone()
+	protected Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
@@ -169,21 +185,21 @@ public class ScenarioDTO implements Cloneable, Serializable
 		while (bit.hasNext())
 		{
 			BuildingDTO b = bit.next();
-			child.BuildingDTOs.add(b.clone());
+			child.BuildingDTOs.add((BuildingDTO) b.clone());
 		}
 		
 		Iterator<GeoNetworkDTO> nit = this.GeoNetworkDTOs.iterator();
 		while (nit.hasNext())
 		{
 			GeoNetworkDTO n = nit.next();
-			child.GeoNetworkDTOs.add(n.clone());
+			child.GeoNetworkDTOs.add((GeoNetworkDTO) n.clone());
 		}
 		
 		Iterator<BuildingNetworkDTO> bnit = this.BuildingNetworkDTOs.iterator();
 		while (bnit.hasNext())
 		{
 			BuildingNetworkDTO n = bnit.next();
-			child.BuildingNetworkDTOs.add(n.clone());
+			child.BuildingNetworkDTOs.add((BuildingNetworkDTO) n.clone());
 		}
 		
 		this.children.add(child);

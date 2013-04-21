@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.BuildingDTO;
-import org.visico.neighborhoodpss.shared.NetworkDTO;
+import org.visico.neighborhoodpss.shared.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.ScenarioDTO;
 
 
@@ -46,7 +46,7 @@ public class ScenarioPanel extends DockLayoutPanel
 	    
 	    networks.addAll(scenario.getNetworkDTOs());
 	    
-	    for (NetworkDTO n : networks)
+	    for (GeoNetworkDTO n : networks)
 	    {
 	    	//TODO: here add physical nodes and edges
 	    	
@@ -69,7 +69,7 @@ public class ScenarioPanel extends DockLayoutPanel
 		return scenario;
 	}
 
-	public ArrayList<NetworkDTO> getNetworkDTOs()
+	public ArrayList<GeoNetworkDTO> getNetworkDTOs()
 	{
 		
 		return networks;
@@ -85,7 +85,7 @@ public class ScenarioPanel extends DockLayoutPanel
 		return buildingPlgs;
 	}
 	
-	public void addNetwork (NetworkDTO nw)
+	public void addNetwork (GeoNetworkDTO nw)
 	{
 		networks.add(nw);
 	}
@@ -115,7 +115,7 @@ public class ScenarioPanel extends DockLayoutPanel
 	private ModePanel modePanel;
 	private DataPanel dataPanel;
 	private ArrayList<BuildingPolygon> buildingPlgs = new ArrayList<BuildingPolygon>();
-	private ArrayList<NetworkDTO> networks = new ArrayList<NetworkDTO>();
+	private ArrayList<GeoNetworkDTO> networks = new ArrayList<GeoNetworkDTO>();
 	private ScenarioDTO scenario;
 	
 }

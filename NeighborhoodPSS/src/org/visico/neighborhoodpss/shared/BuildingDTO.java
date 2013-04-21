@@ -78,7 +78,7 @@ public class BuildingDTO implements Cloneable, Serializable
 		this.id = id;
 	}
 	
-	public BuildingDTO clone()
+	public Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
@@ -95,7 +95,7 @@ public class BuildingDTO implements Cloneable, Serializable
 		while (it.hasNext())
 		{
 			GeoPointDTO b = it.next();
-			clone.getPoints().add(b.clone());
+			clone.getPoints().add((GeoPointDTO) b.clone());
 		}
 		
 		return clone;

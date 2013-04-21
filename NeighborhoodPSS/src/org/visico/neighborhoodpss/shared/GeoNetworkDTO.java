@@ -55,28 +55,27 @@ public class GeoNetworkDTO extends NetworkDTO implements Cloneable, Serializable
 	
 	
 	
-	public GeoNetworkDTO clone()
+	public Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
 				// that it is not yet in the db and has to created
-				// instead of updated
-		
-		GeoNetworkDTO clone = (GeoNetworkDTO)super.clone();
+				// instead of updated	
+		GeoNetworkDTO clone = (GeoNetworkDTO) super.clone();
 		
 		// need to clone the nodes and edges as well
 		Iterator<NodeDTO> nit = this.getNodes().iterator();
 		while (nit.hasNext())
 		{
 			NodeDTO n = nit.next();
-			clone.getNodes().add(n.clone());
+			clone.getNodes().add((NodeDTO) n.clone());
 		}
 		
 		Iterator<GeoEdgeDTO> eit = this.getEdges().iterator();
 		while (eit.hasNext())
 		{
 			GeoEdgeDTO e = eit.next();
-			clone.getEdges().add(e.clone());
+			clone.getEdges().add((GeoEdgeDTO) e.clone());
 		}
 		
 		

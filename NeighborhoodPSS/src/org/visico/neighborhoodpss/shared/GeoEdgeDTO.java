@@ -26,7 +26,7 @@ public class GeoEdgeDTO extends EdgeDTO implements Cloneable, Serializable
 	}
 
 	
-	protected GeoEdgeDTO clone()
+	protected Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 
@@ -34,8 +34,8 @@ public class GeoEdgeDTO extends EdgeDTO implements Cloneable, Serializable
 				// instead of updated
 		GeoEdgeDTO edge = (GeoEdgeDTO)super.clone();
 		
-		edge.setEnd_node(this.getEnd_node().clone());
-		edge.setStart_node(this.getStart_node().clone());
+		edge.setEnd_node((NodeDTO) this.getEnd_node().clone());
+		edge.setStart_node((NodeDTO) this.getStart_node().clone());
 		
 		return edge;
 	}

@@ -34,7 +34,7 @@ public class NetworkDTO implements Cloneable, Serializable
 		this.scenario = scenario;
 	} 
 	
-	public NetworkDTO clone()
+	public Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 

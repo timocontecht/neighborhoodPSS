@@ -15,9 +15,15 @@ public class GeoPointDTO implements Cloneable, Serializable
 	private static final long serialVersionUID = -4045277191861116497L;
 	private double longitude;
 	private double latitude;
+	private int id;
 	
 	
-	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public double getLongitude() {
 		return longitude;
 	}
@@ -31,7 +37,7 @@ public class GeoPointDTO implements Cloneable, Serializable
 		this.latitude = latitude;
 	}
 	
-	public GeoPointDTO clone()
+	public Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 

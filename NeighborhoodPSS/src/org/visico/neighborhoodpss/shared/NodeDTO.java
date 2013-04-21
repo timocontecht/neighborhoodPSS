@@ -52,7 +52,7 @@ public class NodeDTO implements Cloneable, Serializable
 		this.latitude = latitude;
 	}
 	
-	public NodeDTO clone()
+	public Object clone()
 	{
 		// do not clone id - id is assigned by a database
 				// the clone should not have yet an id to signify 

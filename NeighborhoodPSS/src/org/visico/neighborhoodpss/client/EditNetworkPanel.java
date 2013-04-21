@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.client;
 
 import java.io.IOException;
 
-import org.visico.neighborhoodpss.shared.NetworkDTO;
+import org.visico.neighborhoodpss.shared.GeoNetworkDTO;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -19,6 +19,8 @@ import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.maps.client.overlay.Overlay;
 
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -43,7 +45,9 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	private final TextBox capacity_tb = new TextBox();
 	private final ToggleButton addEdge_btn = new ToggleButton("Add Edge");
 	
-	private NetworkDTO activeNetwork = null;
+	private final CheckBox isBuilding_cb = new CheckBox();
+	
+	private GeoNetworkDTO activeNetwork = null;
 	
 	private boolean edgeCreationMode = false;
 	private boolean nodeCreationMode = false;
@@ -69,6 +73,10 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	public void draw()
 	{
 		this.add(networkName_tb);
+		HorizontalPanel checkBoxPanel = new HorizontalPanel();
+		checkBoxPanel.add(new Label("geographic network"));
+		checkBoxPanel.add(isBuilding_cb);
+		this.add(checkBoxPanel);
 		this.add(addNetworkBtn);
 		addNetworkBtn.addClickHandler(this);
 		this.add(new Label("Select network to edit"));
@@ -91,7 +99,7 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	public void onClick(ClickEvent event) {
 		if (event.getSource() == addNetworkBtn)
 		{
-			NetworkDTO newNetwork = new NetworkDTO();
+			GeoNetworkDTO newNetwork = new GeoNetworkDTO();
 			newNetwork.setName(networkName_tb.getText());
 			scenarioPanel.addNetwork(newNetwork);
 			drawNetworkList();
