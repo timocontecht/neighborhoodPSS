@@ -31,6 +31,30 @@ public class BuildingDTO implements Cloneable, Serializable
 	 */
 	private static final long serialVersionUID = -6838190883337046022L;
 	
+	public BuildingDTO()
+	{
+		
+	}
+	
+	public BuildingDTO (BuildingDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		this.setArea(toCopy.getArea());
+		//clone.setId(this.getId());
+		this.setType(toCopy.getType());
+		
+		// need to clone the points as well
+		Iterator<GeoPointDTO> it = toCopy.getPoints().iterator();
+		while (it.hasNext())
+		{
+			GeoPointDTO b = it.next();
+			this.getPoints().add(new GeoPointDTO(b));
+		}
+		
+	}
 	
 	public void addVertex(double lat, double lon)
 	{
@@ -78,27 +102,6 @@ public class BuildingDTO implements Cloneable, Serializable
 		this.id = id;
 	}
 	
-	public Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		BuildingDTO clone = new BuildingDTO();
-		
-		clone.setArea(this.getArea());
-		//clone.setId(this.getId());
-		clone.setType(this.getType());
-		
-		// need to clone the points as well
-		Iterator<GeoPointDTO> it = this.getPoints().iterator();
-		while (it.hasNext())
-		{
-			GeoPointDTO b = it.next();
-			clone.getPoints().add((GeoPointDTO) b.clone());
-		}
-		
-		return clone;
-	}
+	
 	
 }

@@ -16,6 +16,35 @@ public class GeoNetworkDTO extends NetworkDTO implements Cloneable, Serializable
 	private List<NodeDTO> nodes = new ArrayList<NodeDTO>();
 	private List<GeoEdgeDTO> edges = new ArrayList<GeoEdgeDTO>();
 	
+	public GeoNetworkDTO()
+	{
+		
+	}
+	
+	public GeoNetworkDTO(GeoNetworkDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated	
+		
+		// need to copy the nodes and edges as well
+		Iterator<NodeDTO> nit = toCopy.getNodes().iterator();
+		while (nit.hasNext())
+		{
+			NodeDTO n = nit.next();
+			this.getNodes().add(new NodeDTO(n));
+		}
+		
+		Iterator<GeoEdgeDTO> eit = toCopy.getEdges().iterator();
+		while (eit.hasNext())
+		{
+			GeoEdgeDTO e = eit.next();
+			this.getEdges().add(new GeoEdgeDTO(e));
+		}
+		
+	}
+	
 	public void addNode(double lat, double lon, double inflow, double outflow)
 	{
 		NodeDTO nd = new NodeDTO();
@@ -55,32 +84,7 @@ public class GeoNetworkDTO extends NetworkDTO implements Cloneable, Serializable
 	
 	
 	
-	public Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated	
-		GeoNetworkDTO clone = (GeoNetworkDTO) super.clone();
-		
-		// need to clone the nodes and edges as well
-		Iterator<NodeDTO> nit = this.getNodes().iterator();
-		while (nit.hasNext())
-		{
-			NodeDTO n = nit.next();
-			clone.getNodes().add((NodeDTO) n.clone());
-		}
-		
-		Iterator<GeoEdgeDTO> eit = this.getEdges().iterator();
-		while (eit.hasNext())
-		{
-			GeoEdgeDTO e = eit.next();
-			clone.getEdges().add((GeoEdgeDTO) e.clone());
-		}
-		
-		
-		return clone;
-	}
+	
 
 	public void addNode(NodeDTO node) {
 		nodes.add(node);

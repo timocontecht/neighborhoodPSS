@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="BUILDING_COORDINATE")
-public class NodeDTO implements Cloneable, Serializable
+@Table(name="NODE")
+public class NodeDTO implements Serializable
 {
 	/**
 	 * 
@@ -19,6 +19,24 @@ public class NodeDTO implements Cloneable, Serializable
 	private double inflow;
 	private double outflow;
 	
+	public NodeDTO()
+	{
+		
+	}
+	
+	public NodeDTO(NodeDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		
+		this.setLatitude(toCopy.getLatitude());
+		this.setLongitude(toCopy.getLongitude());
+		this.setInflow(toCopy.getInflow());
+		this.setOutflow(toCopy.getOutflow());
+	
+	}
 	
 	public int getId() {
 		return id;
@@ -52,19 +70,5 @@ public class NodeDTO implements Cloneable, Serializable
 		this.latitude = latitude;
 	}
 	
-	public Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		NodeDTO clone = new NodeDTO();
-		
-		clone.setLatitude(this.getLatitude());
-		clone.setLongitude(this.getLongitude());
-		clone.setInflow(this.getInflow());
-		clone.setOutflow(this.getOutflow());
 	
-		return clone;
-	}
 }

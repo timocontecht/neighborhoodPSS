@@ -20,6 +20,36 @@ public class ProjectDTO  implements Cloneable, Serializable
 	private Set<ScenarioDTO> parent_scenarios = new HashSet<ScenarioDTO>();
 	private Set<UserDTO> users = new HashSet<UserDTO>();
 	
+	public ProjectDTO()
+	{
+		
+	}
+	
+	public ProjectDTO (ProjectDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		this.name = toCopy.getName();
+		
+		this.latitude = toCopy.getLatitude();
+		this.longitude = toCopy.getLongitude();
+		
+		Iterator<ScenarioDTO> sit = toCopy.getParent_scenarios().iterator();
+		while(sit.hasNext())
+		{
+			this.addParentScenario(new ScenarioDTO(sit.next()));
+		}
+		
+		Iterator<UserDTO> uit = this.getUsers().iterator();
+		while(sit.hasNext())
+		{
+			this.addUser( new UserDTO(uit.next()));
+		}
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -69,31 +99,5 @@ public class ProjectDTO  implements Cloneable, Serializable
 		this.users.add(user);
 	}
 	
-	protected Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		ProjectDTO child = new ProjectDTO();
-		
-		child.name = this.getName();
-		
-		child.latitude = this.getLatitude();
-		child.longitude = this.getLongitude();
-		
-		Iterator<ScenarioDTO> sit = this.getParent_scenarios().iterator();
-		while(sit.hasNext())
-		{
-			child.addParentScenario((ScenarioDTO) sit.next().clone());
-		}
-		
-		Iterator<UserDTO> uit = this.getUsers().iterator();
-		while(sit.hasNext())
-		{
-			child.addUser((UserDTO) uit.next().clone());
-		}
-		
-		return child;
-	}
+	
 }

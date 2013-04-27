@@ -15,6 +15,21 @@ public class NetworkDTO implements Cloneable, Serializable
 	private int id;
 	private ScenarioDTO scenario;
 	
+	public NetworkDTO()
+	{
+		
+	}
+	
+	public NetworkDTO (NetworkDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		this.setName(toCopy.getName());
+		this.setScenario(toCopy.getScenario());
+	}
+	
 		public String getName() {
 		return name;
 	}
@@ -34,19 +49,6 @@ public class NetworkDTO implements Cloneable, Serializable
 		this.scenario = scenario;
 	} 
 	
-	public Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		NetworkDTO clone = new NetworkDTO();
-		
-		clone.setName(this.getName());
-		clone.setScenario(this.getScenario());
-		
-		
-		return clone;
-	}
+	
 
 }

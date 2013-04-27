@@ -12,6 +12,24 @@ public class BuildingEdgeDTO extends EdgeDTO implements Cloneable, Serializable
 	private BuildingDTO start_building;
 	private BuildingDTO end_building;
 	
+	public BuildingEdgeDTO()
+	{
+		
+	}
+	
+	public BuildingEdgeDTO(BuildingEdgeDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated	
+		super(toCopy);
+		this.setCapacity(toCopy.getCapacity());
+		this.setEnd_building(new BuildingDTO(toCopy.getEnd_building()));
+		this.setStart_building(new BuildingDTO(toCopy.getStart_building()));
+		
+	}
+	
 	public BuildingDTO getStart_building() {
 		return start_building;
 	}
@@ -29,18 +47,5 @@ public class BuildingEdgeDTO extends EdgeDTO implements Cloneable, Serializable
 	}
 
 
-	protected Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		BuildingEdgeDTO edge = (BuildingEdgeDTO)super.clone();
-		
-		edge.setCapacity(this.getCapacity());
-		edge.setEnd_building((BuildingDTO) this.getEnd_building().clone());
-		edge.setStart_building((BuildingDTO) this.getStart_building().clone());
-		
-		return edge;
-	}
+	
 }

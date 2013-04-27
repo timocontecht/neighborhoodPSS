@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import org.visico.neighborhoodpss.shared.GeoPointDTO;
 
 @Entity
-@Table(name="BUILDING_COORDINATE")
+@Table(name="GEOCOORDINATE")
 public class GeoPoint implements Serializable
 {
 	/**

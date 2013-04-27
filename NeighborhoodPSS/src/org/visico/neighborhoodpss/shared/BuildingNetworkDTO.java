@@ -16,7 +16,33 @@ public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Seriali
 	private List<BuildingEdgeDTO> edges = new ArrayList<BuildingEdgeDTO>();
 	private List<BuildingDTO> buildings = new ArrayList<BuildingDTO>();
 	
+	public BuildingNetworkDTO()
+	{
+		
+	}
 	
+	public BuildingNetworkDTO (BuildingNetworkDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		
+		Iterator<BuildingEdgeDTO> eit = toCopy.getEdges().iterator();
+		while (eit.hasNext())
+		{
+			BuildingEdgeDTO e = eit.next();
+			this.getEdges().add(new BuildingEdgeDTO(e));
+		}
+		
+		Iterator<BuildingDTO> bit = toCopy.getBuildings().iterator();
+		while (bit.hasNext())
+		{
+			BuildingDTO b = bit.next();
+			this.getBuildings().add(new BuildingDTO(b));
+		}
+	}
+
 	
 	public void addEdge(BuildingDTO start, BuildingDTO end, double capacity)
 	{
@@ -51,32 +77,7 @@ public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Seriali
 	}
 
 	
-	public Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		BuildingNetworkDTO clone = (BuildingNetworkDTO)super.clone();
-		
-		
-		Iterator<BuildingEdgeDTO> eit = this.getEdges().iterator();
-		while (eit.hasNext())
-		{
-			BuildingEdgeDTO e = eit.next();
-			clone.getEdges().add((BuildingEdgeDTO) e.clone());
-		}
-		
-		Iterator<BuildingDTO> bit = this.getBuildings().iterator();
-		while (bit.hasNext())
-		{
-			BuildingDTO b = bit.next();
-			clone.getBuildings().add((BuildingDTO) b.clone());
-		}
-		
-		return clone;
-	}
-
+	
 	
 	public void addEdge(BuildingEdgeDTO edge) {
 		edges.add(edge);

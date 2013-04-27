@@ -30,8 +30,10 @@ public class Scenario implements Cloneable, Serializable
 	private String name;
 	@Column
 	private String description;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Scenario parent; 
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="scenario_id")
 	private Set<Building> buildings = new HashSet<Building>();
@@ -179,7 +181,7 @@ public class Scenario implements Cloneable, Serializable
 		}
 		
 		Iterator<BuildingNetworkDTO> itbn = s_dto.getBuildingNetworkDTOs().iterator();
-		while (itn.hasNext())
+		while (itbn.hasNext())
 		{
 			BuildingNetworkDTO n = itbn.next();
 			this.addBuildingNetwork(new BuildingNetwork(n));

@@ -46,8 +46,9 @@ public class Persistence extends DBTestCase{
 		Assertion.assertEqualsIgnoreCols(expected, databaseDataSet, "BUILDING_COORDINATE", idCols);
 		*/
 		
-		casep.updateCase();
-		impl.saveProject(casep.getP());
+		//casep.updateCase();
+		//impl.saveProject(casep.getP());
+		
 		//expected = new XmlDataSet(new FileInputStream("update.xml"));
 		//databaseDataSet = getConnection().createDataSet();
 		

@@ -28,6 +28,53 @@ public class ScenarioDTO implements Cloneable, Serializable
 		
 	}
 	
+	public ScenarioDTO (ScenarioDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		
+		
+		if (toCopy.parent == null)
+		{
+			this.label = Integer.toString(toCopy.children.size());
+		}
+		else
+		{
+			this.label = toCopy.label + "." +  Integer.toString(toCopy.children.size());
+		}
+		
+		
+		this.name = toCopy.getName();
+		this.description = toCopy.description;
+		//child.id = this.id;
+		this.parent = toCopy;
+		
+		// need to clone the buildings and networks as well
+		Iterator<BuildingDTO> bit = toCopy.BuildingDTOs.iterator();
+		while (bit.hasNext())
+		{
+			BuildingDTO b = bit.next();
+			this.BuildingDTOs.add(new BuildingDTO(b));
+		}
+		
+		Iterator<GeoNetworkDTO> nit = toCopy.GeoNetworkDTOs.iterator();
+		while (nit.hasNext())
+		{
+			GeoNetworkDTO n = nit.next();
+			this.GeoNetworkDTOs.add(new GeoNetworkDTO(n));
+		}
+		
+		Iterator<BuildingNetworkDTO> bnit = toCopy.BuildingNetworkDTOs.iterator();
+		while (bnit.hasNext())
+		{
+			BuildingNetworkDTO n = bnit.next();
+			this.BuildingNetworkDTOs.add(new BuildingNetworkDTO(n));
+		}
+		
+		toCopy.children.add(this);
+	}
 	
 	public String getLabel() {
 		return label;
@@ -153,56 +200,7 @@ public class ScenarioDTO implements Cloneable, Serializable
 	public ScenarioDTO createChild()
 	{
 		ScenarioDTO child;
-		child = (ScenarioDTO)this.clone();
-		return child;
-	}
-	
-	protected Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		ScenarioDTO child = new ScenarioDTO();
-		
-		if (parent == null)
-		{
-			child.label = Integer.toString(children.size());
-		}
-		else
-		{
-			child.label = label + "." +  Integer.toString(children.size());
-		}
-		
-		
-		child.name = this.getName();
-		child.description = this.description;
-		//child.id = this.id;
-		child.parent = this;
-		
-		// need to clone the buildings and networks as well
-		Iterator<BuildingDTO> bit = this.BuildingDTOs.iterator();
-		while (bit.hasNext())
-		{
-			BuildingDTO b = bit.next();
-			child.BuildingDTOs.add((BuildingDTO) b.clone());
-		}
-		
-		Iterator<GeoNetworkDTO> nit = this.GeoNetworkDTOs.iterator();
-		while (nit.hasNext())
-		{
-			GeoNetworkDTO n = nit.next();
-			child.GeoNetworkDTOs.add((GeoNetworkDTO) n.clone());
-		}
-		
-		Iterator<BuildingNetworkDTO> bnit = this.BuildingNetworkDTOs.iterator();
-		while (bnit.hasNext())
-		{
-			BuildingNetworkDTO n = bnit.next();
-			child.BuildingNetworkDTOs.add((BuildingNetworkDTO) n.clone());
-		}
-		
-		this.children.add(child);
+		child = new ScenarioDTO(this);
 		return child;
 	}
 	

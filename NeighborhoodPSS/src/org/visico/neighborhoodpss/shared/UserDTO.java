@@ -14,6 +14,23 @@ public class UserDTO implements Cloneable, Serializable
 	private String email;
 	private String password;
 	private int id;
+	
+	public UserDTO()
+	{
+		
+	}
+	
+	public UserDTO (UserDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the copy should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated
+		this.email = toCopy.email;
+		this.name = toCopy.name;
+		this.password = toCopy.password;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -39,18 +56,5 @@ public class UserDTO implements Cloneable, Serializable
 		this.id = id;
 	}
 	
-	protected Object clone()
-	{
-		// do not clone id - id is assigned by a database
-		// the clone should not have yet an id to signify 
-		// that it is not yet in the db and has to created
-		// instead of updated
-		UserDTO clone = new UserDTO();
-		
-		clone.email = this.email;
-		clone.name = this.name;
-		clone.password = this.password;
-		
-		return clone;
-	}
+	
 }

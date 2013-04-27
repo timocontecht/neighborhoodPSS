@@ -13,6 +13,21 @@ public class EdgeDTO implements Cloneable, Serializable
 	 */
 	private static final long serialVersionUID = 2009155193814407284L;
 
+	public EdgeDTO()
+	{
+		
+	}
+	
+	public EdgeDTO(EdgeDTO toCopy)
+	{
+		// do not copy id - id is assigned by a database
+		// the clone should not have yet an id to signify 
+		// that it is not yet in the db and has to created
+		// instead of updated		
+		this.setCapacity(toCopy.getCapacity());
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -31,16 +46,5 @@ public class EdgeDTO implements Cloneable, Serializable
 		this.capacity = capacity;
 	}
 
-	protected Object clone()
-	{
-		// do not clone id - id is assigned by a database
-				// the clone should not have yet an id to signify 
-				// that it is not yet in the db and has to created
-				// instead of updated
-		EdgeDTO edge = new EdgeDTO();
-		
-		edge.setCapacity(this.getCapacity());
-		
-		return edge;
-	}
+	
 }
