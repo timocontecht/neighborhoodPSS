@@ -11,7 +11,7 @@ import org.visico.neighborhoodpss.shared.GeoEdgeDTO;
 
 @MappedSuperclass
 
-public class Edge implements Serializable
+public abstract class Edge implements Serializable
 {
 
 	/**

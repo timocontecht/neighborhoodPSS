@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class NetworkDTO implements Cloneable, Serializable
+public abstract class NetworkDTO implements Cloneable, Serializable
 {
 	/**
 	 * 

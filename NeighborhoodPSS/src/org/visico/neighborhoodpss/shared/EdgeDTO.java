@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.shared;
 
 import java.io.Serializable;
 
-public class EdgeDTO implements Cloneable, Serializable
+public abstract class EdgeDTO implements Cloneable, Serializable
 {
 
 	private int id;

@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 
 
 @MappedSuperclass
-public class Network implements Cloneable, Serializable
+public abstract class Network implements Cloneable, Serializable
 {
 	/**
 	 * 
