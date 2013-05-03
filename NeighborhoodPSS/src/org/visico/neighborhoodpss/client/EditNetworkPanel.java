@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.client;
 
 import java.io.IOException;
 
-import org.visico.neighborhoodpss.shared.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -34,7 +34,7 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	private static MarkerOptions options = MarkerOptions.newInstance();
 	  
 	
-	private final TextBox networkName_tb = new TextBox();
+	
 	private final Button addNetworkBtn = new Button("Add Network");
 	private final ListBox network_lb = new ListBox();
 	
@@ -45,7 +45,7 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	private final TextBox capacity_tb = new TextBox();
 	private final ToggleButton addEdge_btn = new ToggleButton("Add Edge");
 	
-	private final CheckBox isBuilding_cb = new CheckBox();
+	
 	
 	private GeoNetworkDTO activeNetwork = null;
 	
@@ -72,11 +72,9 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	
 	public void draw()
 	{
-		this.add(networkName_tb);
-		HorizontalPanel checkBoxPanel = new HorizontalPanel();
-		checkBoxPanel.add(new Label("geographic network"));
-		checkBoxPanel.add(isBuilding_cb);
-		this.add(checkBoxPanel);
+		
+		
+		
 		this.add(addNetworkBtn);
 		addNetworkBtn.addClickHandler(this);
 		this.add(new Label("Select network to edit"));
@@ -99,9 +97,8 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	public void onClick(ClickEvent event) {
 		if (event.getSource() == addNetworkBtn)
 		{
-			GeoNetworkDTO newNetwork = new GeoNetworkDTO();
-			newNetwork.setName(networkName_tb.getText());
-			scenarioPanel.addNetwork(newNetwork);
+			AddNetworkDlg nwdlg = new AddNetworkDlg(scenarioPanel);
+			nwdlg.show();
 			drawNetworkList();
 		}
 		else if (event.getSource() == addNode_btn)
