@@ -1,6 +1,6 @@
 package org.visico.neighborhoodpss.client;
 
-import org.visico.neighborhoodpss.shared.Indicators;
+import org.visico.neighborhoodpss.shared.dto.Indicators;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;

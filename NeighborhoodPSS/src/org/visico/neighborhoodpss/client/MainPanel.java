@@ -1,6 +1,6 @@
 package org.visico.neighborhoodpss.client;
 
-import org.visico.neighborhoodpss.shared.UserDTO;
+import org.visico.neighborhoodpss.shared.dto.UserDTO;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import org.visico.neighborhoodpss.shared.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
 
 import com.google.gwt.maps.client.event.PolygonClickHandler;
 import com.google.gwt.maps.client.event.PolygonEndLineHandler;
