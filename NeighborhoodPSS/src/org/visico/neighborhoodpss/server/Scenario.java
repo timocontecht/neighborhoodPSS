@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.shared.BuildingDTO;
-import org.visico.neighborhoodpss.shared.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.shared.GeoNetworkDTO;
-import org.visico.neighborhoodpss.shared.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 
 import javax.persistence.*;
 

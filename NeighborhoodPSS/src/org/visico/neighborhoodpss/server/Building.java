@@ -15,8 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.visico.neighborhoodpss.shared.BuildingDTO;
-import org.visico.neighborhoodpss.shared.GeoPointDTO;
+import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.GeoPointDTO;
 
 
 

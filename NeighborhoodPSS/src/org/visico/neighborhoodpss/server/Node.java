@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import org.visico.neighborhoodpss.shared.NodeDTO;
+
+import org.visico.neighborhoodpss.shared.dto.NodeDTO;
 
 @Entity
 @Table(name="NODE")

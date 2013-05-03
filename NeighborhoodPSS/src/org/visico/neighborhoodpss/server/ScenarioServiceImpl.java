@@ -9,9 +9,9 @@ import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.visico.neighborhoodpss.client.ScenarioService;
-import org.visico.neighborhoodpss.shared.ProjectDTO;
-import org.visico.neighborhoodpss.shared.ScenarioDTO;
-import org.visico.neighborhoodpss.shared.UserDTO;
+import org.visico.neighborhoodpss.shared.dto.ProjectDTO;
+import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.dto.UserDTO;
 
 import com.google.gwt.dev.util.collect.HashSet;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

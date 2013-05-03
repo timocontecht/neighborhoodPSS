@@ -11,9 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.visico.neighborhoodpss.shared.BuildingEdgeDTO;
-import org.visico.neighborhoodpss.shared.EdgeDTO;
-import org.visico.neighborhoodpss.shared.GeoEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.BuildingEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.EdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.GeoEdgeDTO;
 
 @Entity
 @Table(name="BUILDINGEDGE")
