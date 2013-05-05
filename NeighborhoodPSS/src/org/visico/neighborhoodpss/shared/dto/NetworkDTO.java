@@ -14,6 +14,8 @@ public abstract class NetworkDTO implements Cloneable, Serializable
 	private String name;
 	private int id;
 	private ScenarioDTO scenario;
+	private String color; 
+	 
 	
 	public NetworkDTO()
 	{
@@ -28,6 +30,7 @@ public abstract class NetworkDTO implements Cloneable, Serializable
 		// instead of updated
 		this.setName(toCopy.getName());
 		this.setScenario(toCopy.getScenario());
+		this.setColor(toCopy.getColor());
 	}
 	
 		public String getName() {
@@ -47,7 +50,16 @@ public abstract class NetworkDTO implements Cloneable, Serializable
 	}
 	public void setScenario(ScenarioDTO scenario) {
 		this.scenario = scenario;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	} 
+	
 	
 	
 

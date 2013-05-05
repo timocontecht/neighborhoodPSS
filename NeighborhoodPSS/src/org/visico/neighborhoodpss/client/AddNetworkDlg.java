@@ -1,7 +1,9 @@
 package org.visico.neighborhoodpss.client;
 
-import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
+import net.auroris.ColorPicker.client.ColorPicker;
 
+import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -12,15 +14,16 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+
+
 public class AddNetworkDlg extends DialogBox implements ClickHandler{
 	
 	private final TextBox networkName_tb = new TextBox();
 	private final CheckBox isBuilding_cb = new CheckBox();
 	private final Button addNetworkBtn = new Button("Add Network");
 	private final Button cancelBtn = new Button("Cancel");
-	
 	private ScenarioPanel scenarioPanel;
-	
+	private final ColorPicker picker = new ColorPicker();
 	
 	public AddNetworkDlg(ScenarioPanel scenarioPanel)
 	{
@@ -35,9 +38,12 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 		vp.add(networkName_tb);
 		
 		HorizontalPanel checkBoxPanel = new HorizontalPanel();
-		checkBoxPanel.add(new Label("geographic network"));
+		checkBoxPanel.add(new Label("building network"));
 		checkBoxPanel.add(isBuilding_cb);
 		vp.add(checkBoxPanel);
+		
+		vp.add(new Label("Choose color:"));
+		vp.add(picker);
 		
 		HorizontalPanel buttonPanel = new HorizontalPanel();
 		addNetworkBtn.addClickHandler(this);
@@ -45,6 +51,7 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 		cancelBtn.addClickHandler(this);
 		buttonPanel.add(cancelBtn);
 		vp.add(buttonPanel);
+		
 		
 		this.add(vp);		
 	}
@@ -54,9 +61,20 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 	{
 		if (event.getSource() == addNetworkBtn)
 		{
-			GeoNetworkDTO newNetwork = new GeoNetworkDTO();
-			newNetwork.setName(networkName_tb.getText());
-			scenarioPanel.scenario().addGeoNetworkDTO(newNetwork);
+			if (isBuilding_cb.getValue() == Boolean.TRUE)
+			{
+				BuildingNetworkDTO newNetwork = new BuildingNetworkDTO();
+				newNetwork.setName(networkName_tb.getText());
+				newNetwork.setColor(picker.getHexColor());
+				scenarioPanel.scenario().addBuildingNetworkDTO(newNetwork);
+			}
+			else
+			{
+				GeoNetworkDTO newNetwork = new GeoNetworkDTO();
+				newNetwork.setName(networkName_tb.getText());
+				newNetwork.setColor(picker.getHexColor());
+				scenarioPanel.scenario().addGeoNetworkDTO(newNetwork);
+			}
 			this.hide();
 		}
 		else if (event.getSource() == cancelBtn)
@@ -65,4 +83,5 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 		}
 	}
 
+	
 }

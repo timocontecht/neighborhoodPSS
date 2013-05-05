@@ -28,6 +28,7 @@ public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Seriali
 		// that it is not yet in the db and has to created
 		// instead of updated
 		
+		
 		Iterator<BuildingEdgeDTO> eit = toCopy.getEdges().iterator();
 		while (eit.hasNext())
 		{

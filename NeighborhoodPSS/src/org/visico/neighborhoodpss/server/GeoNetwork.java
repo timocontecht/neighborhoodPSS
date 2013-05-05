@@ -90,6 +90,7 @@ public class GeoNetwork extends Network implements Cloneable, Serializable
 		this.dto_object = dto;
 		this.setId(dto.getId());
 		this.setName(dto.getName());
+		this.setColor(dto.getColor());
 		
 		ArrayList<Node> nds = new ArrayList<Node>();
 		Iterator<NodeDTO> nit = dto.getNodes().iterator();
@@ -113,7 +114,7 @@ public class GeoNetwork extends Network implements Cloneable, Serializable
 	
 	public void update_dtoIds() {
 		this.dto_object.setId(this.id);
-		
+		this.dto_object.setColor(this.getColor());
 		Iterator<Node> nit = this.nodes.iterator();
 		while(nit.hasNext())
 		{
@@ -142,6 +143,7 @@ public class GeoNetwork extends Network implements Cloneable, Serializable
 			dto_object = new GeoNetworkDTO();
 			dto_object.setId(this.getId());
 			dto_object.setName(this.getName());
+			dto_object.setColor(this.getColor());
 			
 			for (Node n : nodes)
 				dto_object.addNode(n.getDto_object());

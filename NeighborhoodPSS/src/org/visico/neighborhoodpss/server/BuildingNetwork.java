@@ -65,7 +65,7 @@ public class BuildingNetwork extends Network implements Cloneable, Serializable
 		this.dto_object = dto;
 		this.setId(dto.getId());
 		this.setName(dto.getName());
-		
+		this.setColor(dto.getColor());
 		
 		ArrayList<BuildingEdge> eds = new ArrayList<BuildingEdge>();
 		Iterator<BuildingEdgeDTO> eit = dto.getEdges().iterator();
@@ -81,7 +81,7 @@ public class BuildingNetwork extends Network implements Cloneable, Serializable
 	
 	public void update_dtoIds() {
 		this.dto_object.setId(this.id);
-		
+		this.dto_object.setColor(this.getColor());
 		
 		Iterator<BuildingEdge> eit = this.edges.iterator();
 		while(eit.hasNext())
@@ -99,7 +99,7 @@ public class BuildingNetwork extends Network implements Cloneable, Serializable
 			dto_object = new BuildingNetworkDTO();
 			dto_object.setId(this.getId());
 			dto_object.setName(this.getName());
-			
+			dto_object.setColor(this.getColor());
 			
 			for (BuildingEdge e : edges)
 				dto_object.addEdge(e.getDto_object());

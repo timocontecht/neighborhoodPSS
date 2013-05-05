@@ -23,6 +23,9 @@ public abstract class Network implements Cloneable, Serializable
 	@Column
 	private String name;
 	
+	@Column 
+	private String color;
+	
 	public int getId() {
 		return id;
 	}
@@ -42,6 +45,14 @@ public abstract class Network implements Cloneable, Serializable
 	
 
 
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
 
 	public Network()
 	{

@@ -12,9 +12,10 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
   <inherits name='com.google.gwt.maps.GoogleMaps' />
   <inherits name='com.google.gwt.visualization.Visualization'/>
-
+  
   <!-- Other module inherits                                      -->
-
+  <inherits name='net.auroris.ColorPicker.client'/>
+  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='org.visico.neighborhoodpss.client.NeighborhoodPSS'/>
 
