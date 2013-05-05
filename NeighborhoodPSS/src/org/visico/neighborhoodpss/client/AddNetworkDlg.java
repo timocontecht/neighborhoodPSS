@@ -56,6 +56,7 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 		{
 			GeoNetworkDTO newNetwork = new GeoNetworkDTO();
 			newNetwork.setName(networkName_tb.getText());
+			scenarioPanel.scenario().addGeoNetworkDTO(newNetwork);
 			this.hide();
 		}
 		else if (event.getSource() == cancelBtn)

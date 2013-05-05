@@ -3,13 +3,17 @@ package org.visico.neighborhoodpss.shared.dto;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Observable;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
+import org.visico.neighborhoodpss.shared.observer.ObserverInterface;
+import org.visico.neighborhoodpss.shared.observer.Subject;
 
 
 
-public class ScenarioDTO implements Cloneable, Serializable
+
+public class ScenarioDTO extends Subject implements Cloneable, Serializable
 {
 	/**
 	 * 
@@ -81,6 +85,7 @@ public class ScenarioDTO implements Cloneable, Serializable
 	}
 
 	public void setLabel(String label) {
+		
 		this.label = label;
 	}
 
@@ -131,10 +136,12 @@ public class ScenarioDTO implements Cloneable, Serializable
 
 	public void setGeoNetworkDTOs(Set<GeoNetworkDTO> networkDTOs) {
 		GeoNetworkDTOs = networkDTOs;
+		notifyObservers();
 	}
 	
 	public void setBuildingNetworkDTOs(Set<BuildingNetworkDTO> networkDTOs) {
 		BuildingNetworkDTOs = networkDTOs;
+		notifyObservers();
 	}
 
 	
@@ -170,11 +177,13 @@ public class ScenarioDTO implements Cloneable, Serializable
 	public void addGeoNetworkDTO(GeoNetworkDTO n)
 	{
 		GeoNetworkDTOs.add(n);
+		notifyObservers();
 	}
 	
 	public void addBuildingNetworkDTO(BuildingNetworkDTO n)
 	{
 		BuildingNetworkDTOs.add(n);
+		notifyObservers();
 	}
 	
 	public String label()
@@ -217,4 +226,6 @@ public class ScenarioDTO implements Cloneable, Serializable
 	private Set<BuildingDTO> BuildingDTOs = new HashSet<BuildingDTO>();
 	private Set<GeoNetworkDTO> GeoNetworkDTOs = new HashSet<GeoNetworkDTO>();
 	private Set<BuildingNetworkDTO> BuildingNetworkDTOs = new HashSet<BuildingNetworkDTO>();
+
+	
 }

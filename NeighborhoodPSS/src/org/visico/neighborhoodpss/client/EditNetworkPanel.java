@@ -1,8 +1,15 @@
 package org.visico.neighborhoodpss.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.observer.ObserverInterface;
+import org.visico.neighborhoodpss.shared.observer.Subject;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -27,17 +34,15 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EditNetworkPanel extends VerticalPanel implements ClickHandler, ChangeHandler, MapClickHandler
+public class EditNetworkPanel extends VerticalPanel implements ClickHandler, ChangeHandler, MapClickHandler, ObserverInterface
 {
 	private ScenarioPanel scenarioPanel;
 	
 	private static MarkerOptions options = MarkerOptions.newInstance();
 	  
-	
-	
 	private final Button addNetworkBtn = new Button("Add Network");
 	private final ListBox network_lb = new ListBox();
-	
+	private List<NetworkDTO> networks = new ArrayList<NetworkDTO>();
 	private final TextBox inflow_tb = new TextBox();
 	private final TextBox outflow_tb = new TextBox();
 	private final ToggleButton addNode_btn = new ToggleButton("Add Node");
@@ -47,16 +52,18 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	
 	
 	
-	private GeoNetworkDTO activeNetwork = null;
+	private NetworkDTO activeNetwork = null;
 	
 	private boolean edgeCreationMode = false;
 	private boolean nodeCreationMode = false;
+	
 	
 	private static NodeMarker firstPickedNode = null; 
 	
 	public EditNetworkPanel(ScenarioPanel scenarioPanel)
 	{
 		this.scenarioPanel = scenarioPanel;
+		this.scenarioPanel.scenario().addObserver(this);
 		scenarioPanel.getMap().getMap().addMapClickHandler(this);
 		draw();
 	}
@@ -64,17 +71,20 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	public void drawNetworkList()
 	{
 		network_lb.clear();
-		for (int i=0; i<scenarioPanel.getNetworkDTOs().size(); i++)
+		networks.clear();
+		
+		networks.addAll(scenarioPanel.scenario().getGeoNetworkDTOs());
+		networks.addAll(scenarioPanel.scenario().getBuildingNetworkDTOs());
+		
+		for (int i=0; i<networks.size(); i++)
 		{
-			network_lb.addItem(scenarioPanel.getNetworkDTOs().get(i).getName(), Integer.toString(i));
+			network_lb.addItem(networks.get(i).getName());
 		}
+		
 	}
 	
 	public void draw()
 	{
-		
-		
-		
 		this.add(addNetworkBtn);
 		addNetworkBtn.addClickHandler(this);
 		this.add(new Label("Select network to edit"));
@@ -133,7 +143,7 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 	public void onChange(ChangeEvent event) {
 		if (event.getSource() == network_lb)
 		{
-			activeNetwork = scenarioPanel.getNetworkDTOs().get(network_lb.getSelectedIndex());
+			activeNetwork = networks.get(network_lb.getSelectedIndex());
 		}
 		
 	}
@@ -170,6 +180,12 @@ public class EditNetworkPanel extends VerticalPanel implements ClickHandler, Cha
 			}
         }
         
+	}
+
+	@Override
+	public void update(Subject o) {
+		if (o instanceof ScenarioDTO)
+			drawNetworkList();	
 	}
 
 

@@ -96,7 +96,6 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		{
 			ScenarioDTO scenario = scenarioPanel.scenario();
 			scenario.setBuilingDTOs(scenarioPanel.getBuildingDTOs());
-			scenario.setGeoNetworkDTOs(new HashSet(scenarioPanel.getNetworkDTOs()));
 			scenarioPanel.removeFromParent();
 		}
 	}
