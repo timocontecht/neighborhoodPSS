@@ -52,13 +52,35 @@ h1 {
   margin: 5px;
 }
 
+.boundedVPanel {
+	border: 1px solid;
+  	padding: 5px;
+  	width: 95%;
+  	margin: 5px;
+}
+
 .serverResponseLabelError {
   color: red;
 }
 
 
+.normalButton
+{
+	width: 95%;
+}
 
 /** Set ids using widget.getElement().setId("idOfElement") */
 #closeButton {
   margin: 15px 6px 6px;
+}
+
+.captionLabel {
+	font-size: 100%; 
+   	font-weight: bold;
+   	margin-bottom: 5px;
+}
+
+.informLabel {
+	font-style: italic;
+   	margin-bottom: 2px;
 }

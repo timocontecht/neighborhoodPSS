@@ -56,14 +56,16 @@ create table if not exists GEONETWORK
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	name VARCHAR(250),
-	scenario_id INT REFERENCES SCENARIO.id
+	scenario_id INT REFERENCES SCENARIO.id,
+	color VARCHAR(250)
 );
 
 create table if not exists BUILDINGNETWORK
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	name VARCHAR(250),
-	scenario_id INT REFERENCES SCENARIO.id
+	scenario_id INT REFERENCES SCENARIO.id,
+	color VARCHAR(250)
 );
 
 create table if not exists NODE

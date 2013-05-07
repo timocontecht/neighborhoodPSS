@@ -7,8 +7,8 @@ import java.util.Observable;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
-import org.visico.neighborhoodpss.shared.observer.ObserverInterface;
-import org.visico.neighborhoodpss.shared.observer.Subject;
+import org.visico.neighborhoodpss.shared.patterns.ObserverInterface;
+import org.visico.neighborhoodpss.shared.patterns.Subject;
 
 
 
@@ -174,6 +174,11 @@ public class ScenarioDTO extends Subject implements Cloneable, Serializable
 		BuildingDTOs.add(b);
 	}
 	
+	public void deleteGeoNetwork(GeoNetworkDTO n) {
+		GeoNetworkDTOs.remove(n);
+		notifyObservers();
+	}
+
 	public void addGeoNetworkDTO(GeoNetworkDTO n)
 	{
 		GeoNetworkDTOs.add(n);
@@ -186,6 +191,11 @@ public class ScenarioDTO extends Subject implements Cloneable, Serializable
 		notifyObservers();
 	}
 	
+	public void deleteBuildingNetwork(BuildingNetworkDTO n) {
+		BuildingNetworkDTOs.remove(n);
+		notifyObservers();
+	}
+
 	public String label()
 	{
 		return label;
@@ -227,5 +237,6 @@ public class ScenarioDTO extends Subject implements Cloneable, Serializable
 	private Set<GeoNetworkDTO> GeoNetworkDTOs = new HashSet<GeoNetworkDTO>();
 	private Set<BuildingNetworkDTO> BuildingNetworkDTOs = new HashSet<BuildingNetworkDTO>();
 
+	
 	
 }
