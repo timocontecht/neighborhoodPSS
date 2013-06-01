@@ -9,6 +9,7 @@ import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
 import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
 
 
 import com.google.gwt.dom.client.Style.Unit;
@@ -27,35 +28,12 @@ public class ScenarioPanel extends DockLayoutPanel
 	
 	public void draw()
 	{
-		map = new Map();
-		modePanel = new ModePanel(this);
-		dataPanel = new DataPanel(this);
-	    addWest(modePanel, 35);
-	    addSouth(dataPanel, 25);
-	    MapWidget mw = map.getMap();
-	    add(mw);
+		ScenarioEditMediator med = new ScenarioEditMediator(scenario);
+		map = new Map(med);
+		addWest(new EditNetworkPanel(this, med), 35);
+	    add(map);
 	    
-	    Iterator<BuildingDTO> it = scenario.getBuildingDTOs().iterator();
-	    while (it.hasNext())
-	    {
-	    	BuildingDTO b = it.next();
-	    	BuildingPolygon bldgPlg = new BuildingPolygon(b);
-	    	mw.addOverlay(bldgPlg);
-	    	bldgPlg.setScenario(b);
-	    	buildingPlgs.add(bldgPlg);
-	    }
 	    
-	    for (GeoNetworkDTO n : scenario.getGeoNetworkDTOs())
-	    {
-	    	//TODO: here add physical nodes and edges
-	    	
-	    }
-	    
-	    for (BuildingNetworkDTO n : scenario.getBuildingNetworkDTOs())
-	    {
-	    	//TODO: here add physical nodes and edges
-	    	
-	    }
 	    
 	}
 	

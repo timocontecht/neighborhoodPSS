@@ -45,7 +45,7 @@ public class BuildingTable extends ScrollPanel
 		{
 			buildingGrid.setText(i+1, 0, Integer.toString(i+1));
 			buildingGrid.setText(i+1, 1, Double.toString(BuildingPolygon.buildings.get(i).getArea()) + "m2");
-			buildingGrid.setText(i+1, 2, BuildingPolygon.buildings.get(i).getType());
+			//buildingGrid.setText(i+1, 2, BuildingPolygon.buildings.get(i).getType());
 			buildingGrid.getRowFormatter().addStyleName(i+1, "BuildingTableRow");
 		}
 	}

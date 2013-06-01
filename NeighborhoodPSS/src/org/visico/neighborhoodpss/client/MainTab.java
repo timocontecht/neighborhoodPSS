@@ -53,8 +53,8 @@ public class MainTab extends TabLayoutPanel
 	public void draw()
 	{
 		HierarchyPanel panel = HierarchyPanel.getInstance();
-		//add(panel, "Scenarios");
-		addScenario(new ScenarioDTO());
+		add(panel, "Scenarios");
+		
 		
 		
 	}

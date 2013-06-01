@@ -1,69 +1,58 @@
 package org.visico.neighborhoodpss.client;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.text.ParseException;
 
 import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 import org.visico.neighborhoodpss.shared.patterns.ObserverInterface;
+import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.shared.patterns.Subject;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.event.MapClickHandler;
-import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.geom.Point;
-import com.google.gwt.maps.client.geom.Size;
-import com.google.gwt.maps.client.overlay.Icon;
-import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.overlay.Overlay;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EditNetworkPanel extends Composite implements ClickHandler, ChangeHandler, MapClickHandler, ObserverInterface
+public class EditNetworkPanel extends Composite implements ClickHandler, ChangeHandler,  ObserverInterface
 {
 	private ScenarioPanel scenarioPanel;
 	
 	private final VerticalPanel mainPanel = new VerticalPanel();
-	private static MarkerOptions options = MarkerOptions.newInstance();
+	private final ToggleButton addBuildingBtn = new ToggleButton("Add Building");
 	private final Button addNetworkBtn = new Button("Add Network");
 	private final NetworkTable network_tbl;
 	private final Button deleteNetworkBtn = new Button("Delete Network");;
-	private final TextBox inflow_tb = new TextBox();
-	private final TextBox outflow_tb = new TextBox();
+	private final DoubleBox inflow_tb = new DoubleBox();
+	private final DoubleBox outflow_tb = new DoubleBox();
 	private final ToggleButton addNode_btn = new ToggleButton("Add Node");
-	private final TextBox capacity_tb = new TextBox();
+	private final DoubleBox capacity_tb = new DoubleBox();
 	private final ToggleButton addEdge_btn = new ToggleButton("Add Edge");
-	private Label selectedLbl = new Label("Selected: 0 nodes; 0 edges;");
+	private Label selectedLbl = new Label("Selected: 0 nodes; 0 edges; 0 buildings;");
+	private final Button changeSelectedBtn = new Button("Change Selected Elements");
+	private final Button deleteSelectedBtn = new Button("Delete Selected Elements");
 	
-	private boolean edgeCreationMode = false;
-	private boolean nodeCreationMode = false;
 	
 	
 	private static NodeMarker firstPickedNode = null; 
+	ScenarioEditMediator med;
 	
-	public EditNetworkPanel(ScenarioPanel scenarioPanel)
+	public EditNetworkPanel(ScenarioPanel scenarioPanel, ScenarioEditMediator med)
 	{
+		this.med = med;
+		med.registerEditNetworkPanel(this);
 		this.scenarioPanel = scenarioPanel;
 		this.scenarioPanel.scenario().addObserver(this);
-		network_tbl = new NetworkTable(scenarioPanel.scenario());
-		scenarioPanel.getMap().getMap().addMapClickHandler(this);
+		network_tbl = new NetworkTable(scenarioPanel.scenario(), med);
 		draw();
 	}
 	
@@ -71,6 +60,12 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 	
 	public void draw()
 	{
+		VerticalPanel addBuildingPanel = new VerticalPanel();
+		addBuildingPanel.setStyleName("boundedVPanel");
+		addBuildingPanel.add(addBuildingBtn);
+		addBuildingBtn.addClickHandler(this);
+		mainPanel.add(addBuildingPanel);
+		
 		VerticalPanel addNetwPanel = new VerticalPanel();
 		addNetwPanel.setStyleName("boundedVPanel");
 		addNetworkBtn.setStyleName("normalButton");
@@ -96,24 +91,39 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 		addEdge_btn.addClickHandler(this);
 		mainPanel.add(addBtnPanel);
 		
-		VerticalPanel editNetwkCompPanel = new VerticalPanel();
-		editNetwkCompPanel.setStyleName("boundedVPanel");
+		VerticalPanel netwkPropCompPanel = new VerticalPanel();
+		netwkPropCompPanel.setStyleName("boundedVPanel");
 		Label caption = new Label("Element properties:");
 		caption.setStyleName("captionLabel");
-		editNetwkCompPanel.add(caption);
+		netwkPropCompPanel.add(caption);
+		netwkPropCompPanel.add(new Label("inflow node"));
+		netwkPropCompPanel.add(inflow_tb);
+		inflow_tb.addChangeHandler(this);
+		netwkPropCompPanel.add(new Label("outflow node"));
+		netwkPropCompPanel.add(outflow_tb);
+		outflow_tb.addChangeHandler(this);
+		netwkPropCompPanel.add(new Label("capacity edge"));
+		netwkPropCompPanel.add(capacity_tb);
+		capacity_tb.addChangeHandler(this);
+		mainPanel.add(netwkPropCompPanel);
 		
-		editNetwkCompPanel.add(new Label("inflow node"));
-		editNetwkCompPanel.add(inflow_tb);
-		editNetwkCompPanel.add(new Label("outflow node"));
-		editNetwkCompPanel.add(outflow_tb);
-		editNetwkCompPanel.add(new Label("capacity edge"));
-		editNetwkCompPanel.add(capacity_tb);
+		VerticalPanel editNetworkPanel = new VerticalPanel();
+		editNetworkPanel.setStyleName("boundedVPanel");
+		Label captionEdit = new Label("Edit components");
+		captionEdit.setStyleName("captionLabel");
+		editNetworkPanel.add(captionEdit);
 		selectedLbl.setStyleName("informLabel");
-		editNetwkCompPanel.add(selectedLbl);
-		mainPanel.add(editNetwkCompPanel);
+		editNetworkPanel.add(selectedLbl);
+		changeSelectedBtn.setStyleName("normalButton");
+		changeSelectedBtn.addClickHandler(this);
+		editNetworkPanel.add(changeSelectedBtn);
+		changeSelectedBtn.addClickHandler(this);
+		deleteSelectedBtn.setStyleName("normalButton");
+		deleteSelectedBtn.addClickHandler(this);
+		editNetworkPanel.add(deleteSelectedBtn);
+		mainPanel.add(editNetworkPanel);
 		
-		this.initWidget(mainPanel);
-		
+		this.initWidget(mainPanel);	
 	}
 
 	@Override
@@ -123,30 +133,57 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 			AddNetworkDlg nwdlg = new AddNetworkDlg(scenarioPanel);
 			nwdlg.show();
 		}
-		else if (event.getSource() == addNode_btn)
+		else if (event.getSource() == addBuildingBtn)
 		{
-			if (addNode_btn.isDown())
+			if (addBuildingBtn.isDown())
 			{
-				nodeCreationMode = true;
-				edgeCreationMode = false;
+				med.addBuildingMode();
 				addEdge_btn.setDown(false);
-			}
-			else
-			{
-				scenarioPanel.getMap().getMap().removeMapClickHandler(this);
-			}
-		}
-		else if (event.getSource() == addEdge_btn)
-		{
-			if (addEdge_btn.isDown())
-			{
-				edgeCreationMode = true;
-				nodeCreationMode = false;
 				addNode_btn.setDown(false);
 			}
 			else
 			{
-				edgeCreationMode = false;
+				med.noMode();
+			}
+		}
+		else if (event.getSource() == addNode_btn)
+		{
+			if (med.getSelectedNetwork() == null)
+			{
+				med.noMode();
+				addEdge_btn.setDown(false);
+				addNode_btn.setDown(false);
+				addBuildingBtn.setDown(false);
+			}
+			else if (addNode_btn.isDown() )
+			{
+				med.addNodeMode();
+				addEdge_btn.setDown(false);
+				addBuildingBtn.setDown(false);
+			}
+			else
+			{
+				med.selectionMode();
+			}
+		}
+		else if (event.getSource() == addEdge_btn )
+		{
+			if (med.getSelectedNetwork() == null)
+			{
+				med.noMode();
+				addEdge_btn.setDown(false);
+				addNode_btn.setDown(false);
+				addBuildingBtn.setDown(false);
+			}
+			else if (addEdge_btn.isDown())
+			{
+				med.addEdgeMode();
+				addNode_btn.setDown(false);
+				addBuildingBtn.setDown(false);
+			}
+			else
+			{
+				med.selectionMode();
 			}
 		}
 		else if (event.getSource() == deleteNetworkBtn)
@@ -162,55 +199,69 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 			}
 			
 		}
+		else if (event.getSource() == changeSelectedBtn)
+		{
+			if (Window.confirm("Really change all selected network elements?"))
+			{
+				med.changeSelected();
+			}
+		}
+		else if (event.getSource() == deleteSelectedBtn)
+		{
+			if (Window.confirm("Really delete all selected buildings and network elements?"))
+			{
+				med.deleteSelected();
+			}
+		}
 	}
 
+	public void cleanEditModes() {
+		addNode_btn.setDown(false);
+		addEdge_btn.setDown(false);
+	}
+	
 	@Override
 	public void onChange(ChangeEvent event) {
-		if (event.getSource() == network_tbl)
+		try
 		{
-			//activeNetwork = networks.get(network_lb.getSelectedIndex());
+			if (event.getSource() == inflow_tb)
+			{
+				med.setInflow(inflow_tb.getValueOrThrow());
+			}
+			else if (event.getSource() == outflow_tb)
+			{
+				med.setOutflow(outflow_tb.getValueOrThrow());
+			}
+			else if (event.getSource() == capacity_tb)
+			{
+				med.setCapacity(capacity_tb.getValueOrThrow());
+			}
+		}
+	 	catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Window.alert("Please enter only numerical values!");
 		}
 		
 	}
 
-	@Override
-	public void onClick(MapClickEvent event) 
+	public void changeSelectedLabel(int selectedNodes, int selectedEdges, int selectedBuildings)
 	{
-		// TODO Auto-generated method stub
-		MapWidget sender = event.getSender();
-        Overlay overlay = event.getOverlay();
-        LatLng point = event.getLatLng();
-
-        if (overlay instanceof Marker == false && nodeCreationMode) 
-        {
-        	  Icon icon = Icon.newInstance("res/node.png");
-        	  icon.setIconSize(Size.newInstance(8, 8));
-        	  icon.setIconAnchor(Point.newInstance(4, 4));
-        	  options.setIcon(icon);
-        	  sender.addOverlay(new NodeMarker(point, options, this));
-        	  
-		} 
-        
-        else if (overlay instanceof NodeMarker && edgeCreationMode)
-        {
-        	if (firstPickedNode == null)
-				firstPickedNode = (NodeMarker)overlay;
-			else
-			{
-				LatLng points[] = new LatLng[2];
-				points[0] = firstPickedNode.getLatLng(); points[1] = ((NodeMarker)overlay).getLatLng();
-				NetworkEdge edge = new NetworkEdge(points);
-				sender.addOverlay(edge);
-				firstPickedNode = null;
-			}
-        }
-        
+		String newText = "Selected: " + selectedNodes + " nodes; " 
+				+ selectedEdges + " edges; " 
+				+ selectedBuildings + " buildings;";
+		selectedLbl.setText(newText);
 	}
 
 	@Override
 	public void update(Subject o) {
 		
 	}
+
+
+
+
+
 
 
 }

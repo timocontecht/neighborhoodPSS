@@ -40,7 +40,6 @@ create table if not exists SCENARIO
 create table if not exists BUILDING
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	industry VARCHAR(250),
 	scenario_id INT REFERENCES SCENARIO.id
 );
 

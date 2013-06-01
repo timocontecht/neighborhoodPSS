@@ -67,6 +67,7 @@ h1 {
 .normalButton
 {
 	width: 95%;
+	text-align: left;
 }
 
 /** Set ids using widget.getElement().setId("idOfElement") */

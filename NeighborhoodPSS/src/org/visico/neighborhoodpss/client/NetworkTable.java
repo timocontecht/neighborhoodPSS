@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 import org.visico.neighborhoodpss.shared.patterns.ObserverInterface;
+import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.shared.patterns.Subject;
 
 import com.google.gwt.cell.client.CheckboxCell;
@@ -15,6 +16,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 
@@ -23,11 +25,14 @@ public class NetworkTable extends Composite implements ObserverInterface
 	private ScenarioDTO scenario;
 	private CellTable<NetworkDTO> table = new CellTable<NetworkDTO>();
 	final SingleSelectionModel<NetworkDTO> selectionModel = new SingleSelectionModel<NetworkDTO>();
+	ScenarioEditMediator mediator; 
 	
-	public NetworkTable(ScenarioDTO s)
+	public NetworkTable(ScenarioDTO s, ScenarioEditMediator med)
 	{
 		this.scenario = s;
 		this.scenario.addObserver(this);
+		
+		this.mediator = med;
 		
 		TextColumn<NetworkDTO> nameColumn = new TextColumn<NetworkDTO>() {
 
@@ -75,6 +80,15 @@ public class NetworkTable extends Composite implements ObserverInterface
 		table.addColumn(nameColumn);
 		table.addColumn(colorColumn, "Color");
 		table.addColumn(checkBoxColumn, "Visible");
+		
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		      public void onSelectionChange(SelectionChangeEvent event) {
+		        NetworkDTO selected = selectionModel.getSelectedObject();
+		        if (selected != null) {
+		          mediator.setSelectedNetwork(selected);
+		        }
+		      }
+		    });
 		table.setSelectionModel(selectionModel);
 		
 		fillTable();
@@ -92,13 +106,14 @@ public class NetworkTable extends Composite implements ObserverInterface
 		table.setRowCount(scenarios.size());
 		table.setRowData(0, scenarios);
 		
+		
 	}
 
 
 	@Override
 	public void update(Subject o) {
 		fillTable();
-		
+		mediator.setSelectedNetwork(null);
 	}
 
 

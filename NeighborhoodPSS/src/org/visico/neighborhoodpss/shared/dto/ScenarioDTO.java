@@ -237,6 +237,10 @@ public class ScenarioDTO extends Subject implements Cloneable, Serializable
 	private Set<GeoNetworkDTO> GeoNetworkDTOs = new HashSet<GeoNetworkDTO>();
 	private Set<BuildingNetworkDTO> BuildingNetworkDTOs = new HashSet<BuildingNetworkDTO>();
 
+	public void deleteBuilding(BuildingDTO buildingDTO) {
+		BuildingDTOs.remove(buildingDTO);
+	}
+
 	
 	
 }

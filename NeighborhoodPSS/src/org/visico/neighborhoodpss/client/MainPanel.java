@@ -38,7 +38,7 @@ public class MainPanel extends DockLayoutPanel
 	}
 
 	private void draw() {
-		//addNorth(UserPanel.getInstance(), 10);
+		addNorth(UserPanel.getInstance(), 10);
 		
 		MainTab panel = MainTab.getInstance();
 		add(panel);

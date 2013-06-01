@@ -19,12 +19,12 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 	//final private Button building_btn;
 	final private Button close_btn;
 	//final private Button network_btn;
-	private EditBuildingPanel editBuildingTab;
+	//private EditBuildingPanel editBuildingTab;
 	
 	final private TabLayoutPanel panel = new TabLayoutPanel(2.5, Unit.EM);
 	
 	
-	
+	/*
 	public EditBuildingPanel getEditBuilding() {
 		return editBuildingTab;
 	}
@@ -36,7 +36,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		this.editBuildingTab = editBuilding;
 	}
 
-
+*/
 
 
 	public ModePanel(ScenarioPanel scenarioPanel)
@@ -54,9 +54,9 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		network_btn.addClickHandler(this);
 */	
 		panel.setSize("20em", "40em");
-		editBuildingTab = new EditBuildingPanel(scenarioPanel);
-		panel.add(editBuildingTab, "Edit Buildings");
-		panel.add(new EditNetworkPanel(scenarioPanel), new HTML("Edit Networks"));
+		//editBuildingTab = new EditBuildingPanel(scenarioPanel);
+		//panel.add(editBuildingTab, "Edit Buildings");
+		//panel.add(new EditNetworkPanel(scenarioPanel), new HTML("Edit Networks"));
 	
 		add (panel);
 		

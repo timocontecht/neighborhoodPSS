@@ -95,5 +95,9 @@ public class GeoNetworkDTO extends NetworkDTO implements Cloneable, Serializable
 		edges.add(edge);
 	}
 
+	public void deleteEdge(EdgeDTO edgeDTO) {
+		edges.remove(edgeDTO);
+	}
+
 	
 }

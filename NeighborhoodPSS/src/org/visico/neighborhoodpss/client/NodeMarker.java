@@ -8,13 +8,12 @@ import com.google.gwt.maps.client.overlay.MarkerOptions;
 
 public class NodeMarker extends Marker  {
 
-	private EditNetworkPanel panel;
 	
 	
-	public NodeMarker(LatLng point, MarkerOptions op, EditNetworkPanel panel) 
+	public NodeMarker(LatLng point, MarkerOptions op) 
 	{	
 		super(point, op);
-		this.panel = panel;
+		
 	}
 
 	

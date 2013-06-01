@@ -3,11 +3,34 @@ package org.visico.neighborhoodpss.client;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Polyline;
 
-public class NetworkEdge extends Polyline{
-
-	public NetworkEdge(LatLng[] points) {
+public class NetworkEdge extends Polyline
+{
+	NodeMarker start = null;
+	NodeMarker end = null;
+	
+	public NetworkEdge(NodeMarker start, NodeMarker end, LatLng[] points) {
 		super(points, "#3104B4");
-		// TODO Auto-generated constructor stub
+		this.start = start;
+		this.end = end;
+		
+		
+		
+	}
+
+	public NodeMarker getStart() {
+		return start;
+	}
+
+	public void setStart(NodeMarker start) {
+		this.start = start;
+	}
+
+	public NodeMarker getEnd() {
+		return end;
+	}
+
+	public void setEnd(NodeMarker end) {
+		this.end = end;
 	}
 	
 	
