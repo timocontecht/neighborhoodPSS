@@ -5,8 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="GEOCOORDINATE")
+
 public class GeoPointDTO implements Cloneable, Serializable
 {
 	/**

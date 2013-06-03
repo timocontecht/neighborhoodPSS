@@ -15,8 +15,8 @@ import com.google.gwt.maps.client.overlay.Polygon;
 public class BuildingPolygon extends Polygon 
 {
 
-	public static ArrayList<BuildingPolygon>buildings = new ArrayList<BuildingPolygon>();
-	private static HashSet<BuildingPolygon>selected = new HashSet<BuildingPolygon>();
+	//public static ArrayList<BuildingPolygon>buildings = new ArrayList<BuildingPolygon>();
+	//private static HashSet<BuildingPolygon>selected = new HashSet<BuildingPolygon>();
 	
 	private boolean closed = false;
 	
@@ -29,19 +29,23 @@ public class BuildingPolygon extends Polygon
 		String color = "#0000FF";
 		op.setColor(color);
 		this.setFillStyle(op);
-		building = new BuildingDTO();
-		}
+	}
 	
 	
-	public BuildingPolygon(BuildingDTO next) 
-	{
-		super(new LatLng[0], "0000FF", 1, 1.0, "0000FF", 0.1);
-		building = new BuildingDTO();
+	
+
+	
+	public BuildingPolygon(LatLng[] points) {
+		super(points, "0000FF", 1, 1.0, "0000FF", 0.1);
+		String color = "#0000FF";
+		op.setColor(color);
+		this.setFillStyle(op);
 	}
 
-	
 
-	
+
+
+
 	public boolean isClosed() {
 		return closed;
 	}
@@ -73,7 +77,6 @@ public class BuildingPolygon extends Polygon
 			building.addVertex(vertex.getLatitude(), vertex.getLongitude());
 		}
 		
-		
 		building.setArea(getArea());
 		return building;
 	}
@@ -84,7 +87,7 @@ public class BuildingPolygon extends Polygon
 
 	public void setScenario(BuildingDTO b) 
 	{
-		building = b;
+		//building = b;
 		
 		for (int i=0; i<b.getPoints().size(); i++)
 		{
@@ -95,25 +98,7 @@ public class BuildingPolygon extends Polygon
 	}
 	
 	
-	public static HashSet<BuildingPolygon> getSelected() {
-		return selected;
-	}
-
-
-
-	public void select()
-	{
-		setColor(true);
-		selected.add(this);
-		//scenarioPanel.getModePanel().getEditBuilding().selectedBuildings(selected);
-	}
 	
-	public void unselect()
-	{
-		setColor(false);
-		selected.remove(this);
-		//scenarioPanel.getModePanel().getEditBuilding().selectedBuildings(selected);
-	}
 	
 	public void setColor(boolean isSelected)
 	{
@@ -126,15 +111,6 @@ public class BuildingPolygon extends Polygon
 		this.setFillStyle(op);
 	}
 	
-	public static void unselectAll()
-	{
-		for (BuildingPolygon p:selected)
-		{
-			p.setColor(false);
-		}
-		selected.clear();
-		
-	}
-
+	
 	
 }

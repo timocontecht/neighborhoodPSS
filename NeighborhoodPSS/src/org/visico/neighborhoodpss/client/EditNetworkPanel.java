@@ -23,9 +23,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EditNetworkPanel extends Composite implements ClickHandler, ChangeHandler,  ObserverInterface
+public class EditNetworkPanel extends Composite implements ClickHandler, ChangeHandler
 {
-	private ScenarioPanel scenarioPanel;
+	//private ScenarioPanel scenarioPanel;
 	
 	private final VerticalPanel mainPanel = new VerticalPanel();
 	private final ToggleButton addBuildingBtn = new ToggleButton("Add Building");
@@ -50,9 +50,7 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 	{
 		this.med = med;
 		med.registerEditNetworkPanel(this);
-		this.scenarioPanel = scenarioPanel;
-		this.scenarioPanel.scenario().addObserver(this);
-		network_tbl = new NetworkTable(scenarioPanel.scenario(), med);
+		network_tbl = new NetworkTable(med);
 		draw();
 	}
 	
@@ -130,7 +128,7 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 	public void onClick(ClickEvent event) {
 		if (event.getSource() == addNetworkBtn)
 		{
-			AddNetworkDlg nwdlg = new AddNetworkDlg(scenarioPanel);
+			AddNetworkDlg nwdlg = new AddNetworkDlg(med);
 			nwdlg.show();
 		}
 		else if (event.getSource() == addBuildingBtn)
@@ -192,10 +190,9 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 			NetworkDTO networkToDelete = network_tbl.getSelectedNetwork();
 			if (Window.confirm("Really delete network "+ networkToDelete.getName()))
 			{
-				if (networkToDelete instanceof GeoNetworkDTO)
-					scenarioPanel.scenario().deleteGeoNetwork((GeoNetworkDTO) networkToDelete);
-				else if (networkToDelete instanceof BuildingNetworkDTO)
-					scenarioPanel.scenario().deleteBuildingNetwork((BuildingNetworkDTO) networkToDelete);
+				med.deleteGeoNetwork((GeoNetworkDTO) networkToDelete);
+				//else if (networkToDelete instanceof BuildingNetworkDTO)
+				//	scenarioPanel.scenario().deleteBuildingNetwork((BuildingNetworkDTO) networkToDelete);
 			}
 			
 		}
@@ -252,16 +249,6 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 				+ selectedBuildings + " buildings;";
 		selectedLbl.setText(newText);
 	}
-
-	@Override
-	public void update(Subject o) {
-		
-	}
-
-
-
-
-
 
 
 }

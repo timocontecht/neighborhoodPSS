@@ -32,9 +32,7 @@ public class ScenarioPanel extends DockLayoutPanel
 		map = new Map(med);
 		addWest(new EditNetworkPanel(this, med), 35);
 	    add(map);
-	    
-	    
-	    
+	    med.initializeOverlays();
 	}
 	
 	public Map getMap()

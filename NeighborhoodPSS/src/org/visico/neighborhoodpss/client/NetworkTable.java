@@ -2,6 +2,7 @@ package org.visico.neighborhoodpss.client;
 
 import java.util.ArrayList;
 
+import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 import org.visico.neighborhoodpss.shared.patterns.ObserverInterface;
@@ -20,19 +21,18 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 
-public class NetworkTable extends Composite implements ObserverInterface
+public class NetworkTable extends Composite 
 {
-	private ScenarioDTO scenario;
+	//private ScenarioDTO scenario;
 	private CellTable<NetworkDTO> table = new CellTable<NetworkDTO>();
 	final SingleSelectionModel<NetworkDTO> selectionModel = new SingleSelectionModel<NetworkDTO>();
 	ScenarioEditMediator mediator; 
 	
-	public NetworkTable(ScenarioDTO s, ScenarioEditMediator med)
+	public NetworkTable( ScenarioEditMediator med)
 	{
-		this.scenario = s;
-		this.scenario.addObserver(this);
 		
 		this.mediator = med;
+		med.registerNetworkTable(this);
 		
 		TextColumn<NetworkDTO> nameColumn = new TextColumn<NetworkDTO>() {
 
@@ -91,35 +91,16 @@ public class NetworkTable extends Composite implements ObserverInterface
 		    });
 		table.setSelectionModel(selectionModel);
 		
-		fillTable();
-		
 		initWidget(table);
 	}
-
 	
-	private void fillTable() 
+	public void fillTable(ArrayList<GeoNetworkDTO> scenarios) 
 	{
-		ArrayList<NetworkDTO> scenarios = new ArrayList<NetworkDTO>();
-		scenarios.addAll(scenario.getBuildingNetworkDTOs());
-		scenarios.addAll(scenario.getGeoNetworkDTOs());
-		
 		table.setRowCount(scenarios.size());
 		table.setRowData(0, scenarios);
-		
-		
 	}
-
-
-	@Override
-	public void update(Subject o) {
-		fillTable();
-		mediator.setSelectedNetwork(null);
-	}
-
 
 	public NetworkDTO getSelectedNetwork() {
 		return selectionModel.getSelectedObject();
 	}
-	
-
 }

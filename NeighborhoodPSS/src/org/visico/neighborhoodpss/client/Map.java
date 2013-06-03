@@ -49,9 +49,13 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
 	
 	public Map(ScenarioEditMediator med)
 	{
+		Icon icon = Icon.newInstance("res/node.png");
+    	  icon.setIconSize(Size.newInstance(8, 8));
+    	  icon.setIconAnchor(Point.newInstance(4, 4));
+    	  options.setIcon(icon);
+    	  
 		this.med = med;
 		med.registerMap(this);
-		
 		
 		LatLng gaxel = LatLng.newInstance(52.01997, 6.79255);
 
@@ -92,13 +96,10 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
         }
         else if (overlay instanceof Marker == false && mode == editmodes.ADD_NODE)
         {
-        	  Icon icon = Icon.newInstance("res/node.png");
-	      	  icon.setIconSize(Size.newInstance(8, 8));
-	      	  icon.setIconAnchor(Point.newInstance(4, 4));
-	      	  options.setIcon(icon);
+        	  
 	      	  NodeMarker node = new NodeMarker(point, options);
 	      	  sender.addOverlay(node);
-	      	 med.addNewNode(node); 
+	      	  med.addNewNode(node); 
         }
         else if (overlay instanceof NodeMarker && mode == editmodes.ADD_EDGE)
         {
@@ -127,7 +128,17 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
         	
         }
 	}
+
 	
+	public static MarkerOptions getOptions() {
+		return options;
+	}
+
+	public static void setOptions(MarkerOptions options) {
+		Map.options = options;
+	}
+
+
 	// variable used to mark whether a polygonal object in the drawings is closed 
 	boolean isClosed = false;
 

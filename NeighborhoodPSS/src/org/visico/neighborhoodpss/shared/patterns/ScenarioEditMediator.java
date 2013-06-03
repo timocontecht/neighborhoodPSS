@@ -3,6 +3,7 @@ package org.visico.neighborhoodpss.shared.patterns;
 
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,15 +12,19 @@ import org.visico.neighborhoodpss.client.BuildingPolygon;
 import org.visico.neighborhoodpss.client.EditNetworkPanel;
 import org.visico.neighborhoodpss.client.Map;
 import org.visico.neighborhoodpss.client.NetworkEdge;
+import org.visico.neighborhoodpss.client.NetworkTable;
 import org.visico.neighborhoodpss.client.NodeMarker;
+import org.visico.neighborhoodpss.server.project.GeoPoint;
 import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
 import org.visico.neighborhoodpss.shared.dto.EdgeDTO;
 import org.visico.neighborhoodpss.shared.dto.GeoEdgeDTO;
 import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.GeoPointDTO;
 import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.NodeDTO;
 import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Overlay;
 
 
@@ -43,13 +48,54 @@ public class ScenarioEditMediator {
 	private HashMap<NodeMarker, NodeDTO> nodeMap = new HashMap<NodeMarker, NodeDTO>();
 	
 	private Set<Overlay> selected = new HashSet<Overlay>();
+
+	private NetworkTable networkTable;
 	
 	
 	public ScenarioEditMediator(ScenarioDTO scenario)
 	{
 		this.scenario = scenario;
+		
 	}
 	
+	public void initializeOverlays() {
+		for (BuildingDTO b : scenario.getBuildingDTOs())
+		{
+			BuildingPolygon bldgPlg = new BuildingPolygon();
+	    	map.getMap().addOverlay(bldgPlg);
+	    	
+	    	for (int i=0; i<b.getPoints().size(); i++)
+			{
+				bldgPlg.insertVertex(i, LatLng.newInstance(b.getPoints().get(i).getLatitude(), b.getPoints().get(i).getLongitude()));
+			}
+	    	buildingMap.put(bldgPlg, b);
+		}
+		
+		ArrayList<GeoNetworkDTO> networks = new ArrayList<GeoNetworkDTO>(scenario.getGeoNetworkDTOs()); 
+		networkTable.fillTable(networks);
+		
+		for (GeoNetworkDTO n : scenario.getGeoNetworkDTOs())
+		{
+			for (GeoEdgeDTO e : n.getEdges())
+			{
+				LatLng points[] = new LatLng[2];
+				points[0] = LatLng.newInstance(e.getStart_node().getLatitude(), e.getStart_node().getLongitude());
+				NodeMarker mStart = new NodeMarker(points[0], Map.getOptions());
+				map.getMap().addOverlay(mStart);
+				nodeMap.put(mStart, e.getStart_node());
+				
+				points[1] = LatLng.newInstance(e.getEnd_node().getLatitude(), e.getEnd_node().getLongitude());
+				NodeMarker mEnd = new NodeMarker(points[1], Map.getOptions());
+				map.getMap().addOverlay(mEnd);
+				nodeMap.put(mEnd, e.getEnd_node());
+				
+				NetworkEdge edge = new NetworkEdge(mStart, mEnd, points);
+				map.getMap().addOverlay(edge);
+				edgeMap.put(edge, e);
+			}
+		}
+	}
+
 	public NetworkDTO getSelectedNetwork() {
 		return selectedNetwork;
 	}
@@ -95,6 +141,10 @@ public class ScenarioEditMediator {
 
 	public void registerEditNetworkPanel(EditNetworkPanel edtNetwPnl) {
 		this.editNetworkPanel = edtNetwPnl;
+	}
+	
+	public void registerNetworkTable(NetworkTable table) {
+		this.networkTable = table;
 	}
 
 	public void noMode() {
@@ -172,7 +222,7 @@ public class ScenarioEditMediator {
 	public void addNewNode(NodeMarker node) {
 		  NodeDTO nodeDTO = new NodeDTO();
      	  nodeDTO.setLatitude(node.getLatLng().getLatitude());
-     	  nodeDTO.setLatitude(node.getLatLng().getLongitude());
+     	  nodeDTO.setLongitude(node.getLatLng().getLongitude());
      	  nodeDTO.setInflow(getInflow());
      	  nodeDTO.setOutflow(getOutflow());
      	  ((GeoNetworkDTO)selectedNetwork).addNode(nodeDTO);
@@ -220,6 +270,19 @@ public class ScenarioEditMediator {
 		}
 			
 		editNetworkPanel.changeSelectedLabel(selectedNodes, selectedEdges, selectedBuildings);
+	}
+
+	public void addGeoNetwork(String text, String hexColor) {
+		GeoNetworkDTO newNetwork = new GeoNetworkDTO();
+		newNetwork.setName(text);
+		newNetwork.setColor(hexColor);
+		scenario.addGeoNetworkDTO(newNetwork);
+		networkTable.fillTable(new ArrayList<GeoNetworkDTO>(scenario.getGeoNetworkDTOs()));
+	}
+
+	public void deleteGeoNetwork(GeoNetworkDTO networkToDelete) {
+		scenario.deleteGeoNetwork(networkToDelete);
+		networkTable.fillTable(new ArrayList<GeoNetworkDTO>(scenario.getGeoNetworkDTOs()));
 	}
 
 }

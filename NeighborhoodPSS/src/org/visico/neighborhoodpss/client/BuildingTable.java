@@ -32,7 +32,7 @@ public class BuildingTable extends ScrollPanel
 	public void draw()
 	{
 		buildingGrid.clear();
-		buildingGrid.resize(BuildingPolygon.buildings.size() + 1, 3);
+		//buildingGrid.resize(BuildingPolygon.buildings.size() + 1, 3);
 		
 		buildingGrid.getRowFormatter().addStyleName(0, "BuildingTableHeader");
 		buildingGrid.setText(0, 0, "Number");
@@ -41,13 +41,13 @@ public class BuildingTable extends ScrollPanel
 		
 		
 		
-		for (int i=0; i<BuildingPolygon.buildings.size(); i++)
-		{
-			buildingGrid.setText(i+1, 0, Integer.toString(i+1));
-			buildingGrid.setText(i+1, 1, Double.toString(BuildingPolygon.buildings.get(i).getArea()) + "m2");
-			//buildingGrid.setText(i+1, 2, BuildingPolygon.buildings.get(i).getType());
-			buildingGrid.getRowFormatter().addStyleName(i+1, "BuildingTableRow");
-		}
+		//for (int i=0; i<BuildingPolygon.buildings.size(); i++)
+		//{
+		//	buildingGrid.setText(i+1, 0, Integer.toString(i+1));
+		//	buildingGrid.setText(i+1, 1, Double.toString(BuildingPolygon.buildings.get(i).getArea()) + "m2");
+		//	//buildingGrid.setText(i+1, 2, BuildingPolygon.buildings.get(i).getType());
+		//	buildingGrid.getRowFormatter().addStyleName(i+1, "BuildingTableRow");
+		//}
 	}
 	
 	Grid buildingGrid = null;

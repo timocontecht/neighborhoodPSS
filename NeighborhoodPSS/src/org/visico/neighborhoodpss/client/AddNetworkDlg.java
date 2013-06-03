@@ -4,6 +4,8 @@ import net.auroris.ColorPicker.client.ColorPicker;
 
 import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
 import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -22,12 +24,12 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 	private final CheckBox isBuilding_cb = new CheckBox();
 	private final Button addNetworkBtn = new Button("Add Network");
 	private final Button cancelBtn = new Button("Cancel");
-	private ScenarioPanel scenarioPanel;
+	private ScenarioEditMediator med;
 	private final ColorPicker picker = new ColorPicker();
 	
-	public AddNetworkDlg(ScenarioPanel scenarioPanel)
+	public AddNetworkDlg(ScenarioEditMediator med)
 	{
-		this.scenarioPanel = scenarioPanel;
+		this.med = med;
 		draw();
 	}
 	
@@ -63,17 +65,15 @@ public class AddNetworkDlg extends DialogBox implements ClickHandler{
 		{
 			if (isBuilding_cb.getValue() == Boolean.TRUE)
 			{
-				BuildingNetworkDTO newNetwork = new BuildingNetworkDTO();
-				newNetwork.setName(networkName_tb.getText());
-				newNetwork.setColor(picker.getHexColor());
-				scenarioPanel.scenario().addBuildingNetworkDTO(newNetwork);
+				//BuildingNetworkDTO newNetwork = new BuildingNetworkDTO();
+				//newNetwork.setName(networkName_tb.getText());
+				//newNetwork.setColor(picker.getHexColor());
+				//med.addBuildingNetworkDTO(newNetwork);
 			}
 			else
 			{
-				GeoNetworkDTO newNetwork = new GeoNetworkDTO();
-				newNetwork.setName(networkName_tb.getText());
-				newNetwork.setColor(picker.getHexColor());
-				scenarioPanel.scenario().addGeoNetworkDTO(newNetwork);
+				
+				med.addGeoNetwork(networkName_tb.getText(), picker.getHexColor());
 			}
 			this.hide();
 		}
