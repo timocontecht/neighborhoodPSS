@@ -6,6 +6,8 @@ package org.visico.neighborhoodpss.shared.patterns;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.client.BuildingPolygon;
@@ -256,7 +258,23 @@ public class ScenarioEditMediator {
 
 	public void addMapSelection(Overlay overlay) {
 		selected.add(overlay);
-		
+		changeSelectionString();
+	}
+	
+	public void removeSelection(Overlay overlay){
+		selected.remove(overlay);
+		changeSelectionString();
+	}
+	
+	public void clearAllSelected()
+	{
+		selected.clear();
+		changeSelectionString();
+	}
+	
+	
+	private void changeSelectionString()
+	{
 		int selectedNodes = 0, selectedEdges = 0, selectedBuildings = 0;
 		
 		for (Overlay o : selected)
@@ -283,6 +301,43 @@ public class ScenarioEditMediator {
 	public void deleteGeoNetwork(GeoNetworkDTO networkToDelete) {
 		scenario.deleteGeoNetwork(networkToDelete);
 		networkTable.fillTable(new ArrayList<GeoNetworkDTO>(scenario.getGeoNetworkDTOs()));
+		
+		HashSet<NetworkEdge> edgesToDelete = new HashSet<NetworkEdge>();
+		HashSet<NodeMarker> nodesToDelete = new HashSet<NodeMarker>();
+		
+		for (EdgeDTO edge : networkToDelete.getEdges())
+		{
+			Iterator<Entry<NetworkEdge, EdgeDTO>> it = edgeMap.entrySet().iterator();
+			while (it.hasNext())
+			{
+				Entry<NetworkEdge, EdgeDTO> entry =  it.next();
+				if (entry.getValue() == edge)
+				{
+					NetworkEdge nwEdge = entry.getKey();
+					map.getMap().removeOverlay(nwEdge);
+					edgesToDelete.add(nwEdge);
+					
+					nodesToDelete.add(nwEdge.getStart());
+					nodesToDelete.add(nwEdge.getEnd());
+				}
+			}
+		}
+		
+		for (NetworkEdge e : edgesToDelete)
+		{
+			edgeMap.remove(e);
+			selected.remove(e);
+		}
+		
+		for (NodeMarker n : nodesToDelete)
+		{
+			map.getMap().removeOverlay(n);
+			nodeMap.remove(n);
+			selected.remove(n);
+		}
+		
+		changeSelectionString();
+		
 	}
 
 }
