@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
-import org.visico.neighborhoodpss.server.Scenario;
+import org.visico.neighborhoodpss.server.project.Scenario;
 import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 
 import com.google.gwt.dev.util.collect.HashSet;

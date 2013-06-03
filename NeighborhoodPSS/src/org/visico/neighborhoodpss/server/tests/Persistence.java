@@ -12,7 +12,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.SortedTable;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.junit.Test;
-import org.visico.neighborhoodpss.server.ScenarioServiceImpl;
+import org.visico.neighborhoodpss.server.project.ScenarioServiceImpl;
 
 public class Persistence extends DBTestCase{
 
