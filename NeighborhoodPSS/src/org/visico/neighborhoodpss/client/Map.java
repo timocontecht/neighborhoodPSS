@@ -67,6 +67,7 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
 	    theMap.addControl(new LargeMapControl());
 	    theMap.addMapClickHandler(this);
 	    
+	    mode = editmodes.SELECTION;
 	    this.initWidget(theMap);
 	}
 	
