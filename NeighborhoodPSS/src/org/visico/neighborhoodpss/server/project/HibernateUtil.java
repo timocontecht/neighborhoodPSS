@@ -2,20 +2,18 @@ package org.visico.neighborhoodpss.server.project;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-//import org.hibernate.service.ServiceRegistryBuilder;
-//import org.hibernate.service.ServiceRegistry;
+
 
 
 public class HibernateUtil 
 {
 	private static final SessionFactory sessionFactory;
-	//private static ServiceRegistry serviceRegistry;
 	
 	static
 	{
 		try
 		{
-			sessionFactory = new Configuration().configure().buildSessionFactory();;
+			sessionFactory = new Configuration().configure("/org/visico/neighborhoodpss/server/project/hibernate.cfg.xml").buildSessionFactory();;
 		}
 		catch (Throwable ex)
 		{

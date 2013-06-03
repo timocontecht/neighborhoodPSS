@@ -1,0 +1,43 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/NEIGHBORHOODPSS</property>
+        <property name="connection.username">NHPSSUSER</property>
+        <property name="connection.password">RESU#2008_2010</property> 
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">1</property>
+
+        <!-- SQL dialect -->
+         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+		<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+		
+		<!--  Mapping files -->
+		<mapping class = "org.visico.neighborhoodpss.server.project.Scenario"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.Building"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.GeoPoint"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.Network"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.GeoNetwork"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.BuildingNetwork"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.Node"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.Edge"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.Project"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.User"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.GeoEdge"/>
+		<mapping class = "org.visico.neighborhoodpss.server.project.BuildingEdge"/>
+	
+    </session-factory>
+
+</hibernate-configuration>
