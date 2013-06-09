@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class EditNetworkPanel extends Composite implements ClickHandler, ChangeHandler
+public class EditMapPanel extends Composite implements ClickHandler, ChangeHandler
 {
 	//private ScenarioPanel scenarioPanel;
 	
@@ -40,13 +40,14 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 	private Label selectedLbl = new Label("Selected: 0 nodes; 0 edges; 0 buildings;");
 	private final Button changeSelectedBtn = new Button("Change Selected Elements");
 	private final Button deleteSelectedBtn = new Button("Delete Selected Elements");
+	private final Button deleteHangingNodesBtn = new Button("Delete Hanging Nodes");
 	
 	
 	
 	private static NodeMarker firstPickedNode = null; 
 	ScenarioEditMediator med;
 	
-	public EditNetworkPanel(ScenarioPanel scenarioPanel, ScenarioEditMediator med)
+	public EditMapPanel(ScenarioPanel scenarioPanel, ScenarioEditMediator med)
 	{
 		this.med = med;
 		med.registerEditNetworkPanel(this);
@@ -62,6 +63,7 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 		addBuildingPanel.setStyleName("boundedVPanel");
 		addBuildingPanel.add(addBuildingBtn);
 		addBuildingBtn.addClickHandler(this);
+		addBuildingBtn.addStyleName("normalButton");
 		mainPanel.add(addBuildingPanel);
 		
 		VerticalPanel addNetwPanel = new VerticalPanel();
@@ -119,6 +121,10 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 		deleteSelectedBtn.setStyleName("normalButton");
 		deleteSelectedBtn.addClickHandler(this);
 		editNetworkPanel.add(deleteSelectedBtn);
+		deleteHangingNodesBtn.setStyleName("normalButton");
+		deleteHangingNodesBtn.addClickHandler(this);
+		editNetworkPanel.add(deleteHangingNodesBtn);
+
 		mainPanel.add(editNetworkPanel);
 		
 		this.initWidget(mainPanel);	
@@ -208,6 +214,13 @@ public class EditNetworkPanel extends Composite implements ClickHandler, ChangeH
 			if (Window.confirm("Really delete all selected buildings and network elements?"))
 			{
 				med.deleteSelected();
+			}
+		}
+		else if (event.getSource() == deleteHangingNodesBtn)
+		{
+			if (Window.confirm("Really delete all not connected nodes of this network?"))
+			{
+				med.deleteHangingNodes();
 			}
 		}
 	}

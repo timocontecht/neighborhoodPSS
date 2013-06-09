@@ -85,4 +85,5 @@ public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Seriali
 	}
 
 	
+	
 }

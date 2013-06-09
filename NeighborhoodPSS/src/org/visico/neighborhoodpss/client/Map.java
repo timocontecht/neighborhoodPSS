@@ -44,15 +44,12 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
 	private static MarkerOptions options = MarkerOptions.newInstance();
 	private static NodeMarker firstPickedNode = null; 
 	
-	
-	
-	
 	public Map(ScenarioEditMediator med)
 	{
 		Icon icon = Icon.newInstance("res/node.png");
-    	  icon.setIconSize(Size.newInstance(8, 8));
-    	  icon.setIconAnchor(Point.newInstance(4, 4));
-    	  options.setIcon(icon);
+  	  	icon.setIconSize(Size.newInstance(8, 8));
+  	  	icon.setIconAnchor(Point.newInstance(4, 4));
+  	  	options.setIcon(icon);
     	  
 		this.med = med;
 		med.registerMap(this);
@@ -97,7 +94,7 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
         }
         else if (overlay instanceof Marker == false && mode == editmodes.ADD_NODE)
         {
-        	  
+        	
 	      	  NodeMarker node = new NodeMarker(point, options);
 	      	  sender.addOverlay(node);
 	      	  med.addNewNode(node); 
@@ -110,7 +107,7 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
 			{
 				LatLng points[] = new LatLng[2];
 				points[0] = firstPickedNode.getLatLng(); points[1] = ((NodeMarker)overlay).getLatLng();
-				NetworkEdge edge = new NetworkEdge(firstPickedNode, (NodeMarker)overlay, points);
+				NetworkEdge edge = new NetworkEdge(firstPickedNode, (NodeMarker)overlay, points, med.getActiveNetworkColor());
 				sender.addOverlay(edge);
 				firstPickedNode = null;
 				med.addNewEdge(edge);

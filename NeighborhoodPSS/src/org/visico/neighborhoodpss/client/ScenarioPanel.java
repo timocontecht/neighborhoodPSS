@@ -30,7 +30,7 @@ public class ScenarioPanel extends DockLayoutPanel
 	{
 		ScenarioEditMediator med = new ScenarioEditMediator(scenario);
 		map = new Map(med);
-		addWest(new EditNetworkPanel(this, med), 35);
+		addWest(new EditMapPanel(this, med), 35);
 	    add(map);
 	    med.initializeOverlays();
 	}

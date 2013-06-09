@@ -8,13 +8,10 @@ public class NetworkEdge extends Polyline
 	NodeMarker start = null;
 	NodeMarker end = null;
 	
-	public NetworkEdge(NodeMarker start, NodeMarker end, LatLng[] points) {
-		super(points, "#3104B4");
+	public NetworkEdge(NodeMarker start, NodeMarker end, LatLng[] points, String color) {
+		super(points, color, 3, 1.0);
 		this.start = start;
 		this.end = end;
-		
-		
-		
 	}
 
 	public NodeMarker getStart() {

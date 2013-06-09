@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.client.BuildingPolygon;
-import org.visico.neighborhoodpss.client.EditNetworkPanel;
+import org.visico.neighborhoodpss.client.EditMapPanel;
 import org.visico.neighborhoodpss.client.Map;
 import org.visico.neighborhoodpss.client.NetworkEdge;
 import org.visico.neighborhoodpss.client.NetworkTable;
@@ -35,7 +35,7 @@ public class ScenarioEditMediator {
 	ScenarioDTO scenario;
 	
 	Map map;
-	EditNetworkPanel editNetworkPanel;
+	EditMapPanel editNetworkPanel;
 	
 	// variables
 	NetworkDTO selectedNetwork = null;
@@ -91,7 +91,7 @@ public class ScenarioEditMediator {
 				map.getMap().addOverlay(mEnd);
 				nodeMap.put(mEnd, e.getEnd_node());
 				
-				NetworkEdge edge = new NetworkEdge(mStart, mEnd, points);
+				NetworkEdge edge = new NetworkEdge(mStart, mEnd, points, n.getColor());
 				map.getMap().addOverlay(edge);
 				edgeMap.put(edge, e);
 			}
@@ -141,7 +141,7 @@ public class ScenarioEditMediator {
 		this.map = map;
 	}
 
-	public void registerEditNetworkPanel(EditNetworkPanel edtNetwPnl) {
+	public void registerEditNetworkPanel(EditMapPanel edtNetwPnl) {
 		this.editNetworkPanel = edtNetwPnl;
 	}
 	
@@ -338,6 +338,50 @@ public class ScenarioEditMediator {
 		
 		changeSelectionString();
 		
+	}
+
+	public void deleteHangingNodes() {
+		if (selectedNetwork instanceof GeoNetworkDTO)
+		{
+			GeoNetworkDTO nw = (GeoNetworkDTO)selectedNetwork;
+			
+			HashSet<NodeDTO> connected = new HashSet<NodeDTO>();  
+			for (GeoEdgeDTO edge : nw.getEdges())
+			{
+				connected.add(edge.getStart_node());
+				connected.add(edge.getEnd_node());
+			}
+			
+			ArrayList<NodeMarker> markersToDelete = new ArrayList<NodeMarker>();
+			for (NodeDTO node : nw.getNodes())
+			{
+				if (connected.contains(node) == false)
+				{
+					
+					Iterator<Entry<NodeMarker, NodeDTO>> it = nodeMap.entrySet().iterator();
+					while (it.hasNext())
+					{
+						Entry<NodeMarker, NodeDTO> entry =  it.next();
+						if (entry.getValue() == node)
+						{
+							markersToDelete.add(entry.getKey());
+						}
+					}
+				}
+			}
+			
+			for (NodeMarker nm : markersToDelete)
+			{
+				nw.deleteNode(nodeMap.get(nm));
+				nodeMap.remove(nm);
+				map.getMap().removeOverlay(nm);
+			}
+		}
+		
+	}
+
+	public String getActiveNetworkColor() {
+		return selectedNetwork.getColor();
 	}
 
 }

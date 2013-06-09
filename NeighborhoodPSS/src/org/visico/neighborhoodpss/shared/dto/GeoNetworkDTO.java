@@ -2,6 +2,7 @@ package org.visico.neighborhoodpss.shared.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,5 +100,11 @@ public class GeoNetworkDTO extends NetworkDTO implements Cloneable, Serializable
 		edges.remove(edgeDTO);
 	}
 
+	public void deleteNode(NodeDTO node) {
+		nodes.remove(node);
+		
+	}
+
+	
 	
 }

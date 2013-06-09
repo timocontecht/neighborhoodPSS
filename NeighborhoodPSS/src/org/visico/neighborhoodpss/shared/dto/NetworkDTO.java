@@ -58,9 +58,8 @@ public abstract class NetworkDTO implements Cloneable, Serializable
 
 	public void setColor(String color) {
 		this.color = color;
-	} 
-	
-	
-	
+	}
 
+	
+	
 }
