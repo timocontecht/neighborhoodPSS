@@ -28,6 +28,7 @@ import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
 
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Overlay;
+import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 
 
 
@@ -258,11 +259,27 @@ public class ScenarioEditMediator {
 
 	public void addMapSelection(Overlay overlay) {
 		selected.add(overlay);
+		if (overlay instanceof NetworkEdge)
+		{
+			((NetworkEdge) overlay).setOpacity(0.5);
+		}
+		else if (overlay instanceof NodeMarker)
+		{
+			((NodeMarker) overlay).setSelected();
+		}
 		changeSelectionString();
 	}
 	
 	public void removeSelection(Overlay overlay){
 		selected.remove(overlay);
+		if (overlay instanceof NetworkEdge)
+		{
+			((NetworkEdge) overlay).setOpacity(1.0);
+		}
+		else if (overlay instanceof NodeMarker)
+		{
+			((NodeMarker) overlay).setSelected();
+		}
 		changeSelectionString();
 	}
 	

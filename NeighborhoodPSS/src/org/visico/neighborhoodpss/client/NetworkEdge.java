@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.client;
 
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polyline;
 
 public class NetworkEdge extends Polyline
@@ -30,6 +31,11 @@ public class NetworkEdge extends Polyline
 		this.end = end;
 	}
 	
-	
+	public void setOpacity(double opacity)
+	{
+		PolyStyleOptions op = PolyStyleOptions.getInstance();
+		op.setOpacity(opacity);
+		this.setStrokeStyle(op);
+	}
 
 }

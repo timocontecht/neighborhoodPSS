@@ -43,13 +43,14 @@ public class Map extends Composite implements MapClickHandler, ObserverInterface
 	ScenarioEditMediator med;
 	private static MarkerOptions options = MarkerOptions.newInstance();
 	private static NodeMarker firstPickedNode = null; 
+	private static Icon nodeIcon = null;
 	
 	public Map(ScenarioEditMediator med)
 	{
-		Icon icon = Icon.newInstance("res/node.png");
-  	  	icon.setIconSize(Size.newInstance(8, 8));
-  	  	icon.setIconAnchor(Point.newInstance(4, 4));
-  	  	options.setIcon(icon);
+		nodeIcon = Icon.newInstance("res/node.png");
+		nodeIcon.setIconSize(Size.newInstance(8, 8));
+		nodeIcon.setIconAnchor(Point.newInstance(4, 4));
+  	  	options.setIcon(nodeIcon);
     	  
 		this.med = med;
 		med.registerMap(this);
