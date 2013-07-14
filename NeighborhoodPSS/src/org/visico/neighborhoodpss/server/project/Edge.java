@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.visico.neighborhoodpss.shared.dto.GeoEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoEdgeDTO;
 
 @MappedSuperclass
 

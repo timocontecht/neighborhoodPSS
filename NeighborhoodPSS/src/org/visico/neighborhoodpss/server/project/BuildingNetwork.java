@@ -19,12 +19,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
-import org.visico.neighborhoodpss.shared.dto.BuildingEdgeDTO;
-import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoEdgeDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.NodeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.NodeDTO;
 
 @Entity
 @Table(name="BUILDINGNETWORK")

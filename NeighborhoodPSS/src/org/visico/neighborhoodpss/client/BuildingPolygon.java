@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 
-import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingDTO;
 
 
 import com.google.gwt.maps.client.geom.LatLng;

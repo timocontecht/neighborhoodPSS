@@ -13,16 +13,16 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
-import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
-import org.visico.neighborhoodpss.shared.dto.BuildingEdgeDTO;
-import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoEdgeDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoPointDTO;
-import org.visico.neighborhoodpss.shared.dto.NodeDTO;
-import org.visico.neighborhoodpss.shared.dto.ProjectDTO;
-import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
-import org.visico.neighborhoodpss.shared.dto.UserDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoEdgeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoPointDTO;
+import org.visico.neighborhoodpss.shared.dto.project.NodeDTO;
+import org.visico.neighborhoodpss.shared.dto.project.ProjectDTO;
+import org.visico.neighborhoodpss.shared.dto.project.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.dto.project.UserDTO;
 
 import com.google.gwt.dev.util.collect.HashSet;
 

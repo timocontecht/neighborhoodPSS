@@ -2,9 +2,9 @@ package org.visico.neighborhoodpss.client;
 
 import java.util.ArrayList;
 
-import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.NetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.ScenarioDTO;
 import org.visico.neighborhoodpss.shared.patterns.ObserverInterface;
 import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.shared.patterns.Subject;

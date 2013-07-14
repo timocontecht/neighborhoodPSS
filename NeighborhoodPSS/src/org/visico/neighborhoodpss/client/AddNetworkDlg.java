@@ -2,8 +2,8 @@ package org.visico.neighborhoodpss.client;
 
 import net.auroris.ColorPicker.client.ColorPicker;
 
-import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoNetworkDTO;
 import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
 
 import com.google.gwt.event.dom.client.ClickEvent;

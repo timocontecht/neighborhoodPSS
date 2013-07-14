@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.client;
 
 import java.util.ArrayList;
 
-import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.dto.project.ScenarioDTO;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

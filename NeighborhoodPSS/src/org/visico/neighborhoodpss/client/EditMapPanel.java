@@ -3,9 +3,9 @@ package org.visico.neighborhoodpss.client;
 
 import java.text.ParseException;
 
-import org.visico.neighborhoodpss.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.shared.dto.NetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoNetworkDTO;
+import org.visico.neighborhoodpss.shared.dto.project.NetworkDTO;
 import org.visico.neighborhoodpss.shared.patterns.ObserverInterface;
 import org.visico.neighborhoodpss.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.shared.patterns.Subject;

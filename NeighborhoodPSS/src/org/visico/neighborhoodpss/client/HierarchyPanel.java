@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.shared.dto.BuildingDTO;
-import org.visico.neighborhoodpss.shared.dto.ProjectDTO;
-import org.visico.neighborhoodpss.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.shared.dto.project.BuildingDTO;
+import org.visico.neighborhoodpss.shared.dto.project.ProjectDTO;
+import org.visico.neighborhoodpss.shared.dto.project.ScenarioDTO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;

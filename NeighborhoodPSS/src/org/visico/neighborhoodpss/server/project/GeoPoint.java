@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.visico.neighborhoodpss.shared.dto.GeoPointDTO;
+import org.visico.neighborhoodpss.shared.dto.project.GeoPointDTO;
 
 @Entity
 @Table(name="GEOCOORDINATE")
