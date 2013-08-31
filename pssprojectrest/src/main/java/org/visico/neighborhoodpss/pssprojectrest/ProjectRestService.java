@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.pssprojectrest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -20,6 +21,7 @@ import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.domain.project.ProjectNameDTO;
 import org.visico.neighborhoodpss.pssprojectrest.db.HibernateUtil;
 import org.visico.neighborhoodpss.pssprojectrest.db.Project;
 
@@ -53,6 +55,34 @@ public class ProjectRestService {
 	    ArrayList<Project> p = (ArrayList<Project>) q.list();
 	    ArrayList<ProjectDTO> projects = Project.getDTOList(p); 
 	    final GenericEntity<ArrayList<ProjectDTO>> entity = new GenericEntity<ArrayList<ProjectDTO>>(projects) { };
+    	return Response.ok(entity).build();
+    }
+    
+    @GET @Path("/names")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user"})
+    public Response getProjectNames(@Context SecurityContext sc)
+    {
+    	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	    session.beginTransaction();
+	    Query q = session.createQuery("from Project p join fetch p.users u where u.name = :name");
+	   
+	    String name = sc.getUserPrincipal().getName();
+	    q.setString("name", name);
+	    ArrayList<Project> p = (ArrayList<Project>) q.list();
+	    
+	    // set up the hash map and return it
+	    ArrayList<ProjectNameDTO> projectNames = new ArrayList<ProjectNameDTO>();
+	    for (Project project : p)
+	    {
+	    	ProjectNameDTO n = new ProjectNameDTO();
+	    	n.setDb_id(project.getId());
+	    	n.setName(project.getName());
+	    	projectNames.add(n);
+	    }
+	    
+	    final GenericEntity<ArrayList<ProjectNameDTO>> entity = 
+	    		new GenericEntity<ArrayList<ProjectNameDTO>>(projectNames) { };
     	return Response.ok(entity).build();
     }
     

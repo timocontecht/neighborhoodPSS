@@ -4,7 +4,7 @@ package org.visico.neighborhoodpss.gwt.shared.dto;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.gwt.shared.dto.BuildingDTO;
+import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 
 
 

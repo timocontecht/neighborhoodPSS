@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Set;
 
-import org.visico.neighborhoodpss.gwt.shared.dto.BuildingDTO;
+import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ObserverInterface;
 import org.visico.neighborhoodpss.gwt.shared.patterns.Subject;
 

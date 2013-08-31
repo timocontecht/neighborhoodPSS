@@ -2,18 +2,12 @@ package org.visico.neighborhoodpss.gwt.client;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
-import org.visico.neighborhoodpss.gwt.shared.dto.BuildingDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.ScenarioDTO;
-
-
+import org.visico.neighborhoodpss.domain.project.BuildingDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 
 public class ScenarioPanel extends DockLayoutPanel

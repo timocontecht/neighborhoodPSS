@@ -6,9 +6,9 @@ import java.text.ParseException;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ObserverInterface;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.gwt.shared.patterns.Subject;
-import org.visico.neighborhoodpss.gwt.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.NetworkDTO;
+import org.visico.neighborhoodpss.domain.project.BuildingNetworkDTO;
+import org.visico.neighborhoodpss.domain.project.GeoNetworkDTO;
+import org.visico.neighborhoodpss.domain.project.NetworkDTO;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;

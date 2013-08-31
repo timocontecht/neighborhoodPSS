@@ -3,6 +3,8 @@ package org.visico.neighborhoodpss.pssprojectrest.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import javax.ws.rs.client.Entity;
@@ -20,6 +22,7 @@ import org.junit.Test;
 
 
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.domain.project.ProjectNameDTO;
 import org.visico.neighborhoodpss.pssprojectrest.ProjectRestService;
 
 public class ProjectRestServiceTest extends JerseyTest{
@@ -57,6 +60,14 @@ public class ProjectRestServiceTest extends JerseyTest{
 				 .header("pass", "timopass")
 				 .buildGet();
 		 ArrayList<ProjectDTO> projectList = invocation.invoke(new GenericType<ArrayList<ProjectDTO>>() {});
+		 assertNotNull(projectList);
+	 }*/
+	 
+	 /*@Test
+	// this test does not work as it is not possible to inject a security context with the grizley server
+	 public void getProjectNames() {
+		 Invocation invocation = target("project/names").request().buildGet();
+		 ArrayList<ProjectNameDTO> projectList = invocation.invoke(new GenericType<ArrayList<ProjectNameDTO>>() {});
 		 assertNotNull(projectList);
 	 }*/
 }

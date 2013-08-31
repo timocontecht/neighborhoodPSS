@@ -3,8 +3,7 @@ package org.visico.neighborhoodpss.gwt.client;
 import net.auroris.ColorPicker.client.ColorPicker;
 
 import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
-import org.visico.neighborhoodpss.gwt.shared.dto.BuildingNetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.GeoNetworkDTO;
+
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

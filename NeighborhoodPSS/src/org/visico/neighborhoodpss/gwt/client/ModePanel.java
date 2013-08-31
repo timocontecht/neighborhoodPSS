@@ -3,7 +3,7 @@ package org.visico.neighborhoodpss.gwt.client;
 
 import java.util.HashSet;
 
-import org.visico.neighborhoodpss.gwt.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;

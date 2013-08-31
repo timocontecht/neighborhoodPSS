@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ObserverInterface;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.gwt.shared.patterns.Subject;
-import org.visico.neighborhoodpss.gwt.shared.dto.GeoNetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.NetworkDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.domain.project.GeoNetworkDTO;
+import org.visico.neighborhoodpss.domain.project.NetworkDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.SafeHtmlCell;

@@ -4,8 +4,8 @@ package org.visico.neighborhoodpss.gwt.client;
 
 import java.util.ArrayList;
 
-import org.visico.neighborhoodpss.gwt.shared.dto.ProjectDTO;
-import org.visico.neighborhoodpss.gwt.shared.dto.UserDTO;
+import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.domain.project.UserDTO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

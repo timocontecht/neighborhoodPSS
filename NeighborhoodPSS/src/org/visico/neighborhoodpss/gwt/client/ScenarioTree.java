@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.gwt.client;
 
 import java.util.Iterator;
 
-import org.visico.neighborhoodpss.gwt.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;

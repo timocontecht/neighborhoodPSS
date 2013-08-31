@@ -1,7 +1,7 @@
 package org.visico.neighborhoodpss.gwt.client;
 
 
-import org.visico.neighborhoodpss.gwt.shared.dto.ScenarioDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
