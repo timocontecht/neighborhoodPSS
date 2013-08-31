@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Realm 
+       localDataSource="true"
+       className="org.apache.catalina.realm.JDBCRealm"
+       driverName="com.mysql.jdbc.Driver"
+       connectionURL="jdbc:mysql://localhost:3306/NEIGHBORHOODPSS"
+       connectionName="NHPSSUSER" connectionPassword="RESU#2008_2010"
+       userTable="tc_realm_users" userNameCol="username" userCredCol="passwordhash" 
+       userRoleTable="tc_realm_groups" roleNameCol="groupname"
+       digest="sha-256"/>
+</Context>
+
