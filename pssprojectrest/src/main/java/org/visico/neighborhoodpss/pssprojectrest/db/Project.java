@@ -192,7 +192,7 @@ public class Project implements Cloneable, Serializable
 		
 	}
 	
-	static ArrayList<ProjectDTO> getDTOList(ArrayList<Project> projects)
+	public static ArrayList<ProjectDTO> getDTOList(ArrayList<Project> projects)
 	{
 		ArrayList<ProjectDTO> dtos = new ArrayList<ProjectDTO>();
 		for (Project p : projects)

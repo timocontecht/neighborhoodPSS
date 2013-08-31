@@ -28,7 +28,7 @@ public class MyResourceTest extends JerseyTest{
 	 @Test
 	 public void test() {
 		String responseMsg = target("myresource").request().get(String.class);
-        assertEquals("Got it!", responseMsg);
+        assertEquals("Got it new!", responseMsg);
 	 }
 
 }

@@ -13,7 +13,7 @@ public class HibernateUtil
 	{
 		try
 		{
-			sessionFactory = new Configuration().configure("/org/visico/neighborhoodpss/server/project/hibernate.cfg.xml").buildSessionFactory();;
+			sessionFactory = new Configuration().configure("/org/visico/neighborhoodpss/pssprojectrest/db/hibernate.cfg.xml").buildSessionFactory();;
 		}
 		catch (Throwable ex)
 		{

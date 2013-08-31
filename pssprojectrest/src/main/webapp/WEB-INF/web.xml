@@ -9,10 +9,33 @@
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>org.visico.neighborhoodpss</param-value>
         </init-param>
+         <init-param>
+                <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name>
+                <param-value>com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/webapi/*</url-pattern>
     </servlet-mapping>
+	<security-constraint>
+        <web-resource-collection>
+                <web-resource-name>pssprojectrest</web-resource-name>
+                <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+                <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+        <auth-constraint>
+                <role-name>user</role-name>
+        </auth-constraint>
+	</security-constraint>
+	<login-config>
+	    <auth-method>BASIC</auth-method>
+        <realm-name>pssprojectrest</realm-name>	
+	</login-config> 
+	<security-role> 
+		<role-name>user</role-name> 
+	</security-role>
 </web-app>

@@ -12,6 +12,20 @@ create table if not exists USER
 	password VARCHAR(32)
 );
 
+# create views to allow for tomcat user management
+create view tc_realm_users as
+select 
+	name as username, 
+	sha2(password, 256) as passwordhash
+from USER;
+
+create view tc_realm_groups as
+select
+	USER.name as username
+	'user' as groupname
+from USER;
+
+
 create table if not exists PROJECT
 (
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,

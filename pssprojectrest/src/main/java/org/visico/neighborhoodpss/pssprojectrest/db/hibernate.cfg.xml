@@ -25,18 +25,18 @@
         <property name="show_sql">true</property>
 		
 		<!--  Mapping files -->
-		<mapping class = "org.visico.neighborhoodpss.server.project.Scenario"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.Building"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.GeoPoint"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.Network"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.GeoNetwork"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.BuildingNetwork"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.Node"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.Edge"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.Project"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.User"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.GeoEdge"/>
-		<mapping class = "org.visico.neighborhoodpss.server.project.BuildingEdge"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.Scenario"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.Building"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.GeoPoint"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.Network"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.GeoNetwork"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.BuildingNetwork"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.Node"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.Edge"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.Project"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.User"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.GeoEdge"/>
+		<mapping class = "org.visico.neighborhoodpss.pssprojectrest.db.BuildingEdge"/>
 	
     </session-factory>
 
