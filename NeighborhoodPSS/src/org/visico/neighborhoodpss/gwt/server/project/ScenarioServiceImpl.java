@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
+import org.glassfish.jersey.client.JerseyClient;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,32 +36,39 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public ProjectDTO saveProject(ProjectDTO project)
 	{
-		
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8443").
+				path("pssprojectrest/webapi/project/saveProject");
+		Invocation invocation = target.request().header("project", project).
+				buildPost(Entity.entity(project, MediaType.APPLICATION_JSON_TYPE));
+		return invocation.invoke(ProjectDTO.class);
 	}
 	
 	@Override
 	public ArrayList<ProjectDTO> getProjects(UserDTO user) {
-		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
-	    Query q = session.createQuery("from Project p join fetch p.users u where u.id = :id");
-	    q.setInteger("id", user.getId());
-	    ArrayList<Project> p = (ArrayList<Project>) q.list();
-	    ArrayList<ProjectDTO> dtos = Project.getDTOList(p); 
-	    return dtos;
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8443").
+				path("pssprojectrest/webapi/project/list");
+		Invocation invocation = target.request().buildGet();
+		ArrayList<ProjectDTO> projectList = invocation.invoke(new GenericType<ArrayList<ProjectDTO>>() {});
+		if (projectList != null)
+			return projectList;
+		else
+			return null;
 		
 	}
 
 	@Override
 	public UserDTO login(String user, String password) 
 	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
-	    Query q = session.createQuery("from User u where u.name = :name");
-	    q.setString("name", user);
-	    User u = (User) q.uniqueResult();
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8443").
+				path("pssprojectrest/webapi/project/login");
+		Invocation invocation = target.queryParam("user", user).
+				queryParam("pass", password).request().buildGet();
+		UserDTO u =  invocation.invoke(UserDTO.class);
 	    if (u != null && u.getPassword().equals(password) )
-	    	return u.getDto_object();
+	    	return u;
 	    else
 	    	return null;
 	}
