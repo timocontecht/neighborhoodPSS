@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectNameDTO;
+import org.visico.neighborhoodpss.domain.project.UserDTO;
 import org.visico.neighborhoodpss.pssprojectrest.ProjectRestService;
 
 public class ProjectRestServiceTest extends JerseyTest{
@@ -35,9 +36,9 @@ public class ProjectRestServiceTest extends JerseyTest{
 	 
 	 @Test
 	 public void getProjectTest() {
-		Invocation invocation = target("project").request().header("id", "1").buildGet();
+		Invocation invocation = target("project").queryParam("id", "1").request().buildGet();
 		ProjectDTO responseMsg = invocation.invoke(ProjectDTO.class);
-        assertNotNull(responseMsg);
+        assertEquals(responseMsg.getId(), 1);
 	 }
 	 
 	 @Test
@@ -49,6 +50,15 @@ public class ProjectRestServiceTest extends JerseyTest{
 		Invocation invocation = target("project/saveProject").request().header("project", r).
 				buildPost(Entity.entity(project, MediaType.APPLICATION_JSON_TYPE));
 		invocation.invoke();
+        
+	 }
+	 
+	 @Test
+	 public void loginTest() {
+		Invocation invocation = target("project/login").queryParam("user", "User 1").
+				queryParam("pass", "pass1").request().buildGet();
+		 UserDTO user = invocation.invoke(UserDTO.class);
+	     assertEquals(user.getName(), "User 1");
         
 	 }
 	 
