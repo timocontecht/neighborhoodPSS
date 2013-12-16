@@ -3,39 +3,16 @@ package org.visico.neighborhoodpss.gwt.server.project;
 
 import java.util.ArrayList;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-
-
-
-
-
-
-
-
-
-import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.client.filter.HttpBasicAuthFilter;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.visico.neighborhoodpss.gwt.client.ScenarioService;
-import org.visico.neighborhoodpss.pssprojectrest.db.HibernateUtil;
-import org.visico.neighborhoodpss.pssprojectrest.db.Project;
-import org.visico.neighborhoodpss.pssprojectrest.db.User;
+import org.visico.neighborhoodpss.gwt.server.project.db.HibernateUtil;
+import org.visico.neighborhoodpss.gwt.server.project.db.Project;
+import org.visico.neighborhoodpss.gwt.server.project.db.User;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.UserDTO;
-
-
-
 
 
 
