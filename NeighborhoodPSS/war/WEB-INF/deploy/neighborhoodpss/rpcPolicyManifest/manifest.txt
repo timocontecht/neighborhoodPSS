@@ -1,3 +1,2 @@
 # Module neighborhoodpss
 # RPC service class, partial path of RPC policy file
-org.visico.neighborhoodpss.gwt.client.ScenarioService, 3449C0A7A98D01E0A3E6B1048B90CD8E.gwt.rpc
