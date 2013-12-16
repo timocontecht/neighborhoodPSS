@@ -9,7 +9,7 @@ import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MapClickHandler;
-import com.google.gwt.maps.client.event.PolygonEndLineHandler;
+import com.google.gwt.maps.client.event.MapRightClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Point;
 import com.google.gwt.maps.client.geom.Size;
@@ -20,7 +20,7 @@ import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.user.client.ui.Composite;
 
 
-public class Map extends Composite implements MapClickHandler, PolygonEndLineHandler
+public class Map extends Composite implements MapClickHandler, MapRightClickHandler
 {
 	public enum editmodes
 	{
@@ -59,6 +59,7 @@ public class Map extends Composite implements MapClickHandler, PolygonEndLineHan
 	    // Add some controls for the zoom level
 	    theMap.addControl(new LargeMapControl());
 	    theMap.addMapClickHandler(this);
+	    theMap.addMapRightClickHandler(this);
 	    
 	    mode = editmodes.SELECTION;
 	    this.initWidget(theMap);
@@ -75,6 +76,16 @@ public class Map extends Composite implements MapClickHandler, PolygonEndLineHan
 
 	public void setMode(editmodes mode) {
 		this.mode = mode;
+		
+		// delete all temporary objects
+		firstBuildingNode = null;
+		
+		for (int i=0; i<buildingnodes.size(); i++)
+		{
+			theMap.removeOverlay(buildingnodes.get(i));
+		}
+		buildingnodes.clear();
+		firstPickedNode = null;
 	}
 
 	@Override
@@ -154,10 +165,12 @@ public class Map extends Composite implements MapClickHandler, PolygonEndLineHan
 
 
 	@Override
-	public void onEnd(PolygonEndLineEvent event) {
-		BuildingPolygon building = (BuildingPolygon)event.getSource();
-		building.setClosed(true);
-		med.addNewBuilding(building);
+	public void onRightClick(MapRightClickEvent event) {
+		if (mode == editmodes.ADD_BUILDING )
+		{
+			firstBuildingNode = null;
+    		buildingnodes.clear();	
+		}
 	}
 
 }

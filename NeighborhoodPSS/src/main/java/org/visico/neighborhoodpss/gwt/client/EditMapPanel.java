@@ -68,8 +68,8 @@ public class EditMapPanel extends Composite implements ClickHandler, ChangeHandl
 		
 		VerticalPanel addNetwPanel = new VerticalPanel();
 		addNetwPanel.setStyleName("boundedVPanel");
-		addNetworkBtn.setStyleName("normalButton");
 		addNetwPanel.add(addNetworkBtn);
+		addNetworkBtn.setStyleName("normalButton");
 		addNetworkBtn.addClickHandler(this);
 		mainPanel.add(addNetwPanel);
 		

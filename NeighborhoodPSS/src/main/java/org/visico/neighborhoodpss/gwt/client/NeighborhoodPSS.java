@@ -26,7 +26,7 @@ public class NeighborhoodPSS implements EntryPoint
 	    * application on a public server, but a blank key will work for an
 	    * application served from localhost.
 	   */
-	   Maps.loadMapsApi("", "2", false, new Runnable() {
+	   Maps.loadMapsApi("AIzaSyCwVoJpM6ZJhpyQ5zX7zVzqrB-F_vjM9Ak", "2", false, new Runnable() {
 	      public void run() {
 	        buildUi();
 	      }

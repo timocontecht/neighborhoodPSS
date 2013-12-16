@@ -209,19 +209,21 @@ public class ScenarioEditMediator {
 	public void deleteSelected() {
 		for (Overlay o : selected)
 		{
-			if (o instanceof NetworkEdge)
+			
+			if (o != null && o instanceof NetworkEdge)
 			{
 				EdgeDTO edgeDTO = edgeMap.get((NetworkEdge)o);
 				((GeoNetworkDTO)selectedNetwork).deleteEdge(edgeDTO);
 				edgeMap.remove(o);
+				map.getMap().removeOverlay(o);
 			}
-			else if (o instanceof BuildingPolygon)
+			else if (o != null && o instanceof BuildingPolygon)
 			{
 				BuildingDTO buildingDTO = buildingMap.get(((BuildingPolygon)o));
 				scenario.deleteBuilding(buildingDTO);
 				buildingMap.remove(o);
+				map.getMap().removeOverlay(o);
 			}
-			map.getMap().removeOverlay(o);
 		}
 		selected.clear();
 		editNetworkPanel.changeSelectedLabel(0,0,0);
