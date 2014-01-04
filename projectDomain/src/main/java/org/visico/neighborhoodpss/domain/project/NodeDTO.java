@@ -1,14 +1,10 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class NodeDTO implements Serializable
+public class NodeDTO implements IsSerializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4045277191861116497L;
 	private int id;
 	private double longitude;
 	private double latitude;

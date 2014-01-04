@@ -1,17 +1,14 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public abstract class EdgeDTO implements Cloneable, Serializable
+
+public abstract class EdgeDTO implements Cloneable, IsSerializable
 {
 
 	private int id;
 	private double capacity;
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2009155193814407284L;
 
 	public EdgeDTO()
 	{

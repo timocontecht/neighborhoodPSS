@@ -1,8 +1,10 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class GeoEdgeDTO extends EdgeDTO implements Cloneable, Serializable
+
+
+public class GeoEdgeDTO extends EdgeDTO implements Cloneable, IsSerializable
 {
 
 	private NodeDTO start_node;

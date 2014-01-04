@@ -1,19 +1,14 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class GeoNetworkDTO extends NetworkDTO implements Cloneable, Serializable
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class GeoNetworkDTO extends NetworkDTO implements Cloneable, IsSerializable
 {
 	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6028036394408737589L;
 	private List<NodeDTO> nodes = new ArrayList<NodeDTO>();
 	private List<GeoEdgeDTO> edges = new ArrayList<GeoEdgeDTO>();
 	

@@ -1,14 +1,12 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
 
-public class UserDTO implements Cloneable, Serializable
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class UserDTO implements Cloneable, IsSerializable
 {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1646718522876342283L;
 	
 	private String name;
 	private String email;

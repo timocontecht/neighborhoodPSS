@@ -1,15 +1,11 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
-public class GeoPointDTO implements Cloneable, Serializable
+public class GeoPointDTO implements Cloneable, IsSerializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4045277191861116497L;
 	private double longitude;
 	private double latitude;
 	private int id;

@@ -1,17 +1,13 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, Serializable
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class BuildingNetworkDTO extends NetworkDTO implements Cloneable, IsSerializable
 {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -833655125804076550L;
 	
 	private List<BuildingEdgeDTO> edges = new ArrayList<BuildingEdgeDTO>();
 	private List<BuildingDTO> buildings = new ArrayList<BuildingDTO>();

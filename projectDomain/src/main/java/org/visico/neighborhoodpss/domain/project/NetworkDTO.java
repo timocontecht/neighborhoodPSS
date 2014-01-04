@@ -1,16 +1,11 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-public abstract class NetworkDTO implements Cloneable, Serializable
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public abstract class NetworkDTO implements Cloneable, IsSerializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4908867498424445477L;
 	private String name;
 	private int id;
 	private ScenarioDTO scenario;

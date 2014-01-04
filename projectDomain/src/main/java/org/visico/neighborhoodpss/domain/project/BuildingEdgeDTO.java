@@ -1,13 +1,10 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class BuildingEdgeDTO extends EdgeDTO implements Cloneable, Serializable
+
+public class BuildingEdgeDTO extends EdgeDTO implements Cloneable, IsSerializable
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1063185573018035186L;
 
 	private BuildingDTO start_building;
 	private BuildingDTO end_building;

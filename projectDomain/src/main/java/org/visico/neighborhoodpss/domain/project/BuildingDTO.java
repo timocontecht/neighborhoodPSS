@@ -1,10 +1,10 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-
 import java.util.Iterator;
 import java.util.List;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 
-public class BuildingDTO implements Cloneable, Serializable
+public class BuildingDTO implements Cloneable, IsSerializable
 {
 	
 	// label is automatically created
@@ -25,10 +25,6 @@ public class BuildingDTO implements Cloneable, Serializable
 	private double area;
 	private List<GeoPointDTO> points = new ArrayList<GeoPointDTO>();
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6838190883337046022L;
 	
 	public BuildingDTO()
 	{
