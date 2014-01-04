@@ -22,7 +22,6 @@ public class BuildingDTO implements Cloneable, Serializable
 	
 	// label is automatically created
 	private int id;
-	private String industry;
 	private double area;
 	private List<GeoPointDTO> points = new ArrayList<GeoPointDTO>();
 	
@@ -43,9 +42,6 @@ public class BuildingDTO implements Cloneable, Serializable
 		// that it is not yet in the db and has to created
 		// instead of updated
 		this.setArea(toCopy.getArea());
-		//clone.setId(this.getId());
-		this.setType(toCopy.getType());
-		
 		// need to clone the points as well
 		Iterator<GeoPointDTO> it = toCopy.getPoints().iterator();
 		while (it.hasNext())
@@ -78,13 +74,6 @@ public class BuildingDTO implements Cloneable, Serializable
 		points.add(p);
 	}
 
-	public String getType() {
-		return industry;
-	}
-
-	public void setType(String type) {
-		this.industry = type;
-	}
 
 	public double getArea() {
 		return area;
