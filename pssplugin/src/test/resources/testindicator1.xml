@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tns:plugin xmlns:tns="http://www.example.org/indicatorPlugin/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/indicatorPlugin/ ../../main/resources/indicatorPlugin.xsd ">
+ <name>Test Indicator 1</name>
+	<className>org.visico.neighborhoodpss.deterioationindicator.DeterioationIndicator</className>
+	<description>Indicator to test dynamic loading</description>
+	<author> Timo Hartmann</author>
+	<version>1.0</version>
+	<jar>testindicator1.jar</jar>
+	
+	<data>
+		<building-property>
+				<name>Condition</name>
+				<type>Integer</type>
+				<max>5</max>
+				<min>0</min>
+				<default>3</default>
+		</building-property>
+	</data>
+</tns:plugin>
