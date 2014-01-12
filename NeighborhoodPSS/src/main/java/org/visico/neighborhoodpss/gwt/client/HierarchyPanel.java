@@ -8,6 +8,7 @@ import java.util.Set;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
+import org.visico.neighborhoodpss.gwt.shared.patterns.IndicatorMediator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -39,11 +40,17 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 		draw();
 	}
 	
+	Set<ScenarioDTO> parentScenarios;
+	Button addRoot;
+	Button saveSession;
+	IndicatorMediator indicatorMed;
+	
 	public void setProject(ProjectDTO project)
 	{
 		this.project = project;
 		parentScenarios.clear();
 		parentScenarios.addAll(project.getParent_scenarios());
+		indicatorMed = new IndicatorMediator(project);
 		draw();
 	}
 	
@@ -60,9 +67,10 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 			else
 			{
 				VerticalPanel p = new VerticalPanel();
+				//p.setStyleName("boundedVPanel");
 				ScrollPanel s = new ScrollPanel();
-				s.setSize("40em", "40em");
-				p.add(s);
+				//s.setSize("40em", "40em");
+				s.add(p);
 				VerticalPanel scenarioPanel = new VerticalPanel();
 				
 				Iterator<ScenarioDTO> it = parentScenarios.iterator();
@@ -72,18 +80,23 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 					scenarioPanel.add(st);
 				}
 				
-				s.add(scenarioPanel);
+				p.add(scenarioPanel);
 				
 				addRoot = new Button("Add Root Scenario");
 			    addRoot.addClickHandler(this);
 			    p.add(addRoot);
 			    
-			    this.addWest(p, 50);
+			    this.addWest(s, 50);
+			    
+			    // add the indicator selection panel
+			    IndicatorSelectionPanel indSelPanel = new IndicatorSelectionPanel(indicatorMed);
+			    indicatorMed.registerIndicatorSelectionPanel(indSelPanel);
+			    this.addEast(indSelPanel, 20);
 			    
 			    saveSession = new Button("Save Session");
-			    saveSession.setSize("50em", "10em");
+			    //saveSession.setSize("50em", "10em");
 			    saveSession.addClickHandler(this);
-			    this.addSouth(saveSession, 20);
+			    this.addSouth(saveSession, 5);
 			}
 		    
 		} 
@@ -94,9 +107,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	    
 	}
 	
-	Set<ScenarioDTO> parentScenarios;
-	Button addRoot;
-	Button saveSession;
+	
 
 	@Override
 	public void onClick(ClickEvent event) 
