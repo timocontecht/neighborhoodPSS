@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/indicatorPlugin/" targetNamespace="http://www.example.org/indicatorPlugin/">
+    
+    <complexType name="plugin">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="className" type="string"></element>
+    		<element name="description" type="string"></element>
+    		<element name="author" type="string"></element>
+    		<element name="version" type="string"></element>
+    		<element name="jar" type="string"></element>
+    		<element name="data" type="tns:data" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="data">
+    	<sequence>
+    		<element name="building-property" type="tns:building-property" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="building-property">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="type" type="string"></element>
+    		<element name="max" type="string"></element>
+    		<element name="min" type="string"></element>
+    		<element name="default" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="plugin" type="tns:plugin"></element>
+</schema>
