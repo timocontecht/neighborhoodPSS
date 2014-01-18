@@ -24,10 +24,10 @@ public class IndicatorManager {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void initIndicator(String xmlInfoName, String pathToIndicator) throws JAXBException, MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
+	public void initIndicatorByFileName(String xmlInfoName, String pathToIndicator, ClassLoader classLoader) throws JAXBException, MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
 		
 		// read Indicator Plugin information from xml
-		File file = new File(xmlInfoName);
+		File file= new File(xmlInfoName);
 		
 		JAXBContext jaxbContext = JAXBContext.newInstance(Plugin.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -37,14 +37,39 @@ public class IndicatorManager {
 		// initialize class
 		File jarfile = new File(pathToIndicator + indPlugInfo.getJar());
 		URL jarfileurl = new URL("jar", "","file:" + jarfile.getAbsolutePath()+"!/");
-		URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl});
+		System.out.println("Trying to load file from " + jarfileurl.getPath());
+		URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, classLoader);
 		Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(indPlugInfo.getClassName());
 		IndicatorPlugin indPlug = indPlugClass.newInstance();
 		
 		// add to map
 		plugins.put(indPlugInfo, indPlug);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void initIndicatorByIndicatorName(String indicatorName, String pathToIndicator, ClassLoader parentCL) throws JAXBException, MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
+		
+		for (Plugin p : availableIndicators(pathToIndicator))  {
+			if (p.getName().equals(indicatorName))  {
+				// initialize class
+				File jarfile = new File(pathToIndicator + p.getJar());
+				URL jarfileurl = new URL("jar", "","file:" + jarfile.getAbsolutePath()+"!/");
+				System.out.println("Trying to load file from " + jarfileurl.getPath());
+				URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, parentCL);
+				Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(p.getClassName());
+				IndicatorPlugin indPlug = indPlugClass.newInstance();
+				
+				// add to map
+				plugins.put(p, indPlug);
+			}
+		}
+	}
 
+	public void removeIndicator(Plugin indPlugInfo)
+	{
+		plugins.remove(indPlugInfo);
+	}
+	
 	public ArrayList<Plugin> availableIndicators(String pathToIndicator) 
 	{
 		ArrayList<Plugin> indicators = new ArrayList<Plugin>();
@@ -70,5 +95,16 @@ public class IndicatorManager {
 	
 	public HashMap<Plugin, IndicatorPlugin> getPlugins() {
 		return plugins;
+	}
+
+	public void unregisterIndicatorByIndicatorName(String indicatorName,
+			String pathToIndicators) {
+		for (Plugin p : availableIndicators(pathToIndicators))  {
+			if (p.getName().equals(indicatorName))  {
+				
+				// remove from map
+				plugins.remove(p);
+			}
+		}
 	}
 }

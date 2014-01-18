@@ -34,12 +34,12 @@ public class InidcatorManagerTest {
 	}*/
 	
 	@Test
-	public void initIndicator() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, FileNotFoundException
+	public void initIndicatorByFileName() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, FileNotFoundException
 	{
 		ProjectDTO project = new ProjectDTO();
 		IndicatorManager manager = new IndicatorManager(project);
 		
-		manager.initIndicator("src/test/resources/testindicator1.xml", "src/test/resources/");
+		manager.initIndicatorByFileName("src/test/resources/testindicator1.xml", "src/test/resources/", ClassLoader.getSystemClassLoader());
 		
 		HashMap<Plugin, IndicatorPlugin> indicators = manager.getPlugins();
 		ScenarioDTO scenario = new ScenarioDTO();
@@ -48,6 +48,26 @@ public class InidcatorManagerTest {
 			System.out.println(key.getName());
 			indicators.get(key).calculate(scenario);
 		}
+		
+		
+	}
+	
+	@Test
+	public void initIndicatorByName() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, JAXBException, FileNotFoundException
+	{
+		ProjectDTO project = new ProjectDTO();
+		IndicatorManager manager = new IndicatorManager(project);
+		
+		manager.initIndicatorByIndicatorName("Test Indicator 1", "src/test/resources/", ClassLoader.getSystemClassLoader());
+		
+		HashMap<Plugin, IndicatorPlugin> indicators = manager.getPlugins();
+		ScenarioDTO scenario = new ScenarioDTO();
+		for (Plugin key : indicators.keySet())
+		{
+			System.out.println(key.getName());
+			indicators.get(key).calculate(scenario);
+		}
+		
 		
 	}
 	
