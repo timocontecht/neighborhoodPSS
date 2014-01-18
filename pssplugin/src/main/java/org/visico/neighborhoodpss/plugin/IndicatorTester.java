@@ -18,11 +18,11 @@ public class IndicatorTester {
 		
 		manager.initIndicatorByFileName(args[0], args[1], ClassLoader.getSystemClassLoader());
 		
-		HashMap<Plugin, IndicatorPlugin> indicators = manager.getPlugins();
+		HashMap<String, IndicatorPlugin> indicators = manager.getPlugins();
 		ScenarioDTO scenario = new ScenarioDTO();
-		for (Plugin key : indicators.keySet())
+		for (String key : indicators.keySet())
 		{
-			System.out.println(key.getName());
+			System.out.println(key);
 			indicators.get(key).calculate(scenario);
 		}
 

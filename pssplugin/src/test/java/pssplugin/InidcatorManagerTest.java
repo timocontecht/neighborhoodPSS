@@ -41,11 +41,11 @@ public class InidcatorManagerTest {
 		
 		manager.initIndicatorByFileName("src/test/resources/testindicator1.xml", "src/test/resources/", ClassLoader.getSystemClassLoader());
 		
-		HashMap<Plugin, IndicatorPlugin> indicators = manager.getPlugins();
+		HashMap<String, IndicatorPlugin> indicators = manager.getPlugins();
 		ScenarioDTO scenario = new ScenarioDTO();
-		for (Plugin key : indicators.keySet())
+		for (String key : indicators.keySet())
 		{
-			System.out.println(key.getName());
+			System.out.println(key);
 			indicators.get(key).calculate(scenario);
 		}
 		
@@ -60,11 +60,11 @@ public class InidcatorManagerTest {
 		
 		manager.initIndicatorByIndicatorName("Test Indicator 1", "src/test/resources/", ClassLoader.getSystemClassLoader());
 		
-		HashMap<Plugin, IndicatorPlugin> indicators = manager.getPlugins();
+		HashMap<String, IndicatorPlugin> indicators = manager.getPlugins();
 		ScenarioDTO scenario = new ScenarioDTO();
-		for (Plugin key : indicators.keySet())
+		for (String key : indicators.keySet())
 		{
-			System.out.println(key.getName());
+			System.out.println(key);
 			indicators.get(key).calculate(scenario);
 		}
 		

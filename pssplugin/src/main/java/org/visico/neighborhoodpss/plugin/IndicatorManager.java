@@ -16,7 +16,7 @@ import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.plugin.domain.Plugin;
 
 public class IndicatorManager {
-	HashMap<Plugin, IndicatorPlugin> plugins = new HashMap<Plugin, IndicatorPlugin>();
+	HashMap<String, IndicatorPlugin> plugins = new HashMap<String, IndicatorPlugin>();
 	ProjectDTO project = null;
 	
 	public IndicatorManager(ProjectDTO project) {
@@ -43,7 +43,7 @@ public class IndicatorManager {
 		IndicatorPlugin indPlug = indPlugClass.newInstance();
 		
 		// add to map
-		plugins.put(indPlugInfo, indPlug);
+		plugins.put(indPlugInfo.getClassName(), indPlug);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -60,7 +60,7 @@ public class IndicatorManager {
 				IndicatorPlugin indPlug = indPlugClass.newInstance();
 				
 				// add to map
-				plugins.put(p, indPlug);
+				plugins.put(p.getClassName(), indPlug);
 			}
 		}
 	}
@@ -93,7 +93,7 @@ public class IndicatorManager {
 		return indicators;
 	}
 	
-	public HashMap<Plugin, IndicatorPlugin> getPlugins() {
+	public HashMap<String, IndicatorPlugin> getPlugins() {
 		return plugins;
 	}
 
@@ -101,9 +101,8 @@ public class IndicatorManager {
 			String pathToIndicators) {
 		for (Plugin p : availableIndicators(pathToIndicators))  {
 			if (p.getName().equals(indicatorName))  {
-				
 				// remove from map
-				plugins.remove(p);
+				plugins.remove(p.getClassName());
 			}
 		}
 	}
