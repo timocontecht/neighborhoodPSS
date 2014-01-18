@@ -20,7 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class IndicatorMediator {
 	
-	
+	IndicatorServiceAsync service = GWT.create(IndicatorService.class);
 	IndicatorSelectionPanel indicatorSelectionPanel;
 	HashMap<String, IndicatorWidget> indicatorWidgets = new HashMap<String, IndicatorWidget>();
 
@@ -43,9 +43,10 @@ public class IndicatorMediator {
 		addExistingIndicators();
 	}
 
-	private void addExistingIndicators()
-	{
-		IndicatorServiceAsync service = GWT.create(IndicatorService.class);
+	public void addExistingIndicators()
+	{	
+		indicatorWidgets.clear();
+		indicatorSelectionPanel.clear();
 		
 		AsyncCallback<ArrayList<IndicatorDTO>> callback = new AsyncCallback<ArrayList<IndicatorDTO>>()
 		{
@@ -62,11 +63,11 @@ public class IndicatorMediator {
 			{
 				for (IndicatorDTO ind : result)
 				{
-					IndicatorWidget wid = new IndicatorWidget();
-					wid.setAuthor(ind.getAuthor());
+					IndicatorWidget wid = new IndicatorWidget(IndicatorMediator.this);
 					wid.setDescription(ind.getDescription());
 					wid.setName(ind.getName());
 					wid.setVersion(ind.getVersion());
+					wid.setActivated(ind.getActivated());
 					indicatorWidgets.put(ind.getName(), wid);
 					indicatorSelectionPanel.addIndicatorWidget(wid);
 				}
@@ -74,6 +75,46 @@ public class IndicatorMediator {
 		};
 		
 		service.getIndicatorList(getProject(), callback);
+	}
+
+
+	public void registerIndicator(String indicatorName) {
+		AsyncCallback<String> callback = new AsyncCallback<String>()
+		{
+			@Override
+			public void onFailure(Throwable caught) 
+			{
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onSuccess(String result) 
+			{
+				Window.confirm(result);
+				addExistingIndicators();
+			}
+		};
+		service.activateIndicator(getProject(), indicatorName, callback);
+	}
+
+
+	public void deregisterIndicator(String indicatorName) {
+		AsyncCallback<String> callback = new AsyncCallback<String>()
+				{
+					@Override
+					public void onFailure(Throwable caught) 
+					{
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void onSuccess(String result) 
+					{
+						Window.confirm(result);
+						addExistingIndicators();
+					}
+				};
+				service.deactivateIndicator(getProject(), indicatorName, callback);
 	}
 	
 }

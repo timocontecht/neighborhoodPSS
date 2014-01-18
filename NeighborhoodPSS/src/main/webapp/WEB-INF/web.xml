@@ -6,16 +6,24 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-
   <servlet>
     <servlet-name>scenarioServlet</servlet-name>
     <servlet-class>org.visico.neighborhoodpss.gwt.server.project.ScenarioServiceImpl</servlet-class>
   </servlet>
-  
-
+ 
   <servlet-mapping>
     <servlet-name>scenarioServlet</servlet-name>
     <url-pattern>/neighborhoodpss/scenario</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>indicatorServlet</servlet-name>
+    <servlet-class>org.visico.neighborhoodpss.gwt.server.project.IndicatorServiceImpl</servlet-class>
+  </servlet>
+ 
+  <servlet-mapping>
+    <servlet-name>indicatorServlet</servlet-name>
+    <url-pattern>/neighborhoodpss/indicator</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

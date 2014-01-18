@@ -1,5 +1,7 @@
 package org.visico.neighborhoodpss.gwt.client;
 
+import org.visico.neighborhoodpss.gwt.shared.patterns.IndicatorMediator;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -20,10 +22,12 @@ public class IndicatorWidget extends Composite implements ClickHandler {
 	
 	Button activated_btn;
 	
-	
+	IndicatorMediator med;
 
-	public IndicatorWidget()
+	public IndicatorWidget(IndicatorMediator med)
 	{
+		this.med = med;
+		
 		name_lbl = new Label();
 		author_lbl = new Label();
 		description_lbl = new Label();
@@ -80,8 +84,12 @@ public class IndicatorWidget extends Composite implements ClickHandler {
 	
 	@Override
 	public void onClick(ClickEvent event) {
+		if (activated_btn.getText().equals("Deactivate"))
+			med.deregisterIndicator(name_lbl.getText());
+		else
+			med.registerIndicator(name_lbl.getText());
 		
-		
+		med.addExistingIndicators();
 	}
 
 }

@@ -16,4 +16,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface IndicatorServiceAsync {
 	void getIndicatorList(ProjectDTO project, AsyncCallback<ArrayList<IndicatorDTO>> asyncCallback);
+	void activateIndicator (ProjectDTO project, String indicatorName, AsyncCallback<String> asyncCallback);
+	void deactivateIndicator (ProjectDTO project, String indicatorName, AsyncCallback<String> asyncCallback);
 }

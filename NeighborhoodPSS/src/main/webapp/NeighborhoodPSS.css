@@ -85,3 +85,40 @@ h1 {
 	font-style: italic;
    	margin-bottom: 2px;
 }
+
+.indicatorInfoTitle {
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 16px;
+	width: 255px;
+	width: 330px;
+}
+
+.indicatorInfoDescription {
+font-size: 14px;
+line-height: 18px;
+overflow: hidden;
+white-space: normal;
+text-overflow: ellipsis;
+word-wrap: break-word;
+width: 670px;
+}
+
+.indicatorInfoStage {
+font-size: 11px;
+line-height: 16px;
+font-weight: bold;
+margin-right: 4px;
+color: #F18E00;
+-webkit-font-smoothing: antialiased;
+}
+
+.indicatorInfoPanel {
+position: relative;
+height: 75px;
+width: 100%;
+border-bottom: 1px solid #e6e6e6;
+cursor: pointer !important;
+overflow: hidden;
+padding-bottom: 3px;
+}

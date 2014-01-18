@@ -8,6 +8,7 @@ public class IndicatorDTO implements IsSerializable {
 	String description;
 	String author;
 	String version;
+	private boolean activated;
 	
 	public IndicatorDTO()
 	{
@@ -53,5 +54,13 @@ public class IndicatorDTO implements IsSerializable {
 		this.version = version;
 	}
 
+	public void setActivated(boolean b) {
+		this.activated = b;
+	}
+
+	public boolean getActivated()
+	{
+		return activated;
+	}
 	
 }

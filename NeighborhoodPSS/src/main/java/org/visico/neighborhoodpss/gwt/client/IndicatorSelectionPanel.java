@@ -20,14 +20,16 @@ public class IndicatorSelectionPanel extends Composite {
 	private void draw()
 	{
 		mainPanel = new VerticalPanel();
-		
-		mainPanel.add(new Label("here the indicators available"));
-		
 		this.initWidget(mainPanel);
 	}
 	
 	public void addIndicatorWidget(IndicatorWidget widget)
 	{
 		mainPanel.add(widget);
+	}
+
+	public void clear() {
+		mainPanel.clear();
+		
 	}
 }
