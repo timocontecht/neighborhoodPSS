@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 public class MainTab extends TabLayoutPanel 
 {
 	static private MainTab instance = null;
+
 	
 	static public MainTab getInstance()
 	{
@@ -49,11 +50,13 @@ public class MainTab extends TabLayoutPanel
 		
 		draw();
 	}
+
+	HierarchyPanel hierarchyPanel; 
 	
 	public void draw()
 	{
-		HierarchyPanel panel = HierarchyPanel.getInstance();
-		add(panel, "Scenarios");
+		hierarchyPanel = HierarchyPanel.getInstance();
+		add(hierarchyPanel, "Scenarios");
 		
 		
 		
@@ -61,7 +64,7 @@ public class MainTab extends TabLayoutPanel
 	
 	public void addScenario(ScenarioDTO scenario)
 	{
-		ScenarioPanel dock = new ScenarioPanel(scenario);
+		ScenarioPanel dock = new ScenarioPanel(scenario, hierarchyPanel.getIndicatorMed());
 		dock.setTitle(scenario.getName() + " " + scenario.label());
 		panels.add(dock);
 		add(dock, dock.getTitle());

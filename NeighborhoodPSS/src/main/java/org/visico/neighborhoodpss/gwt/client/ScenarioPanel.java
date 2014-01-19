@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 
 public class ScenarioPanel extends DockLayoutPanel
 {	
-	public ScenarioPanel(ScenarioDTO s) 
+	ProjectMediator indMed;
+	
+	public ScenarioPanel(ScenarioDTO s, ProjectMediator indMed) 
 	{
 		super(Unit.EX);
+		this.indMed = indMed;
 		scenario = s;
 		this.setTitle("Scenarios");
 		draw();
@@ -22,9 +27,10 @@ public class ScenarioPanel extends DockLayoutPanel
 	
 	public void draw()
 	{
-		ScenarioEditMediator med = new ScenarioEditMediator(scenario);
+		ScenarioEditMediator med = new ScenarioEditMediator(scenario, indMed.getProject());
 		map = new Map(med);
 		addWest(new EditMapPanel(this, med), 35);
+		addSouth(new DataPanel(this, med, indMed), 35);
 	    add(map);
 	    med.initializeOverlays();
 	}

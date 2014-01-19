@@ -40,7 +40,7 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 			for (BuildingProperty bp : indInfo.getData().getBuildingProperty() )
 			{
 				BuildingDataTypeDTO dt = new BuildingDataTypeDTO();
-				dt.setDefault_val(Double.parseDouble(bp.getDefault()));
+				dt.setDefault_val(bp.getDefault());
 				dt.setMaximum(Double.parseDouble(bp.getMax()));
 				dt.setMinimum(Double.parseDouble(bp.getMin()));
 				dt.setName(bp.getName());

@@ -115,3 +115,79 @@ create table if not exists NETWORK_BUILDING
 	network_id INT REFERENCES BUILDINGNETWORK.id,
 	building_id INT REFERENCES BUILDING.id
 );
+
+create table if not exists BUILDING_DATA_TYPE
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	name VARCHAR(250) UNIQUE,
+	type VARCHAR(10),
+	maximum DOUBLE,
+	minimum DOUBLE,
+	default_val DOUBLE
+);
+
+create table if not exists BUILDING_DATA_TYPE_PROJECT
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	building_data_type_id INT REFERENCES BUILDING_DATA_TYPE.id,
+	project_id INT REFERENCES project.id
+);
+
+create table if not exists EDGE_DATA_TYPE
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	name VARCHAR(250) UNIQUE,
+	type VARCHAR(10),
+	maximum DOUBLE,
+	minimum DOUBLE,
+	default_val DOUBLE
+);
+
+create table if not exists EDGE_DATA_TYPE_PROJECT
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	edge_data_type_id INT REFERENCES EDGGE_DATA_TYPE.id,
+	project_id INT REFERENCES project.id
+);
+
+create table if not exists NODE_DATA_TYPE
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	name VARCHAR(250) UNIQUE,
+	type VARCHAR(10),
+	maximum DOUBLE,
+	minimum DOUBLE,
+	default_val DOUBLE
+);
+
+create table if not exists NODE_DATA_TYPE_PROJECT
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	node_data_type_id INT REFERENCES NODE_DATA_TYPE.id,
+	project_id INT REFERENCES project.id
+);
+
+create table if not exists BUILDING_DATA
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	type_id INT REFERENCES DATA_BUILDING.id,
+	value VARCHAR(250),
+	building_id INT REFERENCES BUILDING.id
+);
+
+create table if not exists EDGE_DATA
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	type_id INT REFERENCES DATA_EDGE.id,
+	value VARCHAR(250),
+	building_id INT REFERENCES EDGE.id
+);
+
+create table if not exists NODE_DATA
+(
+	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	type_id INT REFERENCES DATA_NODE.id,
+	value VARCHAR(250),
+	building_id INT REFERENCES NODE.id
+);
+

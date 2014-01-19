@@ -1,26 +1,25 @@
 package org.visico.neighborhoodpss.gwt.client;
 
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
+
 import com.google.gwt.user.client.ui.TabPanel;
 
 public class DataPanel extends TabPanel 
 {
-/*	static private DataPanel instance = null;
+	ScenarioEditMediator sceMed;
+	ProjectMediator indMed;
 	
-	static public  DataPanel getInstance()
-	{
-		if (instance == null)
-			instance = new DataPanel();
-		return instance;
-	}
-*/
-	/*public DataPanel(ScenarioPanel p)
+	public DataPanel(ScenarioPanel p, ScenarioEditMediator sceMed, ProjectMediator indMed)
 	{
 		this.setWidth("20px");
+		this.indMed = indMed;
+		this.sceMed = sceMed;
 		scenarioPanel = p;
-		buildingTable = new BuildingTable();
-		indicatorPanel = new IndicatorPanel(p);
+		buildingTable = new BuildingTable(indMed, sceMed);
+		indMed.registerBuildingTable(buildingTable);
+		sceMed.registerBuildingTable(buildingTable);
 		add(buildingTable, "Buildings");
-	    add(indicatorPanel, "Inidcators");
 	    
 
 	    // Show the 'bar' tab initially.
@@ -30,10 +29,8 @@ public class DataPanel extends TabPanel
 	public void updateData()
 	{
 		buildingTable.draw();
-		indicatorPanel.draw();
 	}
 	
 	BuildingTable buildingTable;
-	IndicatorPanel indicatorPanel;
-	ScenarioPanel scenarioPanel;*/
+	ScenarioPanel scenarioPanel;
 }

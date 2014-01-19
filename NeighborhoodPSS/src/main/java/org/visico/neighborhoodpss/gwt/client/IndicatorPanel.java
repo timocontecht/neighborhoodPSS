@@ -12,9 +12,9 @@ import com.google.gwt.visualization.client.LegendPosition;
 
 public class IndicatorPanel extends VerticalPanel
 {
-//	private static IndicatorPanel instance = null;
+	/*private static IndicatorPanel instance = null;
 	
-	/*public IndicatorPanel(ScenarioPanel p)
+	public IndicatorPanel(ScenarioPanel p)
 	{
 		scenarioPanel = p; 
 		data = DataTable.create();
@@ -70,6 +70,6 @@ public class IndicatorPanel extends VerticalPanel
 	private DataTable data;
 	private BarChart chart;
 	private Options options;
-	private ScenarioPanel scenarioPanel;*/
-	
+	private ScenarioPanel scenarioPanel;
+	*/
 }

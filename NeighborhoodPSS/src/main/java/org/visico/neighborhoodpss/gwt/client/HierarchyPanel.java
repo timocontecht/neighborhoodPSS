@@ -8,7 +8,7 @@ import java.util.Set;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
-import org.visico.neighborhoodpss.gwt.shared.patterns.IndicatorMediator;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -43,14 +43,14 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	Set<ScenarioDTO> parentScenarios;
 	Button addRoot;
 	Button saveSession;
-	IndicatorMediator indicatorMed;
+	ProjectMediator projectMed;
 	
 	public void setProject(ProjectDTO project)
 	{
 		this.project = project;
 		parentScenarios.clear();
 		parentScenarios.addAll(project.getParent_scenarios());
-		indicatorMed = new IndicatorMediator(project);
+		projectMed = new ProjectMediator(project);
 		draw();
 	}
 	
@@ -89,8 +89,8 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 			    this.addWest(s, 50);
 			    
 			    // add the indicator selection panel
-			    IndicatorSelectionPanel indSelPanel = new IndicatorSelectionPanel(indicatorMed);
-			    indicatorMed.registerIndicatorSelectionPanel(indSelPanel);
+			    IndicatorSelectionPanel indSelPanel = new IndicatorSelectionPanel(projectMed);
+			    projectMed.registerIndicatorSelectionPanel(indSelPanel);
 			    this.addEast(indSelPanel, 20);
 			    
 			    saveSession = new Button("Save Session");
@@ -114,7 +114,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	{
 		if (event.getSource() == addRoot)
 		{
-			ScenarioDialog dlg = new ScenarioDialog(this);
+			ScenarioDialog dlg = new ScenarioDialog(projectMed);
 			dlg.show();
 		}
 		else if (event.getSource() == saveSession)
@@ -172,6 +172,12 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	public ProjectDTO getProject() {
 		return project;
 	}
+
+	
+	public ProjectMediator getIndicatorMed() {
+		return projectMed;
+	}
+
 
 	private ProjectDTO project; 
 	

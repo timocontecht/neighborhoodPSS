@@ -38,6 +38,8 @@
 		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.User"/>
 		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.GeoEdge"/>
 		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.BuildingEdge"/>
+		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.BuildingData"/>
+		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.BuildingDataType"/>
 	
     </session-factory>
 

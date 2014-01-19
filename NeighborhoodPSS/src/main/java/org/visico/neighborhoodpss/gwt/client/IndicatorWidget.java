@@ -1,6 +1,6 @@
 package org.visico.neighborhoodpss.gwt.client;
 
-import org.visico.neighborhoodpss.gwt.shared.patterns.IndicatorMediator;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,9 +22,9 @@ public class IndicatorWidget extends Composite implements ClickHandler {
 	
 	Button activated_btn;
 	
-	IndicatorMediator med;
+	ProjectMediator med;
 
-	public IndicatorWidget(IndicatorMediator med)
+	public IndicatorWidget(ProjectMediator med)
 	{
 		this.med = med;
 		

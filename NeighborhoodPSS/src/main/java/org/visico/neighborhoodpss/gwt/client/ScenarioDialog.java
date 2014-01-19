@@ -1,7 +1,9 @@
 package org.visico.neighborhoodpss.gwt.client;
 
 
+import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -13,10 +15,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ScenarioDialog extends DialogBox implements ClickHandler
 {
-	public ScenarioDialog(HierarchyPanel h)
+	private ProjectMediator med;
+	
+	public ScenarioDialog(ProjectMediator med)
 	{
 		
-		hierarchyPanel = h;
+		this.med = med;
 		
 		VerticalPanel panel = new VerticalPanel();
 		panel.add (new Label("Please enter the name of the new scenario"));
@@ -42,12 +46,10 @@ public class ScenarioDialog extends DialogBox implements ClickHandler
 	@Override
 	public void onClick(ClickEvent event) 
 	{
-		ScenarioDTO scenario = new ScenarioDTO(text());
-		hierarchyPanel.getProject().addParentScenario(scenario);
 		ScenarioDialog.this.hide(true);
-		hierarchyPanel.addParentScenario(scenario);
+		med.addParentScenario(text());
 	}
 	
 	
-	private HierarchyPanel hierarchyPanel;
+	
 }

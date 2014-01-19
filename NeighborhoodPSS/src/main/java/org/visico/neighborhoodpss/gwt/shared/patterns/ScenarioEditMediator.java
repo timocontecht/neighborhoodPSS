@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.gwt.client.BuildingPolygon;
+import org.visico.neighborhoodpss.gwt.client.BuildingTable;
 import org.visico.neighborhoodpss.gwt.client.EditMapPanel;
 import org.visico.neighborhoodpss.gwt.client.HierarchyPanel;
 import org.visico.neighborhoodpss.gwt.client.Map;
@@ -18,23 +19,28 @@ import org.visico.neighborhoodpss.gwt.client.NetworkEdge;
 import org.visico.neighborhoodpss.gwt.client.NetworkTable;
 import org.visico.neighborhoodpss.gwt.client.NodeMarker;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
+import org.visico.neighborhoodpss.domain.project.BuildingDataDTO;
+import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
 import org.visico.neighborhoodpss.domain.project.EdgeDTO;
 import org.visico.neighborhoodpss.domain.project.GeoEdgeDTO;
 import org.visico.neighborhoodpss.domain.project.GeoNetworkDTO;
 import org.visico.neighborhoodpss.domain.project.GeoPointDTO;
 import org.visico.neighborhoodpss.domain.project.NetworkDTO;
 import org.visico.neighborhoodpss.domain.project.NodeDTO;
+import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
+import com.google.gwt.user.client.ui.Grid;
 
 
 
 public class ScenarioEditMediator {
 	ScenarioDTO scenario;
+	ProjectDTO project;
 	
 	Map map;
 	EditMapPanel editNetworkPanel;
@@ -50,22 +56,20 @@ public class ScenarioEditMediator {
 	private HashMap<BuildingPolygon, BuildingDTO> buildingMap = new HashMap<BuildingPolygon, BuildingDTO>();
 	private HashMap<NetworkEdge, EdgeDTO> edgeMap = new HashMap<NetworkEdge, EdgeDTO>();
 	private HashMap<NodeMarker, NodeDTO> nodeMap = new HashMap<NodeMarker, NodeDTO>();
-	
 	private Set<Overlay> selected = new HashSet<Overlay>();
-
 	private NetworkTable networkTable;
+	private BuildingTable buildingTable;
 	
 	
-	public ScenarioEditMediator(ScenarioDTO scenario)
+	public ScenarioEditMediator(ScenarioDTO scenario, ProjectDTO project)
 	{
 		this.scenario = scenario;
-		
+		this.project = project;
 	}
 	
 	public void initializeOverlays() {
 		for (BuildingDTO b : scenario.getBuildingDTOs())
 		{
-			
 			LatLng[] polyLatLng = new LatLng[b.getPoints().size()];
 	    	for (int i=0; i<b.getPoints().size(); i++)
 			{
@@ -152,6 +156,30 @@ public class ScenarioEditMediator {
 	
 	public void registerNetworkTable(NetworkTable table) {
 		this.networkTable = table;
+	}
+	
+	public void registerBuildingTable(BuildingTable buildingTable) {
+		this.buildingTable = buildingTable;
+		insertBuildingsInTable();
+	}
+
+	private void insertBuildingsInTable() {
+		Grid buildingGrid = buildingTable.getBuildingGrid();
+		
+		buildingGrid.resizeRows(1);
+		
+		for (BuildingDTO b : scenario.getBuildingDTOs())
+		{
+			buildingGrid.insertRow(buildingGrid.getRowCount());
+			buildingGrid.setText(buildingGrid.getRowCount() - 1, 0, new Integer(b.getId()).toString());
+			
+			int column = 1;
+			for (BuildingDataDTO data : b.getData())
+			{
+				buildingGrid.setText(buildingGrid.getRowCount() - 1, column, data.getValue());
+				column ++;
+			}
+		}
 	}
 
 	public void noMode() {
@@ -260,8 +288,19 @@ public class ScenarioEditMediator {
 		}
 		
 		buildingDTO.setArea(building.getArea());
+		
+		for (BuildingDataTypeDTO dt : project.getBuildingDataTypes())
+		{
+			BuildingDataDTO data = new BuildingDataDTO();
+			data.setBuilding(buildingDTO);
+			data.setType(dt);
+			data.setValue(dt.getDefault_val());
+			buildingDTO.getData().add(data);
+		}
+		
 		scenario.addBuilingDTO(buildingDTO);
 		buildingMap.put(building, buildingDTO);
+		insertBuildingsInTable();
 	}
 
 	public void addMapSelection(Overlay overlay) {
@@ -415,4 +454,6 @@ public class ScenarioEditMediator {
 	public double getLongitude() {
 		return HierarchyPanel.getInstance().getProject().getLongitude();
 	}
+
+	
 }

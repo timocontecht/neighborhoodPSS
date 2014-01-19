@@ -1,6 +1,6 @@
 package org.visico.neighborhoodpss.gwt.client;
 
-import org.visico.neighborhoodpss.gwt.shared.patterns.IndicatorMediator;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -8,10 +8,10 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 
 public class IndicatorSelectionPanel extends Composite {
-	IndicatorMediator med;
+	ProjectMediator med;
 	VerticalPanel mainPanel;
 	
-	public IndicatorSelectionPanel(IndicatorMediator med)
+	public IndicatorSelectionPanel(ProjectMediator med)
 	{
 		this.med = med;
 		draw();

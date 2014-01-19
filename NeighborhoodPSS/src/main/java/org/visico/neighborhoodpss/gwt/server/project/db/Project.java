@@ -56,6 +56,14 @@ public class Project implements Cloneable, Serializable
 	    )
 	Set<User> users = new HashSet<User>();
 	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+	        name="BUILDING_DATA_TYPE_PROJECT",
+	        joinColumns=@JoinColumn(name="project_id"),
+	        inverseJoinColumns=@JoinColumn(name="building_data_type_id")
+	    )
+	Set<BuildingDataType> buildingDataTypes = new HashSet<BuildingDataType>();
+	
 	@Transient
 	private ProjectDTO dto_object = null;
 	
@@ -145,6 +153,14 @@ public class Project implements Cloneable, Serializable
 	{
 		this.users.add(u);
 	}
+	
+	public Set<BuildingDataType> getBuildingDataTypes() {
+		return buildingDataTypes;
+	}
+
+	public void setBuildingDataTypes(Set<BuildingDataType> buildingDataTypes) {
+		this.buildingDataTypes = buildingDataTypes;
+	}
 
 	public ProjectDTO getDto_object() {
 		if (dto_object == null)
@@ -164,6 +180,11 @@ public class Project implements Cloneable, Serializable
 			{
 				dto_object.addUser(u.getDto_object());
 			}
+			
+			for (BuildingDataType d : getBuildingDataTypes())
+			{
+				dto_object.getBuildingDataTypes().add(d.getDto_object());
+			}
 		}
 		return dto_object;
 	}
@@ -176,7 +197,6 @@ public class Project implements Cloneable, Serializable
 	{
 		this.dto_object.setId(this.id);
 		
-		
 		Iterator<Scenario> sit = this.getParentScenarios().iterator();
 		while(sit.hasNext())
 		{
@@ -188,6 +208,9 @@ public class Project implements Cloneable, Serializable
 		{
 			uit.next().update_dtoIds();
 		}
+		
+		for (BuildingDataType d : buildingDataTypes)
+			d.update_dtoIds();
 		
 		
 	}
