@@ -1,41 +1,17 @@
 package org.visico.neighborhoodpss.gwt.server.project;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Set;
 
-import javax.xml.bind.JAXBException;
-
+import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
-import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.gwt.client.IndicatorService;
 import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
-
-
-
-
-
-
-
-
 import org.visico.neighborhoodpss.plugin.IndicatorManager;
-import org.visico.neighborhoodpss.plugin.IndicatorPlugin;
+import org.visico.neighborhoodpss.plugin.domain.BuildingProperty;
 import org.visico.neighborhoodpss.plugin.domain.Plugin;
 
-
-
-
-
-
-
-
-
-
-//import com.google.gwt.dev.util.collect.HashSet;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -61,6 +37,17 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 			IndicatorDTO indicatordto = new IndicatorDTO(indInfo.getName(),
 					indInfo.getDescription(), indInfo.getAuthor(), indInfo.getVersion());
 			
+			for (BuildingProperty bp : indInfo.getData().getBuildingProperty() )
+			{
+				BuildingDataTypeDTO dt = new BuildingDataTypeDTO();
+				dt.setDefault_val(Double.parseDouble(bp.getDefault()));
+				dt.setMaximum(Double.parseDouble(bp.getMax()));
+				dt.setMinimum(Double.parseDouble(bp.getMin()));
+				dt.setName(bp.getName());
+				dt.setType(bp.getType());
+				indicatordto.getBuildingDataTypes().add(dt);
+			}
+				
 			if (manager.getPlugins().containsKey(indInfo.getClassName()))
 				indicatordto.setActivated(true);
 			indicators.add(indicatordto);	
@@ -100,5 +87,13 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 			return "Indicator " + indicatorName + " activation failed!";
 	    }
+	}
+
+	@Override
+	public Set<String> buildingDataTypes(ProjectDTO project) {
+		if (manager == null)
+			manager = new IndicatorManager(project);
+		
+		return manager.getBuildingDataTypes();
 	}
 }

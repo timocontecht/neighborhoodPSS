@@ -1,5 +1,10 @@
 package org.visico.neighborhoodpss.gwt.shared.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class IndicatorDTO implements IsSerializable {
@@ -9,6 +14,8 @@ public class IndicatorDTO implements IsSerializable {
 	String author;
 	String version;
 	private boolean activated;
+	
+	Set<BuildingDataTypeDTO> buildingDataTypes = new HashSet<BuildingDataTypeDTO>();
 	
 	public IndicatorDTO()
 	{
@@ -62,5 +69,14 @@ public class IndicatorDTO implements IsSerializable {
 	{
 		return activated;
 	}
+
+	public Set<BuildingDataTypeDTO> getBuildingDataTypes() {
+		return buildingDataTypes;
+	}
+
+	public void setBuildingDataTypes(Set<BuildingDataTypeDTO> buildingDataTypes) {
+		this.buildingDataTypes = buildingDataTypes;
+	}
+	
 	
 }
