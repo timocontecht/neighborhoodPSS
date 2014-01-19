@@ -1,8 +1,5 @@
 package org.visico.neighborhoodpss.domain.project;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
@@ -82,8 +79,7 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		int hashCode = new HashCodeBuilder(17,31).append(name).hashCode();
+		int hashCode = 31 * (name !=null ? name.hashCode() : 0);
 		return hashCode;
 	}
 
@@ -98,7 +94,7 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
         
         BuildingDataTypeDTO dt = (BuildingDataTypeDTO) obj;
         
-        return new EqualsBuilder().append(name, dt.name).isEquals();
+        return dt.getName().equals(this.getName());
 	}
 	
 	
