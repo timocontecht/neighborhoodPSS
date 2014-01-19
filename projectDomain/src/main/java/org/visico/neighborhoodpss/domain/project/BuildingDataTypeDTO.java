@@ -84,7 +84,6 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
 	public int hashCode() {
 		// TODO Auto-generated method stub
 		int hashCode = new HashCodeBuilder(17,31).append(name).hashCode();
-		System.out.println(hashCode);
 		return hashCode;
 	}
 
