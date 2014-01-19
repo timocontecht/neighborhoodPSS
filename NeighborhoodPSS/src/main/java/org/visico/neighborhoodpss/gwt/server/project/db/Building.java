@@ -46,6 +46,10 @@ public class Building implements Serializable
 	@JoinColumn(name="building_id")
 	private List<GeoPoint> points = new ArrayList<GeoPoint>();
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="building_id")
+	private List<BuildingData> data = new ArrayList<BuildingData>();
+	
 	@Transient
 	private BuildingDTO dto_object = null;
 	/**
@@ -78,15 +82,7 @@ public class Building implements Serializable
 
 	}
 	
-/*
-	public void addVertex(double lat, double lon)
-	{
-		GeoPoint pt = new GeoPoint();
-		pt.setLatitude(lat);
-		pt.setLongitude(lon);
-		
-		points.add(pt);
-	}*/
+
 	
 	public List<GeoPoint> getPoints() {
 		return points;
@@ -116,7 +112,13 @@ public class Building implements Serializable
 		this.id = id;
 	}
 	
-	
+	public List<BuildingData> getData() {
+		return data;
+	}
+
+	public void setData(List<BuildingData> data) {
+		this.data = data;
+	}
 
 	public void update_dtoIds() {
 		this.dto_object.setId(this.id);
