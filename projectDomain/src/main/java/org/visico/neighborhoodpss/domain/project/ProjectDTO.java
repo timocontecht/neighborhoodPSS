@@ -17,6 +17,7 @@ public class ProjectDTO  implements Cloneable, IsSerializable
 	private double longitude;
 	private Set<ScenarioDTO> parent_scenarios = new HashSet<ScenarioDTO>();
 	private Set<UserDTO> users = new HashSet<UserDTO>();
+	private Set<BuildingDataTypeDTO> buildingDataTypes = new HashSet<BuildingDataTypeDTO>();
 	
 	public ProjectDTO()
 	{
@@ -40,12 +41,15 @@ public class ProjectDTO  implements Cloneable, IsSerializable
 			this.addParentScenario(new ScenarioDTO(sit.next()));
 		}
 		
-		Iterator<UserDTO> uit = this.getUsers().iterator();
+		Iterator<UserDTO> uit = toCopy.getUsers().iterator();
 		while(sit.hasNext())
 		{
 			this.addUser( new UserDTO(uit.next()));
 		}
 		
+		for (BuildingDataTypeDTO d : toCopy.getBuildingDataTypes() )
+			this.getBuildingDataTypes().add(new BuildingDataTypeDTO(d));
+	
 	}
 	
 	public int getId() {
@@ -96,6 +100,15 @@ public class ProjectDTO  implements Cloneable, IsSerializable
 	{
 		this.users.add(user);
 	}
+
+	public Set<BuildingDataTypeDTO> getBuildingDataTypes() {
+		return buildingDataTypes;
+	}
+
+	public void setBuildingDataTypes(Set<BuildingDataTypeDTO> buildingDataTypes) {
+		this.buildingDataTypes = buildingDataTypes;
+	}
+	
 	
 	
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
@@ -24,7 +25,7 @@ public class BuildingDTO implements Cloneable, IsSerializable
 	private int id;
 	private double area;
 	private List<GeoPointDTO> points = new ArrayList<GeoPointDTO>();
-	
+	private List<BuildingDataDTO> data = new ArrayList<BuildingDataDTO>();
 	
 	public BuildingDTO()
 	{
@@ -45,6 +46,9 @@ public class BuildingDTO implements Cloneable, IsSerializable
 			GeoPointDTO b = it.next();
 			this.getPoints().add(new GeoPointDTO(b));
 		}
+		
+		for (BuildingDataDTO dt : toCopy.getData())
+			this.getData().add(new BuildingDataDTO(dt));
 		
 	}
 	
@@ -85,6 +89,14 @@ public class BuildingDTO implements Cloneable, IsSerializable
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public List<BuildingDataDTO> getData() {
+		return data;
+	}
+
+	public void setData(List<BuildingDataDTO> data) {
+		this.data = data;
 	}
 	
 	

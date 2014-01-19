@@ -9,7 +9,7 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
 	private String type;
 	private double maximum;
 	private double minimum;
-	private double default_val;
+	private String default_val;
 
 	public BuildingDataTypeDTO()  {
 		
@@ -63,11 +63,11 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
 		this.minimum = minimum;
 	}
 
-	public double getDefault_val() {
+	public String getDefault_val() {
 		return default_val;
 	}
 
-	public void setDefault_val(double default_val) {
+	public void setDefault_val(String default_val) {
 		this.default_val = default_val;
 	}
 

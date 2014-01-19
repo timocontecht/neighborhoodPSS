@@ -31,9 +31,7 @@ public class ScenarioDTO implements Cloneable, IsSerializable
 		// do not copy id - id is assigned by a database
 		// the copy should not have yet an id to signify 
 		// that it is not yet in the db and has to created
-		// instead of updated
-		
-		
+		// instead of updated	
 		if (toCopy.parent == null)
 		{
 			this.label = Integer.toString(toCopy.children.size());
