@@ -71,11 +71,7 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
 		this.default_val = default_val;
 	}
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return super.clone();
-	}
+	
 
 	@Override
 	public int hashCode() {
