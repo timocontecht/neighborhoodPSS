@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.gwt.client.BuildingPolygon;
 import org.visico.neighborhoodpss.gwt.client.BuildingTable;
+import org.visico.neighborhoodpss.gwt.client.ChangeAddDataDlg;
 import org.visico.neighborhoodpss.gwt.client.EditMapPanel;
 import org.visico.neighborhoodpss.gwt.client.HierarchyPanel;
 import org.visico.neighborhoodpss.gwt.client.Map;
@@ -453,6 +455,21 @@ public class ScenarioEditMediator {
 
 	public double getLongitude() {
 		return HierarchyPanel.getInstance().getProject().getLongitude();
+	}
+
+	public void editAddElementData() {
+		List<BuildingDataDTO> buildingData = new ArrayList<BuildingDataDTO>();
+		
+		for (Overlay o : selected)
+		{
+			if (o instanceof BuildingPolygon)
+			{
+				BuildingDTO building = buildingMap.get(o);
+				buildingData.addAll(building.getData());
+			}
+		}
+		
+		ChangeAddDataDlg dataDlg = new ChangeAddDataDlg(buildingData);
 	}
 
 	

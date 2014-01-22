@@ -20,7 +20,7 @@ import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.user.client.ui.Composite;
 
 
-public class Map extends Composite implements MapClickHandler, MapRightClickHandler
+public class Map extends Composite implements MapClickHandler
 {
 	public enum editmodes
 	{
@@ -55,11 +55,11 @@ public class Map extends Composite implements MapClickHandler, MapRightClickHand
 	    theMap = new MapWidget(position, 2);
 	    theMap.setSize("100%", "100%");
 	    theMap.setZoomLevel(14);
+	    theMap.setDoubleClickZoom(false);
 	   
 	    // Add some controls for the zoom level
 	    theMap.addControl(new LargeMapControl());
 	    theMap.addMapClickHandler(this);
-	    theMap.addMapRightClickHandler(this);
 	    
 	    mode = editmodes.SELECTION;
 	    this.initWidget(theMap);
@@ -162,15 +162,4 @@ public class Map extends Composite implements MapClickHandler, MapRightClickHand
 
 	// variable used to mark whether a polygonal object in the drawings is closed 
 	boolean isClosed = false;
-
-
-	@Override
-	public void onRightClick(MapRightClickEvent event) {
-		if (mode == editmodes.ADD_BUILDING )
-		{
-			firstBuildingNode = null;
-    		buildingnodes.clear();	
-		}
-	}
-
 }

@@ -3,10 +3,7 @@ package org.visico.neighborhoodpss.gwt.client;
 
 import java.text.ParseException;
 
-import org.visico.neighborhoodpss.gwt.shared.patterns.ObserverInterface;
 import org.visico.neighborhoodpss.gwt.shared.patterns.ScenarioEditMediator;
-import org.visico.neighborhoodpss.gwt.shared.patterns.Subject;
-import org.visico.neighborhoodpss.domain.project.BuildingNetworkDTO;
 import org.visico.neighborhoodpss.domain.project.GeoNetworkDTO;
 import org.visico.neighborhoodpss.domain.project.NetworkDTO;
 
@@ -41,10 +38,10 @@ public class EditMapPanel extends Composite implements ClickHandler, ChangeHandl
 	private final Button changeSelectedBtn = new Button("Change Selected Elements");
 	private final Button deleteSelectedBtn = new Button("Delete Selected Elements");
 	private final Button deleteHangingNodesBtn = new Button("Delete Hanging Nodes");
+	private final Button editAddElementData = new Button ("Edit Data");
 	
 	
 	
-	private static NodeMarker firstPickedNode = null; 
 	ScenarioEditMediator med;
 	
 	public EditMapPanel(ScenarioPanel scenarioPanel, ScenarioEditMediator med)
@@ -124,6 +121,9 @@ public class EditMapPanel extends Composite implements ClickHandler, ChangeHandl
 		deleteHangingNodesBtn.setStyleName("normalButton");
 		deleteHangingNodesBtn.addClickHandler(this);
 		editNetworkPanel.add(deleteHangingNodesBtn);
+		editAddElementData.setStyleName("normalButton");
+		editAddElementData.addClickHandler(this);
+		editNetworkPanel.add(editAddElementData);
 
 		mainPanel.add(editNetworkPanel);
 		
@@ -222,6 +222,10 @@ public class EditMapPanel extends Composite implements ClickHandler, ChangeHandl
 			{
 				med.deleteHangingNodes();
 			}
+		}
+		else if (event.getSource() == editAddElementData)
+		{
+			med.editAddElementData();
 		}
 	}
 
