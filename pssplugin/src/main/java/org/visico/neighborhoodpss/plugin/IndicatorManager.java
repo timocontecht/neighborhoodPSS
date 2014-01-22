@@ -7,12 +7,15 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.plugin.domain.BuildingProperty;
 import org.visico.neighborhoodpss.plugin.domain.Plugin;
 
 public class IndicatorManager {
@@ -41,6 +44,7 @@ public class IndicatorManager {
 		URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, classLoader);
 		Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(indPlugInfo.getClassName());
 		IndicatorPlugin indPlug = indPlugClass.newInstance();
+		indPlug.setPluginInfo(indPlugInfo);
 		
 		// add to map
 		plugins.put(indPlugInfo.getClassName(), indPlug);
@@ -58,6 +62,7 @@ public class IndicatorManager {
 				URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, parentCL);
 				Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(p.getClassName());
 				IndicatorPlugin indPlug = indPlugClass.newInstance();
+				indPlug.setPluginInfo(p);
 				
 				// add to map
 				plugins.put(p.getClassName(), indPlug);
@@ -105,5 +110,22 @@ public class IndicatorManager {
 				plugins.remove(p.getClassName());
 			}
 		}
+	}
+
+	public Set<String> getBuildingDataTypes() {
+		Set<String> buildingData = new HashSet<String>();
+
+		for (String name : plugins.keySet())
+		{
+			IndicatorPlugin p = plugins.get(name);
+			Plugin pluginInfo = p.getPluginInfo();
+			
+			for (BuildingProperty property : pluginInfo.getData().getBuildingProperty())
+			{
+				buildingData.add(property.getName());
+			}
+		}
+
+		return buildingData;
 	}
 }
