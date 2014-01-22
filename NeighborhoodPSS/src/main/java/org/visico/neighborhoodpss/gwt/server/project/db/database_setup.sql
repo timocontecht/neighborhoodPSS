@@ -123,7 +123,7 @@ create table if not exists BUILDING_DATA_TYPE
 	type VARCHAR(10),
 	maximum DOUBLE,
 	minimum DOUBLE,
-	default_val DOUBLE
+	default_val VARCHAR(250)
 );
 
 create table if not exists BUILDING_DATA_TYPE_PROJECT
@@ -140,7 +140,7 @@ create table if not exists EDGE_DATA_TYPE
 	type VARCHAR(10),
 	maximum DOUBLE,
 	minimum DOUBLE,
-	default_val DOUBLE
+	default_val VARCHAR(250)
 );
 
 create table if not exists EDGE_DATA_TYPE_PROJECT
@@ -157,7 +157,7 @@ create table if not exists NODE_DATA_TYPE
 	type VARCHAR(10),
 	maximum DOUBLE,
 	minimum DOUBLE,
-	default_val DOUBLE
+	default_val VARCHAR(250)
 );
 
 create table if not exists NODE_DATA_TYPE_PROJECT
