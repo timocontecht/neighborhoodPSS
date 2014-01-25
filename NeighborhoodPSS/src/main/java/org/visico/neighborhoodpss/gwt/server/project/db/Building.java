@@ -122,11 +122,17 @@ public class Building implements Serializable
 
 	public void update_dtoIds() {
 		this.dto_object.setId(this.id);
+		
 		Iterator<GeoPoint> pit = this.points.iterator();
 		while(pit.hasNext())
 		{
 			GeoPoint pt = pit.next();
 			pt.update_dtoIds();
+		}
+		
+		for (BuildingData d : data)
+		{
+			d.update_dtoIds();
 		}
 	}
 
@@ -139,6 +145,11 @@ public class Building implements Serializable
 			
 			for (GeoPoint p : points)
 				dto_object.addPoint(p.getDto_object());
+			
+			for (BuildingData d : data)
+			{
+				dto_object.getData().put(d.getType().getDto_object(), d.getDto_object());
+			}
 		}
 		return dto_object;
 	}
