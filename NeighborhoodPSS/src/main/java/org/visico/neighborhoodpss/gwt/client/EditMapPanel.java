@@ -147,7 +147,7 @@ public class EditMapPanel extends Composite implements ClickHandler, ChangeHandl
 			}
 			else
 			{
-				med.noMode();
+				med.selectionMode();
 			}
 		}
 		else if (event.getSource() == addNode_btn)

@@ -135,10 +135,7 @@ public class ScenarioEditMediator {
 	}
 
 	public void selectionMode() {
-		if (selectedNetwork != null)
-			map.setMode(Map.editmodes.SELECTION);
-		
-			
+		map.setMode(Map.editmodes.SELECTION);	
 	}
 	
 	public void addNodeMode() {
@@ -189,8 +186,6 @@ public class ScenarioEditMediator {
 			}
 			column ++; 
 		}
-		
-		
 	}
 
 	public void noMode() {
@@ -266,6 +261,8 @@ public class ScenarioEditMediator {
 		}
 		selected.clear();
 		editNetworkPanel.changeSelectedLabel(0,0,0);
+		
+		insertBuildingsInTable();
 	}
 
 	public void addNewNode(NodeMarker node) {
