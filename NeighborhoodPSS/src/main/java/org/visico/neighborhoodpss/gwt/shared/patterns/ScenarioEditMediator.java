@@ -481,8 +481,8 @@ public class ScenarioEditMediator {
 			if (o instanceof BuildingPolygon)  {
 				for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : buildingMap.get(o).getData().entrySet())  {
 					if (buildingDataMap.containsKey(data.getKey()) )  {
-						if (buildingDataMap.get(data.getKey() ).equals(data.getValue()) == false)  {
-							TextBox dataBox = new TextBox();
+						TextBox dataBox = buildingDataMap.get(data.getKey());
+						if (dataBox.getText().equals(data.getValue().getValue()) == false)  {
 							dataBox.setValue("*");
 							buildingDataMap.put(data.getKey(), dataBox);
 						}
