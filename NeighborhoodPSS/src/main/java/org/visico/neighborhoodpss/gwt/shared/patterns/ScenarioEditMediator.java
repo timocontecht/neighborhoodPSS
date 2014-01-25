@@ -37,6 +37,8 @@ import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 
 
 
@@ -46,8 +48,10 @@ public class ScenarioEditMediator {
 	
 	Map map;
 	EditMapPanel editNetworkPanel;
+	private NetworkTable networkTable;
+	private BuildingTable buildingTable;
+	private ChangeAddDataDlg changeAddDataDlg;
 	
-	// variables
 	NetworkDTO selectedNetwork = null;
 	Set<NetworkDTO> visibleNetworks = new HashSet<NetworkDTO>();
 	
@@ -59,8 +63,8 @@ public class ScenarioEditMediator {
 	private HashMap<NetworkEdge, EdgeDTO> edgeMap = new HashMap<NetworkEdge, EdgeDTO>();
 	private HashMap<NodeMarker, NodeDTO> nodeMap = new HashMap<NodeMarker, NodeDTO>();
 	private Set<Overlay> selected = new HashSet<Overlay>();
-	private NetworkTable networkTable;
-	private BuildingTable buildingTable;
+	private HashMap<BuildingDataTypeDTO, TextBox> buildingDataMap;
+	
 	
 	
 	public ScenarioEditMediator(ScenarioDTO scenario, ProjectDTO project)
@@ -168,7 +172,7 @@ public class ScenarioEditMediator {
 	private void insertBuildingsInTable() {
 		Grid buildingGrid = buildingTable.getBuildingGrid();
 		
-		buildingGrid.resizeRows(1);
+		buildingGrid.resizeRows(buildingGrid.getRowCount() + 1);
 		
 		for (BuildingDTO b : scenario.getBuildingDTOs())
 		{
@@ -176,9 +180,9 @@ public class ScenarioEditMediator {
 			buildingGrid.setText(buildingGrid.getRowCount() - 1, 0, new Integer(b.getId()).toString());
 			
 			int column = 1;
-			for (BuildingDataDTO data : b.getData())
+			for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : b.getData().entrySet())
 			{
-				buildingGrid.setText(buildingGrid.getRowCount() - 1, column, data.getValue());
+				buildingGrid.setText(buildingGrid.getRowCount() - 1, column, data.getValue().getValue());
 				column ++;
 			}
 		}
@@ -297,7 +301,7 @@ public class ScenarioEditMediator {
 			data.setBuilding(buildingDTO);
 			data.setType(dt);
 			data.setValue(dt.getDefault_val());
-			buildingDTO.getData().add(data);
+			buildingDTO.getData().put(data.getType(), data);
 		}
 		
 		scenario.addBuilingDTO(buildingDTO);
@@ -458,19 +462,69 @@ public class ScenarioEditMediator {
 	}
 
 	public void editAddElementData() {
-		List<BuildingDataDTO> buildingData = new ArrayList<BuildingDataDTO>();
+		changeAddDataDlg = new ChangeAddDataDlg(this);
+		setAddDataDlgTable();
+		changeAddDataDlg.center();
+		changeAddDataDlg.show();
+	}
+
+	public void setAddDataDlgTable() {
+		// collect the data 
+		buildingDataMap = new HashMap<BuildingDataTypeDTO, TextBox>();
 		
-		for (Overlay o : selected)
-		{
-			if (o instanceof BuildingPolygon)
-			{
-				BuildingDTO building = buildingMap.get(o);
-				buildingData.addAll(building.getData());
+		for (Overlay o : selected) {
+			if (o instanceof BuildingPolygon)  {
+				for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : buildingMap.get(o).getData().entrySet())  {
+					if (buildingDataMap.containsKey(data.getKey()) )  {
+						if (buildingDataMap.get(data.getKey() ).equals(data.getValue()) == false)  {
+							TextBox dataBox = new TextBox();
+							dataBox.setValue("*");
+							buildingDataMap.put(data.getKey(), dataBox);
+						}
+					}
+					else 
+					{
+						TextBox dataBox = new TextBox();
+						dataBox.setValue(data.getValue().getValue());
+						buildingDataMap.put(data.getKey(), dataBox);
+					}
+				}
 			}
 		}
 		
-		ChangeAddDataDlg dataDlg = new ChangeAddDataDlg(buildingData);
+		Grid buildingGrid = changeAddDataDlg.getBuildingDataGrid();
+		buildingGrid.clear();
+		
+		buildingGrid.resize(buildingDataMap.size() + 1, 2);
+		buildingGrid.setStyleName("BuildingTable");
+		buildingGrid.getRowFormatter().addStyleName(0, "BuildingTableHeader");
+		buildingGrid.setWidget(0, 0, new Label("Data Type"));
+		buildingGrid.setWidget(0, 1, new Label("Data Value"));
+		
+		int rowCount = 1;
+		for (Entry<BuildingDataTypeDTO, TextBox> type : buildingDataMap.entrySet())  {
+			buildingGrid.setWidget(rowCount, 0, new Label(type.getKey().getName()));
+			buildingGrid.setWidget(rowCount, 1, type.getValue());
+		}
 	}
 
-	
+	public void changeAdditionalBuildingData() {
+		if (buildingDataMap != null)  {
+			for (Overlay o : selected)  {
+				if (o instanceof BuildingPolygon)  {
+					BuildingDTO building = buildingMap.get(o);
+					for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : building.getData().entrySet())  {
+						TextBox dataTextBox = buildingDataMap.get(data.getKey());
+						if (dataTextBox.getText().equals("*") == false)  {
+							BuildingDataDTO datadto = data.getValue();
+							datadto.setValue(dataTextBox.getText());
+							building.getData().put(data.getKey(), datadto);
+						}
+					}
+				}
+			}
+		}
+		
+		insertBuildingsInTable();
+	}
 }

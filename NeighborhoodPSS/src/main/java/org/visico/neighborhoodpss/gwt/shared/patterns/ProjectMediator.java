@@ -109,7 +109,7 @@ public class ProjectMediator {
 					data.setBuilding(building);
 					data.setType(dt);
 					data.setValue(dt.getDefault_val());
-					building.getData().add(data);
+					building.getData().put(data.getType(), data);
 				}
 			}
 		};
