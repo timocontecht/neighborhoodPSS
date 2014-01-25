@@ -44,7 +44,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class ScenarioEditMediator {
 	ScenarioDTO scenario;
-	ProjectDTO project;
+	ProjectMediator projectMed;
 	
 	Map map;
 	EditMapPanel editNetworkPanel;
@@ -67,10 +67,10 @@ public class ScenarioEditMediator {
 	
 	
 	
-	public ScenarioEditMediator(ScenarioDTO scenario, ProjectDTO project)
+	public ScenarioEditMediator(ScenarioDTO scenario, ProjectMediator projectMed)
 	{
 		this.scenario = scenario;
-		this.project = project;
+		this.projectMed = projectMed;
 	}
 	
 	public void initializeOverlays() {
@@ -171,21 +171,26 @@ public class ScenarioEditMediator {
 
 	private void insertBuildingsInTable() {
 		Grid buildingGrid = buildingTable.getBuildingGrid();
+		buildingGrid.clear();
 		
 		buildingGrid.resizeRows(buildingGrid.getRowCount() + 1);
+		buildingGrid.resizeColumns(projectMed.getBuildingDataTypes().size() + 1);
 		
-		for (BuildingDTO b : scenario.getBuildingDTOs())
-		{
-			buildingGrid.insertRow(buildingGrid.getRowCount());
-			buildingGrid.setText(buildingGrid.getRowCount() - 1, 0, new Integer(b.getId()).toString());
+		int column = 1;
+		for (BuildingDataTypeDTO dataType : projectMed.getBuildingDataTypes())  {
+			buildingGrid.setWidget(0, column, new Label(dataType.getName()));
+			int row = 1;
 			
-			int column = 1;
-			for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : b.getData().entrySet())
-			{
-				buildingGrid.setText(buildingGrid.getRowCount() - 1, column, data.getValue().getValue());
-				column ++;
+			for (BuildingDTO b : scenario.getBuildingDTOs())  {
+				buildingGrid.insertRow(buildingGrid.getRowCount());
+				buildingGrid.setText(row, 0, Integer.toString(b.getId()));
+				buildingGrid.setText(row, column, b.getData().get(dataType).getValue());
+				row ++;
 			}
+			column ++; 
 		}
+		
+		
 	}
 
 	public void noMode() {
@@ -295,7 +300,7 @@ public class ScenarioEditMediator {
 		
 		buildingDTO.setArea(building.getArea());
 		
-		for (BuildingDataTypeDTO dt : project.getBuildingDataTypes())
+		for (BuildingDataTypeDTO dt : projectMed.getBuildingDataTypes())
 		{
 			BuildingDataDTO data = new BuildingDataDTO();
 			data.setBuilding(buildingDTO);

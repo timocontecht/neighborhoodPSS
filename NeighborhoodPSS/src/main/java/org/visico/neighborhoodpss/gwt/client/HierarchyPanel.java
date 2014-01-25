@@ -49,6 +49,8 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	{
 		this.project = project;
 		parentScenarios.clear();
+		
+		MainTab.getInstance().clearScenarioTabs();
 		parentScenarios.addAll(project.getParent_scenarios());
 		projectMed = new ProjectMediator(project);
 		draw();
@@ -76,7 +78,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 				Iterator<ScenarioDTO> it = parentScenarios.iterator();
 				while(it.hasNext())
 				{
-					ScenarioTree st = new ScenarioTree(it.next());
+					ScenarioTree st = new ScenarioTree(it.next(), projectMed);
 					scenarioPanel.add(st);
 				}
 				

@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 public class ScenarioPanel extends DockLayoutPanel
 {	
 	ProjectMediator indMed;
+	ScenarioEditMediator scenarioMed;
 	
 	public ScenarioPanel(ScenarioDTO s, ProjectMediator indMed) 
 	{
@@ -27,12 +28,12 @@ public class ScenarioPanel extends DockLayoutPanel
 	
 	public void draw()
 	{
-		ScenarioEditMediator med = new ScenarioEditMediator(scenario, indMed.getProject());
-		map = new Map(med);
-		addWest(new EditMapPanel(this, med), 35);
-		addSouth(new DataPanel(this, med, indMed), 35);
+		scenarioMed = new ScenarioEditMediator(scenario, indMed);
+		map = new Map(scenarioMed);
+		addWest(new EditMapPanel(this, scenarioMed), 35);
+		addSouth(new DataPanel(this, scenarioMed, indMed), 35);
 	    add(map);
-	    med.initializeOverlays();
+	    scenarioMed.initializeOverlays();
 	}
 	
 	public Map getMap()
@@ -81,6 +82,13 @@ public class ScenarioPanel extends DockLayoutPanel
 	public void setModePanel(ModePanel modePanel) {
 		this.modePanel = modePanel;
 	}
+
+	
+
+	public ScenarioEditMediator getScenarioMed() {
+		return scenarioMed;
+	}
+
 
 
 	private Map map; 

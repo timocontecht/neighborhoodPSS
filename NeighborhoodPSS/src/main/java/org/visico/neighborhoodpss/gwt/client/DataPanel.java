@@ -17,7 +17,6 @@ public class DataPanel extends TabPanel
 		this.sceMed = sceMed;
 		scenarioPanel = p;
 		buildingTable = new BuildingTable(indMed, sceMed);
-		indMed.registerBuildingTable(buildingTable);
 		sceMed.registerBuildingTable(buildingTable);
 		add(buildingTable, "Buildings");
 	    

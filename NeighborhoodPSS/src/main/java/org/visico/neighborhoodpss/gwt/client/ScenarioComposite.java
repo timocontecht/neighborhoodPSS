@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.gwt.client;
 
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,8 +13,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ScenarioComposite extends Composite implements ClickHandler
 {
-	public ScenarioComposite(ScenarioDTO s)
+	ProjectMediator projectMed;
+	
+	public ScenarioComposite(ScenarioDTO s, ProjectMediator projectMed)
 	{
+		this.projectMed = projectMed;
+		
 		scenario = s;
 		
 		VerticalPanel vp = new VerticalPanel();
@@ -42,7 +47,8 @@ public class ScenarioComposite extends Composite implements ClickHandler
 	{
 		if (event.getSource() == view)
 		{
-			MainTab.getInstance().addScenario(scenario);
+			projectMed.addScenarioComp(scenario);
+			
 		}
 		
 		if (event.getSource() == branch)
