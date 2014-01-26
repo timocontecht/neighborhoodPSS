@@ -14,12 +14,9 @@ public class ScenarioTree extends Tree
 {
 	ProjectMediator projectMed;
 	
-	ScenarioTree(ScenarioDTO scenario, ProjectMediator projectMed) throws Exception
+	public ScenarioTree(ScenarioDTO scenario, ProjectMediator projectMed) 
 	{
 		this.projectMed = projectMed;
-		
-		if (scenario.hasParent() == true)
-			throw new Exception("not a root scenario!");
 		
 		TreeItem root = new TreeItem(new ScenarioComposite(scenario, projectMed));
 		addChildren(root, scenario);

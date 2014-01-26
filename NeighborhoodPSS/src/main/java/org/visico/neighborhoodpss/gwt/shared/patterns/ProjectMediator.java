@@ -11,18 +11,22 @@ import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.gwt.client.BuildingTable;
+import org.visico.neighborhoodpss.gwt.client.HierarchyPanel;
 import org.visico.neighborhoodpss.gwt.client.IndicatorSelectionPanel;
 import org.visico.neighborhoodpss.gwt.client.IndicatorService;
 import org.visico.neighborhoodpss.gwt.client.IndicatorServiceAsync;
 import org.visico.neighborhoodpss.gwt.client.IndicatorWidget;
 import org.visico.neighborhoodpss.gwt.client.MainTab;
 import org.visico.neighborhoodpss.gwt.client.ScenarioPanel;
+import org.visico.neighborhoodpss.gwt.client.ScenarioService;
+import org.visico.neighborhoodpss.gwt.client.ScenarioServiceAsync;
+import org.visico.neighborhoodpss.gwt.client.ScenarioTree;
+import org.visico.neighborhoodpss.gwt.client.UserPanel;
 import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Grid;
 
 
 public class ProjectMediator {
@@ -30,6 +34,9 @@ public class ProjectMediator {
 	IndicatorServiceAsync service = GWT.create(IndicatorService.class);
 	IndicatorSelectionPanel indicatorSelectionPanel;
 	BuildingTable buildingTable;
+	HierarchyPanel hierarchyPanel;
+	MainTab mainPanel;
+	UserPanel userPanel;
 	
 	HashMap<String, IndicatorWidget> indicatorWidgets = new HashMap<String, IndicatorWidget>();
 	HashMap<String, IndicatorDTO> allIndicators = new HashMap<String, IndicatorDTO>();
@@ -40,9 +47,8 @@ public class ProjectMediator {
 
 	private ProjectDTO project;
 	
-	public ProjectMediator(ProjectDTO project)
-	{
-		this.project = project;
+	public ProjectMediator()  {
+		
 	}
 	
 	
@@ -50,7 +56,11 @@ public class ProjectMediator {
 		return project;
 	}
 
-	
+	public void setProject(ProjectDTO project)  {
+		this.project = project;
+		hierarchyPanel.drawHierarchyPanel();
+		drawScenarioHierarchy(); 
+	}
 
 	public Set<BuildingDataTypeDTO> getBuildingDataTypes() {
 		return buildingDataTypes;
@@ -63,7 +73,21 @@ public class ProjectMediator {
 		addExistingIndicators();
 	}
 	
+	public void registerHierachyPanel (HierarchyPanel hierarchyPanel)  {
+		this.hierarchyPanel = hierarchyPanel;
+	}
+	
+	public void registerMainPanel(MainTab panel) {
+		this.mainPanel = panel;
+		
+	}
 
+
+	public void registerUserPanel(UserPanel userPanel) {
+		this.userPanel = userPanel;
+		
+	}
+	
 	public void addExistingIndicators()
 	{	
 		indicatorWidgets.clear();
@@ -183,15 +207,65 @@ public class ProjectMediator {
 		}
 	}
 
-
 	public void addScenarioComp(ScenarioDTO scenario) {
-		MainTab.getInstance().addScenario(scenario);
-
+		ScenarioPanel dock = new ScenarioPanel(scenario, hierarchyPanel.getIndicatorMed());
+        hierarchyPanel.getIndicatorMed().addNewScenarioPanel(dock);
+        dock.setTitle(scenario.getName() + " " + scenario.label());
+		mainPanel.addScenarioPanel(dock);
 	}
 
 
 	public void addNewScenarioPanel(ScenarioPanel dock) {
 		scenarioPanels.add(dock);
 	}
+
+
+	public void saveProject() {
+		ScenarioServiceAsync service = GWT.create(ScenarioService.class);
+		
+		AsyncCallback<ProjectDTO> callback = new AsyncCallback<ProjectDTO>()
+		{
+
+			@Override
+			public void onFailure(Throwable caught) 
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(ProjectDTO result) 
+			{
+				Window.alert("Saved scenarios!");
+				
+				// need to overwrite scnearios to get id from server for database persistence
+				project = result;
+			}
+		};
+		
+		service.saveProject(this.getProject(), callback);
+	}
+
+
+	public void drawScenarioHierarchy()  {
+		hierarchyPanel.getScenarioPanel().clear();
+		for (ScenarioDTO scenario : project.getParent_scenarios())  {
+			ScenarioTree scTree = new ScenarioTree(scenario, this);
+			hierarchyPanel.addScenarioRootTree(scTree);
+		}
+	}
+
+	public double getLatitude() {
+		return project.getLatitude();
+	}
+
+	public double getLongitude() {
+		return project.getLongitude();
+	}
+
+
+
+
+	
 	
 }

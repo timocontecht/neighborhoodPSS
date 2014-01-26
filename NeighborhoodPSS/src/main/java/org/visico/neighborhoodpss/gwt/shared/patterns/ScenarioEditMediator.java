@@ -456,11 +456,11 @@ public class ScenarioEditMediator {
 	}
 
 	public double getLatitude() {
-		return HierarchyPanel.getInstance().getProject().getLatitude();
+		return projectMed.getLatitude();
 	}
 
 	public double getLongitude() {
-		return HierarchyPanel.getInstance().getProject().getLongitude();
+		return projectMed.getLongitude();
 	}
 
 	public void editAddElementData() {

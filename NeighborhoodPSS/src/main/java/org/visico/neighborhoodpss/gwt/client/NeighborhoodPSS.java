@@ -3,6 +3,8 @@ package org.visico.neighborhoodpss.gwt.client;
 
 
 
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.maps.client.Maps;
@@ -51,6 +53,8 @@ public class NeighborhoodPSS implements EntryPoint
 
 	  private void buildUi() 
 	  {
+		ProjectMediator projectMed = new ProjectMediator();
+		  
 		DockLayoutPanel thePanel = new DockLayoutPanel(Unit.EM);  
 		RootLayoutPanel.get().add(thePanel);
 	    
@@ -58,13 +62,17 @@ public class NeighborhoodPSS implements EntryPoint
 	    visico_img.setUrl("res/VISICO.jpg");
 	    final HorizontalPanel logopanel = new HorizontalPanel();
 	    logopanel.add(visico_img);
-	    logopanel.add(UserPanel.getInstance());
+	    
+	    UserPanel userPanel = new UserPanel(projectMed);
+	    projectMed.registerUserPanel(userPanel);
+	    logopanel.add(userPanel);
 	    thePanel.addNorth(logopanel, 10);
 		
-		MainTab panel = MainTab.getInstance();
+		MainTab panel = new MainTab(projectMed);
+		projectMed.registerMainPanel(panel);
 		thePanel.add(panel);
 		
-	   
+		
 	  }	
 	  
 	  		

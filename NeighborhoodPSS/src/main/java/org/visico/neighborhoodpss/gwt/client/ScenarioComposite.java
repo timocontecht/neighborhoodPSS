@@ -54,7 +54,7 @@ public class ScenarioComposite extends Composite implements ClickHandler
 		if (event.getSource() == branch)
 		{
 			this.scenario.createChild();
-			HierarchyPanel.getInstance().draw();
+			projectMed.drawScenarioHierarchy();
 		}
 	}
 
