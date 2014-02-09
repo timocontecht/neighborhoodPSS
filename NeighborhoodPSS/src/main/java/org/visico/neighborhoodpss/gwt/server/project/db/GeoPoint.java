@@ -88,9 +88,4 @@ public class GeoPoint implements Serializable
 	public void setDto_object(GeoPointDTO dto_object) {
 		this.dto_object = dto_object;
 	}
-	
-	
-	
-	
-	
 }

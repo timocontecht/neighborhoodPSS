@@ -1,6 +1,7 @@
 package org.visico.neighborhoodpss.domain.project;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -108,7 +109,61 @@ public class ProjectDTO  implements Cloneable, IsSerializable
 	public void setBuildingDataTypes(Set<BuildingDataTypeDTO> buildingDataTypes) {
 		this.buildingDataTypes = buildingDataTypes;
 	}
-	
-	
+
+	public BuildingDataTypeDTO getBuildingData(String typeName) throws Exception {
+		for (BuildingDataTypeDTO type : buildingDataTypes) {
+			if (type.getName().equals(typeName) )
+				return type;
+		}
+		throw new Exception("Requested data type does not exist!");
+	}
+
+	public void synchronizeDataTypeIds() {
+		
+		for (ScenarioDTO pscenario : parent_scenarios)  {
+			synchronizeDataTypes(pscenario);
+		}
+	}
+
+	private void synchronizeDataTypes(ScenarioDTO scenario) {
+		for (ScenarioDTO child : scenario.getChildren())
+			synchronizeDataTypes(child);
+		
+		for (BuildingDTO building : scenario.getBuildingDTOs())  {
+			for (BuildingDataTypeDTO buildingDataTypeObject : building.getData().keySet())  {
+				for (BuildingDataTypeDTO typeRef : buildingDataTypes)  {
+					if (typeRef.equals(buildingDataTypeObject))  {
+						buildingDataTypeObject.setId(typeRef.getId());
+					}
+				}
+			}
+		}
+			
+	}
+
+	public ScenarioDTO getScenarioByLabel(String name, String label) throws Exception {
+		for (ScenarioDTO p : parent_scenarios)
+		{
+			if (p.getName().equals(name) == true)
+				return getScenarioByLabelRecursive(p, label);
+		}
+			
+		throw new Exception ("Scenario with label " + label + " does not exist!");
+	}
+
+	private ScenarioDTO getScenarioByLabelRecursive(ScenarioDTO scenario,
+			String label)  {
+		if (scenario.getLabel().equals(label))
+			return scenario;
+		
+		for (ScenarioDTO child : scenario.getChildren())  {
+			if ((child.getLabel().equals(label)))
+				return child;
+			else
+				return getScenarioByLabelRecursive(child, label);
+		}
+		return null;
+	}
+
 	
 }

@@ -34,10 +34,6 @@ public class BuildingData implements Serializable {
 		@Column
 		private String value;
 		
-		@ManyToOne(cascade = CascadeType.ALL)
-		@JoinColumn(name="building_id")
-		private Building building;
-		
 		@Transient
 		private BuildingDataDTO dto_object = null;
 
@@ -49,7 +45,6 @@ public class BuildingData implements Serializable {
 		{
 			this.setDto_object(dto_object);
 			this.setId(dto_object.getId());
-			this.setBuilding(new Building(dto_object.getBuilding()));
 			this.setType(new BuildingDataType(dto_object.getType()));
 			this.setValue(dto_object.getValue());
 		}
@@ -78,13 +73,7 @@ public class BuildingData implements Serializable {
 			this.value = value;
 		}
 
-		public Building getBuilding() {
-			return building;
-		}
-
-		public void setBuilding(Building building) {
-			this.building = building;
-		}
+		
 		
 		public void update_dtoIds() {
 			this.dto_object.setId(this.id);	
@@ -95,7 +84,6 @@ public class BuildingData implements Serializable {
 			{
 				dto_object = new BuildingDataDTO();
 				dto_object.setId(this.getId());
-				dto_object.setBuilding(this.getBuilding().getDto_object());
 				dto_object.setType(this.getType().getDto_object());
 				dto_object.setValue(this.getValue());
 				

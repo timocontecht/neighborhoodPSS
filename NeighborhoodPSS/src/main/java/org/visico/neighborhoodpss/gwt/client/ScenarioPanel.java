@@ -14,24 +14,24 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 
 public class ScenarioPanel extends DockLayoutPanel
 {	
-	ProjectMediator indMed;
+	ProjectMediator projectMed;
 	ScenarioEditMediator scenarioMed;
 	
-	public ScenarioPanel(ScenarioDTO s, ProjectMediator indMed) 
+	public ScenarioPanel(ScenarioDTO s, ScenarioEditMediator scenarioMed, ProjectMediator indMed) 
 	{
 		super(Unit.EX);
-		this.indMed = indMed;
-		scenario = s;
+		this.projectMed = indMed;
+		this.scenarioMed = scenarioMed;
 		this.setTitle("Scenarios");
 		draw();
 	}
 	
 	public void draw()
 	{
-		scenarioMed = new ScenarioEditMediator(scenario, indMed);
+		this.clear();
 		map = new Map(scenarioMed);
 		addWest(new EditMapPanel(this, scenarioMed), 35);
-		addSouth(new DataPanel(this, scenarioMed, indMed), 35);
+		addSouth(new DataPanel(this, scenarioMed, projectMed), 35);
 	    add(map);
 	    scenarioMed.initializeOverlays();
 	}
@@ -46,10 +46,7 @@ public class ScenarioPanel extends DockLayoutPanel
 		//dataPanel.updateData();
 	}
 	
-	public ScenarioDTO scenario()
-	{
-		return scenario;
-	}
+	
 
 	
 	
@@ -75,14 +72,14 @@ public class ScenarioPanel extends DockLayoutPanel
 	}
 	
 	
-	public ModePanel getModePanel() {
+	/*public ModePanel getModePanel() {
 		return modePanel;
 	}
 
 	public void setModePanel(ModePanel modePanel) {
 		this.modePanel = modePanel;
 	}
-
+*/
 	
 
 	public ScenarioEditMediator getScenarioMed() {
@@ -92,8 +89,8 @@ public class ScenarioPanel extends DockLayoutPanel
 
 
 	private Map map; 
-	private ModePanel modePanel;
+	/*private ModePanel modePanel;*/
 	private ArrayList<BuildingPolygon> buildingPlgs = new ArrayList<BuildingPolygon>();
-	private ScenarioDTO scenario;
+
 	
 }

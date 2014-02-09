@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
+import org.visico.neighborhoodpss.domain.project.BuildingDataDTO;
 import org.visico.neighborhoodpss.domain.project.GeoPointDTO;
 
 
@@ -32,12 +33,10 @@ import org.visico.neighborhoodpss.domain.project.GeoPointDTO;
 @Table(name="BUILDING")
 public class Building implements Serializable
 {
-	
 	// label is automatically created
 	@Id
 	@GeneratedValue
 	private int id;
-	
 	
 	@Transient
 	private double area;
@@ -52,11 +51,11 @@ public class Building implements Serializable
 	
 	@Transient
 	private BuildingDTO dto_object = null;
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6838190883337046022L;
-	
 	
 	public Building(BuildingDTO b) 
 	{
@@ -67,14 +66,15 @@ public class Building implements Serializable
 		
 		ArrayList<GeoPoint> pts = new ArrayList<GeoPoint>();
 		Iterator<GeoPointDTO> it = b.getPoints().iterator();
-		while (it.hasNext())
-		{
+		while (it.hasNext())   {
 			pts.add(new GeoPoint(it.next()));
 		}
 		
+		for (BuildingDataDTO data_dto : b.getData().values())  {
+			data.add(new BuildingData(data_dto));
+		}
+			
 		this.setPoints(pts);
-	
-		
 	}
 
 	public Building() 
@@ -82,17 +82,13 @@ public class Building implements Serializable
 
 	}
 	
-
-	
 	public List<GeoPoint> getPoints() {
 		return points;
 	}
 
 	public void setPoints(ArrayList<GeoPoint> points) {
 		this.points = points;
-	}
-
-	
+	}	
 
 	public double getArea() {
 		return area;
@@ -102,11 +98,9 @@ public class Building implements Serializable
 		this.area = area;
 	}
 
-
 	public int getId() {
 		return id;
 	}
-
 	
 	public void setId(int id) {
 		this.id = id;
@@ -116,7 +110,7 @@ public class Building implements Serializable
 		return data;
 	}
 
-	public void setData(List<BuildingData> data) {
+	public void setData(ArrayList<BuildingData> data) {
 		this.data = data;
 	}
 
@@ -157,7 +151,4 @@ public class Building implements Serializable
 	public void setDto_object(BuildingDTO dto_object) {
 		this.dto_object = dto_object;
 	}
-	
-	
-	
 }

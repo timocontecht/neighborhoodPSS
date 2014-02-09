@@ -40,9 +40,9 @@ public class ProjectMediator {
 	
 	HashMap<String, IndicatorWidget> indicatorWidgets = new HashMap<String, IndicatorWidget>();
 	HashMap<String, IndicatorDTO> allIndicators = new HashMap<String, IndicatorDTO>();
-	
+	HashMap<ScenarioEditMediator, ScenarioPanel> scenarioPanels = new HashMap<ScenarioEditMediator, ScenarioPanel>();
 	Set<BuildingDataTypeDTO> buildingDataTypes = new HashSet<BuildingDataTypeDTO>();
-	Set<ScenarioPanel> scenarioPanels = new HashSet<ScenarioPanel>();
+	
 	
 
 	private ProjectDTO project;
@@ -134,14 +134,12 @@ public class ProjectMediator {
 		{
 			if (building.getData().containsKey(dt) == false)  {
 				BuildingDataDTO data = new BuildingDataDTO();
-				data.setBuilding(building);
 				data.setType(dt);
 				data.setValue(dt.getDefault_val());
 				building.getData().put(data.getType(), data);
 			}
 		}
 	}
-
 
 	public void registerIndicator(String indicatorName) {
 		AsyncCallback<String> callback = new AsyncCallback<String>()
@@ -194,33 +192,42 @@ public class ProjectMediator {
 			IndicatorDTO indicator = allIndicators.get(indicatorStr);
 			if (indicator.getActivated())  {
 				for (BuildingDataTypeDTO type : indicator.getBuildingDataTypes() ) {
-					buildingDataTypes.add(type);
-					
+					if (buildingDataTypes.contains(type) == false)
+						buildingDataTypes.add(type);
+					else  {
+						for (BuildingDataTypeDTO nextType : buildingDataTypes)  {
+							if (nextType.equals(type)) 
+								type = nextType;
+						}
+					}
+							
 					for (ScenarioDTO scenario : project.getParent_scenarios())
 						addDataToBuildings(scenario, type);
 				}
 			}
 		}
 		
-		for (ScenarioPanel p : scenarioPanels)  {
+		/*for (ScenarioPanel p : scenarioPanels)  {
 			p.getScenarioMed().changeAdditionalBuildingData();
-		}
+		}*/
 	}
 
 	public void addScenarioComp(ScenarioDTO scenario) {
-		ScenarioPanel dock = new ScenarioPanel(scenario, hierarchyPanel.getIndicatorMed());
-        hierarchyPanel.getIndicatorMed().addNewScenarioPanel(dock);
+		ScenarioEditMediator scenarioMed = new ScenarioEditMediator(scenario, this);
+		ScenarioPanel dock = new ScenarioPanel(scenario, scenarioMed, this);
+		scenarioMed.registerScenarioPanel(dock);
         dock.setTitle(scenario.getName() + " " + scenario.label());
 		mainPanel.addScenarioPanel(dock);
+		scenarioPanels.put(scenarioMed, dock);
 	}
 
-
-	public void addNewScenarioPanel(ScenarioPanel dock) {
-		scenarioPanels.add(dock);
-	}
-
+	
 
 	public void saveProject() {
+		// add all active additional data to project
+		setAdditionalBuildingData();
+		project.setBuildingDataTypes(buildingDataTypes);
+		
 		ScenarioServiceAsync service = GWT.create(ScenarioService.class);
 		
 		AsyncCallback<ProjectDTO> callback = new AsyncCallback<ProjectDTO>()
@@ -240,13 +247,30 @@ public class ProjectMediator {
 				
 				// need to overwrite scnearios to get id from server for database persistence
 				project = result;
+				synchronizeScenarioPanels();
 			}
+
+			
 		};
 		
 		service.saveProject(this.getProject(), callback);
 	}
 
-
+	private void synchronizeScenarioPanels()  {
+		try {
+			for (ScenarioEditMediator scenarioMed : scenarioPanels.keySet())  {
+				ScenarioDTO scenario = project.getScenarioByLabel(
+						scenarioMed.getScenario().getName(),
+						scenarioMed.getScenario().getLabel());
+				scenarioMed.setScenario(scenario);
+				scenarioPanels.get(scenarioMed).draw();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void drawScenarioHierarchy()  {
 		hierarchyPanel.getScenarioPanel().clear();
 		for (ScenarioDTO scenario : project.getParent_scenarios())  {
@@ -262,10 +286,4 @@ public class ProjectMediator {
 	public double getLongitude() {
 		return project.getLongitude();
 	}
-
-
-
-
-	
-	
 }
