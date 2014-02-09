@@ -20,6 +20,7 @@ import org.visico.neighborhoodpss.gwt.client.Map;
 import org.visico.neighborhoodpss.gwt.client.NetworkEdge;
 import org.visico.neighborhoodpss.gwt.client.NetworkTable;
 import org.visico.neighborhoodpss.gwt.client.NodeMarker;
+import org.visico.neighborhoodpss.gwt.client.ScenarioPanel;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
@@ -51,19 +52,22 @@ public class ScenarioEditMediator {
 	private NetworkTable networkTable;
 	private BuildingTable buildingTable;
 	private ChangeAddDataDlg changeAddDataDlg;
+	private ScenarioPanel scenarioPanel;
 	
 	NetworkDTO selectedNetwork = null;
 	Set<NetworkDTO> visibleNetworks = new HashSet<NetworkDTO>();
 	
-	double inflow;
-	double outflow;
-	double capacity;
-	
 	private HashMap<BuildingPolygon, BuildingDTO> buildingMap = new HashMap<BuildingPolygon, BuildingDTO>();
 	private HashMap<NetworkEdge, EdgeDTO> edgeMap = new HashMap<NetworkEdge, EdgeDTO>();
 	private HashMap<NodeMarker, NodeDTO> nodeMap = new HashMap<NodeMarker, NodeDTO>();
-	private Set<Overlay> selected = new HashSet<Overlay>();
 	private HashMap<BuildingDataTypeDTO, TextBox> buildingDataMap;
+	
+	// state variables
+	double inflow;
+	double outflow;
+	double capacity;
+	private Set<Overlay> selected = new HashSet<Overlay>();
+	
 	
 	
 	
@@ -149,6 +153,10 @@ public class ScenarioEditMediator {
 			map.setMode(Map.editmodes.ADD_EDGE);
 	}
 
+	public void registerScenarioPanel(ScenarioPanel panel)  {
+		this.scenarioPanel = panel;
+	}
+	
 	public void registerMap(Map map) {
 		this.map = map;
 	}
@@ -300,7 +308,6 @@ public class ScenarioEditMediator {
 		for (BuildingDataTypeDTO dt : projectMed.getBuildingDataTypes())
 		{
 			BuildingDataDTO data = new BuildingDataDTO();
-			data.setBuilding(buildingDTO);
 			data.setType(dt);
 			data.setValue(dt.getDefault_val());
 			buildingDTO.getData().put(data.getType(), data);
@@ -520,7 +527,6 @@ public class ScenarioEditMediator {
 						if (dataTextBox.getText().equals("*") == false)  {
 							BuildingDataDTO datadto = data.getValue();
 							datadto.setValue(dataTextBox.getText());
-							building.getData().put(data.getKey(), datadto);
 						}
 					}
 				}
@@ -528,5 +534,15 @@ public class ScenarioEditMediator {
 		}
 		
 		insertBuildingsInTable();
+	}
+
+	public void setScenario(ScenarioDTO scenario) {
+		selected = new HashSet<Overlay>();
+		this.scenario = scenario;
+		insertBuildingsInTable();
+	}
+	
+	public ScenarioDTO getScenario()  {
+		return scenario;
 	}
 }

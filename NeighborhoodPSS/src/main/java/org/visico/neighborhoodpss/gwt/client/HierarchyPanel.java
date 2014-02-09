@@ -90,7 +90,7 @@ public class HierarchyPanel extends DockLayoutPanel implements ClickHandler
 	
 	
 	
-	public ProjectMediator getIndicatorMed() {
+	public ProjectMediator getProjectMed() {
 		return projectMed;
 	}
 
