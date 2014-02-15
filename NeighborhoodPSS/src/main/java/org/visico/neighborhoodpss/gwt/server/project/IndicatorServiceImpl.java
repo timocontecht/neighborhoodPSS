@@ -1,6 +1,8 @@
 package org.visico.neighborhoodpss.gwt.server.project;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -23,16 +25,20 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 {
 	IndicatorManager manager = null;
 	
-	static String pathToIndicators = "res/plugins/"; 
+	static String pathToIndicators = "plugins/"; 
 
 	@Override
 	public ArrayList<IndicatorDTO> getIndicatorList(ProjectDTO project) {
 		if (manager == null)
 			manager = new IndicatorManager(project);
 		
-		ArrayList<IndicatorDTO> indicators = new ArrayList<IndicatorDTO>();
 		
-		for (Plugin indInfo : manager.availableIndicators(pathToIndicators))
+		ArrayList<IndicatorDTO> indicators = new ArrayList<IndicatorDTO>();
+		System.out.println("IndicatorServiceImpl:getIndicatorList - finding indicators from " + getServletContext().getRealPath("/WEB-INF/" + pathToIndicators));
+		
+		
+		
+		for (Plugin indInfo : manager.availableIndicators(getServletContext().getRealPath("/WEB-INF/" + pathToIndicators)))
 		{
 			IndicatorDTO indicatordto = new IndicatorDTO(indInfo.getName(),
 					indInfo.getDescription(), indInfo.getAuthor(), indInfo.getVersion());
@@ -63,7 +69,7 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 			if (manager == null)
 				manager = new IndicatorManager(project);
 		
-			manager.initIndicatorByIndicatorName(indicatorName, pathToIndicators, IndicatorServiceImpl.class.getClassLoader());
+			manager.initIndicatorByIndicatorName(indicatorName, getServletContext().getRealPath("/WEB-INF/" + pathToIndicators), IndicatorServiceImpl.class.getClassLoader());
 			return "Indicator " + indicatorName + " activated!";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -78,7 +84,7 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 			if (manager == null)
 				manager = new IndicatorManager(project);
 		
-			manager.unregisterIndicatorByIndicatorName(indicatorName, pathToIndicators);
+			manager.unregisterIndicatorByIndicatorName(indicatorName, getServletContext().getRealPath("/WEB-INF/" + pathToIndicators));
 		
 			return "Indicator " + indicatorName + " deactivated!";
 		}

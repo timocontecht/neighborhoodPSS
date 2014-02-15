@@ -76,9 +76,7 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	    	Transaction tx = null;
 		    
 	    	try  
-	    	{
-			    tx = session.beginTransaction();
-			    
+	    	{ 
 			    for (BuildingDataTypeDTO bd_dto : projectdto.getBuildingDataTypes())  {
 					BuildingDataType bd = new BuildingDataType(bd_dto);
 				    try
@@ -94,10 +92,11 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 			 		    	projectdto.synchronizeDataTypeIds();
 			 		    }
 			 		    else  {
-					    	session.merge(bd);
+			 		    	tx = session.beginTransaction();
 							session.saveOrUpdate(bd);
 							bd.update_dtoIds();
 							projectdto.synchronizeDataTypeIds();
+							 tx.commit();
 			 		    }
 						
 					}
@@ -111,7 +110,7 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 				    	
 				    }
 	    		}
-			    tx.commit();
+			   
 			    session.flush();
 	    	}
 	    	catch (Exception e)

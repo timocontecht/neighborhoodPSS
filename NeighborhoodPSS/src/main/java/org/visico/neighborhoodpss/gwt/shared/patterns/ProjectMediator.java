@@ -99,8 +99,7 @@ public class ProjectMediator {
 			@Override
 			public void onFailure(Throwable caught) 
 			{
-				// TODO Auto-generated method stub
-				
+				Window.alert("Could not lookup indicators - contact your system administrator");
 			}
 
 			@Override
@@ -183,6 +182,7 @@ public class ProjectMediator {
 	public void addParentScenario(String parentName) {
 		ScenarioDTO scenario = new ScenarioDTO(parentName);
 		project.addParentScenario(scenario);
+		drawScenarioHierarchy();
 	}
 	
 	private void setAdditionalBuildingData()  {
