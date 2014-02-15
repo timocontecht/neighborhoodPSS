@@ -2,6 +2,7 @@ package org.visico.neighborhoodpss.plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -28,6 +29,8 @@ public class IndicatorManager {
 	
 	@SuppressWarnings("unchecked")
 	public void initIndicatorByFileName(String xmlInfoName, String pathToIndicator, ClassLoader classLoader) throws JAXBException, MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
+		System.out.println("IndicatorManager:initIndicatorByFileName - Path to indicator: " + pathToIndicator);
+		System.out.println("IndicatorManager:initIndicatorByFileName - XML file name: " + xmlInfoName);
 		
 		// read Indicator Plugin information from xml
 		File file= new File(xmlInfoName);
@@ -39,8 +42,9 @@ public class IndicatorManager {
 		
 		// initialize class
 		File jarfile = new File(pathToIndicator + indPlugInfo.getJar());
+		System.out.println("IndicatorManager:initIndicatorByFileName - Will load file from " + pathToIndicator + indPlugInfo.getJar());
 		URL jarfileurl = new URL("jar", "","file:" + jarfile.getAbsolutePath()+"!/");
-		System.out.println("Trying to load file from " + jarfileurl.getPath());
+		System.out.println("IndicatorManager:initIndicatorByFileName- Tried to load file from " + jarfileurl.getPath());
 		URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, classLoader);
 		Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(indPlugInfo.getClassName());
 		IndicatorPlugin indPlug = indPlugClass.newInstance();
@@ -53,12 +57,14 @@ public class IndicatorManager {
 	@SuppressWarnings("unchecked")
 	public void initIndicatorByIndicatorName(String indicatorName, String pathToIndicator, ClassLoader parentCL) throws JAXBException, MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, FileNotFoundException {
 		
+		System.out.println("IndicatorManager:initIndicatorByIndicatorName - Path to indicator: " + pathToIndicator);
 		for (Plugin p : availableIndicators(pathToIndicator))  {
 			if (p.getName().equals(indicatorName))  {
 				// initialize class
-				File jarfile = new File(pathToIndicator + p.getJar());
+				System.out.println("Will load file from " + pathToIndicator + "/" + p.getJar());
+				File jarfile = new File(pathToIndicator + "/" + p.getJar());
 				URL jarfileurl = new URL("jar", "","file:" + jarfile.getAbsolutePath()+"!/");
-				System.out.println("Trying to load file from " + jarfileurl.getPath());
+				System.out.println("Tried to load file from " + jarfileurl.getPath());
 				URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, parentCL);
 				Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(p.getClassName());
 				IndicatorPlugin indPlug = indPlugClass.newInstance();
@@ -78,7 +84,8 @@ public class IndicatorManager {
 	public ArrayList<Plugin> availableIndicators(String pathToIndicator) 
 	{
 		ArrayList<Plugin> indicators = new ArrayList<Plugin>();
-		
+		 
+		System.out.println("IndicatorManager:availableIndicators - Path for indicator plugins " + pathToIndicator );
 		File folder = new File(pathToIndicator);
 		
 		for (final File entry : folder.listFiles())
@@ -91,7 +98,7 @@ public class IndicatorManager {
 			}
 			catch(JAXBException ex)
 			{
-				System.out.println("File " + entry.getName() + " is not a valid xml indicator file!");
+				System.out.println("IndicatorManager:availableIndicators - File " + entry.getName() + " is not a valid xml indicator file!");
 			}
 		}
 		
