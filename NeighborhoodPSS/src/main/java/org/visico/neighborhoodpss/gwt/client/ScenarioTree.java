@@ -3,6 +3,7 @@ package org.visico.neighborhoodpss.gwt.client;
 import java.util.Iterator;
 
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -11,12 +12,13 @@ import com.google.gwt.user.client.ui.TreeItem;
 
 public class ScenarioTree extends Tree 
 {
-	ScenarioTree(ScenarioDTO scenario) throws Exception
+	ProjectMediator projectMed;
+	
+	public ScenarioTree(ScenarioDTO scenario, ProjectMediator projectMed) 
 	{
-		if (scenario.hasParent() == true)
-			throw new Exception("not a root scenario!");
+		this.projectMed = projectMed;
 		
-		TreeItem root = new TreeItem(new ScenarioComposite(scenario));
+		TreeItem root = new TreeItem(new ScenarioComposite(scenario, projectMed));
 		addChildren(root, scenario);
 		this.addItem(root);
 		root.setState(true);
@@ -28,7 +30,8 @@ public class ScenarioTree extends Tree
 		while (it.hasNext())
 		{
 			ScenarioDTO childScenario = it.next();
-			TreeItem childItem = new TreeItem(new ScenarioComposite(childScenario));
+			ScenarioComposite scenarioComp = new ScenarioComposite(childScenario, projectMed);
+			TreeItem childItem = new TreeItem(scenarioComp);
 			rootTreeItem.addItem(childItem);
 			addChildren(childItem, childScenario);
 			childItem.setState(true);

@@ -92,8 +92,4 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
         
         return dt.getName().equals(this.getName());
 	}
-	
-	
-	
-	
 }

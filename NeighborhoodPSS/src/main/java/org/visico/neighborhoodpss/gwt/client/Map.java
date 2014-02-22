@@ -95,44 +95,51 @@ public class Map extends Composite implements MapClickHandler
 		Overlay overlay = event.getOverlay();
         LatLng point = event.getLatLng();
         
-       
-        if (mode == editmodes.SELECTION || mode == editmodes.NO_NETWORK)
+        if (mode == editmodes.SELECTION)
         {
-        	med.addMapSelection(overlay);
+        	if (overlay != null)
+        		med.addMapSelection(overlay);
         }
-        else if (overlay instanceof Marker == false && mode == editmodes.ADD_NODE)
+        
+        if (mode != editmodes.NO_NETWORK)
         {
-	      	  NodeMarker node = new NodeMarker(point, options);
-	      	  sender.addOverlay(node);
-	      	  med.addNewNode(node); 
+	        if (mode == editmodes.ADD_NODE)
+	        {
+	        	NodeMarker node = new NodeMarker(point, options);
+		      	  sender.addOverlay(node);
+		      	  med.addNewNode(node); 
+	        }
+	        else if (mode == editmodes.ADD_EDGE)
+	        {
+	        	if (overlay instanceof NodeMarker)
+	        	{
+	        		if (firstPickedNode == null)
+	    				firstPickedNode = (NodeMarker)overlay;
+	    			else
+	    			{
+	    				LatLng points[] = new LatLng[2];
+	    				points[0] = firstPickedNode.getLatLng(); points[1] = ((NodeMarker)overlay).getLatLng();
+	    				NetworkEdge edge = new NetworkEdge(firstPickedNode, (NodeMarker)overlay, points, med.getActiveNetworkColor());
+	    				sender.addOverlay(edge);
+	    				firstPickedNode = null;
+	    				med.addNewEdge(edge);
+	    			}
+	        	}
+	        }
         }
-        else if (overlay instanceof NodeMarker && mode == editmodes.ADD_EDGE)
+        
+        if (mode == editmodes.ADD_BUILDING)
         {
-        	if (firstPickedNode == null)
-				firstPickedNode = (NodeMarker)overlay;
-			else
-			{
-				LatLng points[] = new LatLng[2];
-				points[0] = firstPickedNode.getLatLng(); points[1] = ((NodeMarker)overlay).getLatLng();
-				NetworkEdge edge = new NetworkEdge(firstPickedNode, (NodeMarker)overlay, points, med.getActiveNetworkColor());
-				sender.addOverlay(edge);
-				firstPickedNode = null;
-				med.addNewEdge(edge);
-			}
-        }
-        else if (overlay == null && mode == editmodes.ADD_BUILDING )
-        {
-        	NodeMarker node = new NodeMarker(point, options);
-	      	sender.addOverlay(node);
-	      	buildingnodes.add(node);
-	      	if (firstBuildingNode == null)
-	      		firstBuildingNode = node;
-        }
-        else if (overlay instanceof NodeMarker && mode == editmodes.ADD_BUILDING)
-        {
-        	if (overlay == firstBuildingNode)
+        	if (overlay == null)
         	{
-        		
+        		NodeMarker node = new NodeMarker(point, options);
+    	      	sender.addOverlay(node);
+    	      	buildingnodes.add(node);
+    	      	if (firstBuildingNode == null)
+    	      		firstBuildingNode = node;
+        	}
+        	else if (overlay == firstBuildingNode)
+        	{
         		LatLng[] polyLatLng = new LatLng[buildingnodes.size()];
         		for (int i = 0; i<buildingnodes.size(); i++)
         		{
@@ -148,6 +155,8 @@ public class Map extends Composite implements MapClickHandler
         		buildingnodes.clear();	
         	}	
         }
+        
+       
 	}
 
 	

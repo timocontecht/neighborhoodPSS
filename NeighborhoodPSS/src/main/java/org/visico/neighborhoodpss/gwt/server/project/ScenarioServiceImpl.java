@@ -7,12 +7,18 @@ import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 import org.visico.neighborhoodpss.gwt.client.ScenarioService;
+import org.visico.neighborhoodpss.gwt.server.project.db.BuildingDataType;
 import org.visico.neighborhoodpss.gwt.server.project.db.HibernateUtil;
 import org.visico.neighborhoodpss.gwt.server.project.db.Project;
 import org.visico.neighborhoodpss.gwt.server.project.db.User;
+import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.UserDTO;
+
+
+
 
 
 
@@ -32,12 +38,14 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public ProjectDTO saveProject(ProjectDTO projectdto)
 	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		saveDataTypes(projectdto);
+    	
+		Session session = HibernateUtil.getSessionFactory().openSession();
     	Transaction tx = null;
 	    
     	try  
     	{
-	    	Project project = new Project(projectdto);
+    		Project project = new Project(projectdto);
 		    tx = session.beginTransaction();
 		    
 		    try
@@ -51,19 +59,75 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 			}
 		
 			tx.commit();
+			session.close();
 			return projectdto;
     	}
     	catch (Exception e)
 	    {
-	    	if (tx != null) tx.rollback();
+	    	//if (tx != null) tx.rollback();
+	    	e.printStackTrace();
+	    	session.close();
 	    	return null;
 	    }
 	}
 	
-	 @Override
+	 private void saveDataTypes(ProjectDTO projectdto) {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+	    	Transaction tx = null;
+		    
+	    	try  
+	    	{
+			    tx = session.beginTransaction();
+			    
+			    for (BuildingDataTypeDTO bd_dto : projectdto.getBuildingDataTypes())  {
+					BuildingDataType bd = new BuildingDataType(bd_dto);
+				    try
+					{
+				    	// check whether constraint exist, if yes, update ids
+				    	Query q = session.createQuery("from BuildingDataType dt where dt.name = :name");
+			 		    q.setString("name", bd_dto.getName());
+			 		    BuildingDataType dt = (BuildingDataType) q.uniqueResult();
+				    	
+			 		    if (dt != null)  {
+			 		    	bd.setId(dt.getId());
+			 		    	bd.update_dtoIds();
+			 		    	projectdto.synchronizeDataTypeIds();
+			 		    }
+			 		    else  {
+					    	session.merge(bd);
+							session.saveOrUpdate(bd);
+							bd.update_dtoIds();
+							projectdto.synchronizeDataTypeIds();
+			 		    }
+						
+					}
+					catch (NonUniqueObjectException e) 
+					{
+						session.merge(bd);
+					}
+				    catch (ConstraintViolationException e)
+				    {
+				    	e.printStackTrace();
+				    	
+				    }
+	    		}
+			    tx.commit();
+			    session.flush();
+	    	}
+	    	catch (Exception e)
+		    {
+		    	if (tx != null) tx.rollback();
+		    	e.printStackTrace();
+		    	
+		    }
+	    	session.close();
+		
+	}
+
+	@Override
      public ArrayList<ProjectDTO> getProjects(UserDTO user) {
              
-		 	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		 	Session session = HibernateUtil.getSessionFactory().openSession();
 	    	Transaction tx = null;
 		    try  
 		    {
@@ -74,20 +138,23 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
 			    ArrayList<Project> p = (ArrayList<Project>) q.list();
 			    ArrayList<ProjectDTO> projects = Project.getDTOList(p); 
 			    tx.commit();
+			    session.close();
 			    return projects;
 		    }
 		    catch (Exception e)
 		    {
 		    	if (tx != null) tx.rollback();
+		    	session.close();
 		    	return null;
 		    }
+		   
 		   
      }
 
      @Override
      public UserDTO login(String user, String password) 
      {
-    	 Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+    	Session session = HibernateUtil.getSessionFactory().openSession();
      	Transaction tx = null;
  	    
      	try  
@@ -107,12 +174,14 @@ public class ScenarioServiceImpl extends RemoteServiceServlet implements
  		    else
  		    {
  		    	tx.commit();
+ 		    	session.close();
  		    	return null;
  		    }
      	}
      	catch (Exception e)
  	    {
  	    	if (tx != null) tx.rollback();
+ 	    	session.close();
  	    	return null;
  	    }
      }

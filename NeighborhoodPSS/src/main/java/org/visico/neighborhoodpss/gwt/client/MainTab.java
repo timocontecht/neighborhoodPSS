@@ -2,7 +2,7 @@ package org.visico.neighborhoodpss.gwt.client;
 
 import java.util.ArrayList;
 
-import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -13,20 +13,20 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 public class MainTab extends TabLayoutPanel 
 {
-	static private MainTab instance = null;
+	ProjectMediator projectMed;
+	
+	ArrayList<ScenarioPanel> panels;
+	HierarchyPanel hierarchyPanel; 
+
 
 	
-	static public MainTab getInstance()
-	{
-		if (instance == null)
-			instance = new MainTab();
-		
-		return instance;
-	}
 	
-	private MainTab() 
+	public MainTab(ProjectMediator projectMed) 
 	{
 		super(5, Unit.EM);
+		
+		this.projectMed = projectMed;
+		
 		panels = new ArrayList<ScenarioPanel>();
 		
 		// work around for bug in google maps - if not implemented tiles of the map are gray
@@ -51,25 +51,23 @@ public class MainTab extends TabLayoutPanel
 		draw();
 	}
 
-	HierarchyPanel hierarchyPanel; 
-	
 	public void draw()
 	{
-		hierarchyPanel = HierarchyPanel.getInstance();
+		hierarchyPanel = new HierarchyPanel(projectMed);
+		projectMed.registerHierachyPanel(hierarchyPanel);
+		hierarchyPanel.drawLogin();
 		add(hierarchyPanel, "Scenarios");
-		
-		
-		
 	}
 	
-	public void addScenario(ScenarioDTO scenario)
-	{
-		ScenarioPanel dock = new ScenarioPanel(scenario, hierarchyPanel.getIndicatorMed());
-		dock.setTitle(scenario.getName() + " " + scenario.label());
-		panels.add(dock);
-		add(dock, dock.getTitle());
+	public void clearScenarioTabs() {
+		for (int i=1; i<this.getWidgetCount(); i++)
+		{
+			this.remove(i);
+		}
 	}
 	
-	ArrayList<ScenarioPanel> panels;
-	
+	public void addScenarioPanel(ScenarioPanel scenarioPanel)  {
+		panels.add(scenarioPanel);
+		add(scenarioPanel, scenarioPanel.getTitle());
+	}
 }

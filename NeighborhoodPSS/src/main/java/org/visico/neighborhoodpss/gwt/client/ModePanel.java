@@ -1,4 +1,4 @@
-package org.visico.neighborhoodpss.gwt.client;
+/*package org.visico.neighborhoodpss.gwt.client;
 
 
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 	final private TabLayoutPanel panel = new TabLayoutPanel(2.5, Unit.EM);
 	
 	
-	/*
+	
 	public EditBuildingPanel getEditBuilding() {
 		return editBuildingTab;
 	}
@@ -36,7 +36,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 		this.editBuildingTab = editBuilding;
 	}
 
-*/
+
 
 
 	public ModePanel(ScenarioPanel scenarioPanel)
@@ -46,13 +46,13 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 
 		//building_btn = new Button("Add Building");
 		//network_btn = new Button("Add Network");
-/*		add (building_btn);
+		add (building_btn);
 		building_btn.addClickHandler(this);
 		
 		
 		add (network_btn);
 		network_btn.addClickHandler(this);
-*/	
+	
 		panel.setSize("20em", "40em");
 		//editBuildingTab = new EditBuildingPanel(scenarioPanel);
 		//panel.add(editBuildingTab, "Edit Buildings");
@@ -72,7 +72,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 	@Override
 	public void onClick(ClickEvent event) 
 	{
-	/*	
+		
 		// set the right mode
 		if (event.getSource() == building_btn)
 		{
@@ -91,7 +91,7 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 			network.setDrawingEnabled();
 			
 		}
-		*/
+		
 		if (event.getSource() == close_btn)
 		{
 			ScenarioDTO scenario = scenarioPanel.scenario();
@@ -103,3 +103,4 @@ public class ModePanel extends VerticalPanel implements ClickHandler
 	ScenarioPanel scenarioPanel;
 	
 }
+*/

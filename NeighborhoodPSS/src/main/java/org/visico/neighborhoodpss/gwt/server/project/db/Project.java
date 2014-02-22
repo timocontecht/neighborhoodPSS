@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.domain.project.UserDTO;
@@ -56,7 +57,7 @@ public class Project implements Cloneable, Serializable
 	    )
 	Set<User> users = new HashSet<User>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(
 	        name="BUILDING_DATA_TYPE_PROJECT",
 	        joinColumns=@JoinColumn(name="project_id"),
@@ -92,6 +93,8 @@ public class Project implements Cloneable, Serializable
 			this.addUser( new User(uit.next()));
 		}
 		
+		for (BuildingDataTypeDTO type : this.dto_object.getBuildingDataTypes())
+			this.buildingDataTypes.add(new BuildingDataType(type));
 		
 	}
 

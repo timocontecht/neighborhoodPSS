@@ -20,6 +20,7 @@ import org.visico.neighborhoodpss.gwt.client.Map;
 import org.visico.neighborhoodpss.gwt.client.NetworkEdge;
 import org.visico.neighborhoodpss.gwt.client.NetworkTable;
 import org.visico.neighborhoodpss.gwt.client.NodeMarker;
+import org.visico.neighborhoodpss.gwt.client.ScenarioPanel;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
@@ -37,36 +38,43 @@ import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 
 
 
 public class ScenarioEditMediator {
 	ScenarioDTO scenario;
-	ProjectDTO project;
+	ProjectMediator projectMed;
 	
 	Map map;
 	EditMapPanel editNetworkPanel;
+	private NetworkTable networkTable;
+	private BuildingTable buildingTable;
+	private ChangeAddDataDlg changeAddDataDlg;
+	private ScenarioPanel scenarioPanel;
 	
-	// variables
 	NetworkDTO selectedNetwork = null;
 	Set<NetworkDTO> visibleNetworks = new HashSet<NetworkDTO>();
-	
-	double inflow;
-	double outflow;
-	double capacity;
 	
 	private HashMap<BuildingPolygon, BuildingDTO> buildingMap = new HashMap<BuildingPolygon, BuildingDTO>();
 	private HashMap<NetworkEdge, EdgeDTO> edgeMap = new HashMap<NetworkEdge, EdgeDTO>();
 	private HashMap<NodeMarker, NodeDTO> nodeMap = new HashMap<NodeMarker, NodeDTO>();
+	private HashMap<BuildingDataTypeDTO, TextBox> buildingDataMap;
+	
+	// state variables
+	double inflow;
+	double outflow;
+	double capacity;
 	private Set<Overlay> selected = new HashSet<Overlay>();
-	private NetworkTable networkTable;
-	private BuildingTable buildingTable;
 	
 	
-	public ScenarioEditMediator(ScenarioDTO scenario, ProjectDTO project)
+	
+	
+	public ScenarioEditMediator(ScenarioDTO scenario, ProjectMediator projectMed)
 	{
 		this.scenario = scenario;
-		this.project = project;
+		this.projectMed = projectMed;
 	}
 	
 	public void initializeOverlays() {
@@ -131,10 +139,7 @@ public class ScenarioEditMediator {
 	}
 
 	public void selectionMode() {
-		if (selectedNetwork != null)
-			map.setMode(Map.editmodes.SELECTION);
-		
-			
+		map.setMode(Map.editmodes.SELECTION);	
 	}
 	
 	public void addNodeMode() {
@@ -148,6 +153,10 @@ public class ScenarioEditMediator {
 			map.setMode(Map.editmodes.ADD_EDGE);
 	}
 
+	public void registerScenarioPanel(ScenarioPanel panel)  {
+		this.scenarioPanel = panel;
+	}
+	
 	public void registerMap(Map map) {
 		this.map = map;
 	}
@@ -167,20 +176,23 @@ public class ScenarioEditMediator {
 
 	private void insertBuildingsInTable() {
 		Grid buildingGrid = buildingTable.getBuildingGrid();
+		buildingGrid.clear();
 		
-		buildingGrid.resizeRows(1);
+		buildingGrid.resizeRows(buildingGrid.getRowCount() + 1);
+		buildingGrid.resizeColumns(projectMed.getBuildingDataTypes().size() + 1);
 		
-		for (BuildingDTO b : scenario.getBuildingDTOs())
-		{
-			buildingGrid.insertRow(buildingGrid.getRowCount());
-			buildingGrid.setText(buildingGrid.getRowCount() - 1, 0, new Integer(b.getId()).toString());
+		int column = 1;
+		for (BuildingDataTypeDTO dataType : projectMed.getBuildingDataTypes())  {
+			buildingGrid.setWidget(0, column, new Label(dataType.getName()));
+			int row = 1;
 			
-			int column = 1;
-			for (BuildingDataDTO data : b.getData())
-			{
-				buildingGrid.setText(buildingGrid.getRowCount() - 1, column, data.getValue());
-				column ++;
+			for (BuildingDTO b : scenario.getBuildingDTOs())  {
+				buildingGrid.insertRow(buildingGrid.getRowCount());
+				buildingGrid.setText(row, 0, Integer.toString(b.getId()));
+				buildingGrid.setText(row, column, b.getData().get(dataType).getValue());
+				row ++;
 			}
+			column ++; 
 		}
 	}
 
@@ -257,6 +269,8 @@ public class ScenarioEditMediator {
 		}
 		selected.clear();
 		editNetworkPanel.changeSelectedLabel(0,0,0);
+		
+		insertBuildingsInTable();
 	}
 
 	public void addNewNode(NodeMarker node) {
@@ -291,13 +305,12 @@ public class ScenarioEditMediator {
 		
 		buildingDTO.setArea(building.getArea());
 		
-		for (BuildingDataTypeDTO dt : project.getBuildingDataTypes())
+		for (BuildingDataTypeDTO dt : projectMed.getBuildingDataTypes())
 		{
 			BuildingDataDTO data = new BuildingDataDTO();
-			data.setBuilding(buildingDTO);
 			data.setType(dt);
 			data.setValue(dt.getDefault_val());
-			buildingDTO.getData().add(data);
+			buildingDTO.getData().put(data.getType(), data);
 		}
 		
 		scenario.addBuilingDTO(buildingDTO);
@@ -450,27 +463,86 @@ public class ScenarioEditMediator {
 	}
 
 	public double getLatitude() {
-		return HierarchyPanel.getInstance().getProject().getLatitude();
+		return projectMed.getLatitude();
 	}
 
 	public double getLongitude() {
-		return HierarchyPanel.getInstance().getProject().getLongitude();
+		return projectMed.getLongitude();
 	}
 
 	public void editAddElementData() {
-		List<BuildingDataDTO> buildingData = new ArrayList<BuildingDataDTO>();
+		changeAddDataDlg = new ChangeAddDataDlg(this);
+		setAddDataDlgTable();
+		changeAddDataDlg.center();
+		changeAddDataDlg.show();
+	}
+
+	public void setAddDataDlgTable() {
+		// collect the data 
+		buildingDataMap = new HashMap<BuildingDataTypeDTO, TextBox>();
 		
-		for (Overlay o : selected)
-		{
-			if (o instanceof BuildingPolygon)
-			{
-				BuildingDTO building = buildingMap.get(o);
-				buildingData.addAll(building.getData());
+		for (Overlay o : selected) {
+			if (o instanceof BuildingPolygon)  {
+				for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : buildingMap.get(o).getData().entrySet())  {
+					if (buildingDataMap.containsKey(data.getKey()) )  {
+						TextBox dataBox = buildingDataMap.get(data.getKey());
+						if (dataBox.getText().equals(data.getValue().getValue()) == false)  {
+							dataBox.setValue("*");
+							buildingDataMap.put(data.getKey(), dataBox);
+						}
+					}
+					else 
+					{
+						TextBox dataBox = new TextBox();
+						dataBox.setValue(data.getValue().getValue());
+						buildingDataMap.put(data.getKey(), dataBox);
+					}
+				}
 			}
 		}
 		
-		ChangeAddDataDlg dataDlg = new ChangeAddDataDlg(buildingData);
+		Grid buildingGrid = changeAddDataDlg.getBuildingDataGrid();
+		buildingGrid.clear();
+		
+		buildingGrid.resize(buildingDataMap.size() + 1, 2);
+		buildingGrid.setStyleName("BuildingTable");
+		buildingGrid.getRowFormatter().addStyleName(0, "BuildingTableHeader");
+		buildingGrid.setWidget(0, 0, new Label("Data Type"));
+		buildingGrid.setWidget(0, 1, new Label("Data Value"));
+		
+		int rowCount = 1;
+		for (Entry<BuildingDataTypeDTO, TextBox> type : buildingDataMap.entrySet())  {
+			buildingGrid.setWidget(rowCount, 0, new Label(type.getKey().getName()));
+			buildingGrid.setWidget(rowCount, 1, type.getValue());
+		}
 	}
 
+	public void changeAdditionalBuildingData() {
+		if (buildingDataMap != null)  {
+			for (Overlay o : selected)  {
+				if (o instanceof BuildingPolygon)  {
+					BuildingDTO building = buildingMap.get(o);
+					for (Entry<BuildingDataTypeDTO, BuildingDataDTO> data : building.getData().entrySet())  {
+						TextBox dataTextBox = buildingDataMap.get(data.getKey());
+						if (dataTextBox.getText().equals("*") == false)  {
+							BuildingDataDTO datadto = data.getValue();
+							datadto.setValue(dataTextBox.getText());
+						}
+					}
+				}
+			}
+		}
+		
+		insertBuildingsInTable();
+	}
+
+	public void setScenario(ScenarioDTO scenario) {
+		selected = new HashSet<Overlay>();
+		this.scenario = scenario;
+		insertBuildingsInTable();
+	}
 	
+	public ScenarioDTO getScenario()  {
+		return scenario;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.UserDTO;
+import org.visico.neighborhoodpss.gwt.shared.patterns.ProjectMediator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,19 +23,19 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class UserPanel extends HorizontalPanel implements ClickHandler
 {
-	static private UserPanel instance = null;
+	private TextBox userNameTB;
+	private PasswordTextBox passwordTB;
+	//private CheckBox rememberMeCB;
+	private FlexTable loginTable;
+	private ListBox projectList;
+	private UserDTO u;
+	private ArrayList<ProjectDTO> projects;
 	
-	static UserPanel getInstance()
-	{
-		if (instance == null)
-		{
-			instance = new UserPanel();
-		}
-		return instance;
-	}
+	ProjectMediator projectMed;
 	
-	private UserPanel()
+	public UserPanel(ProjectMediator projectMed)
 	{
+		this.projectMed = projectMed;
 		refresh();
 	}
 	
@@ -51,7 +52,6 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 		
 		if (u == null)
 		{
-		
 			loginTable = new FlexTable();
 			loginTable.setText(0, 0, "Username:");
 		    userNameTB = new TextBox();
@@ -61,13 +61,10 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 		    passwordTB = new PasswordTextBox();
 		    loginTable.setWidget(1, 1, passwordTB);
 		    
-		    //rememberMeCB = new CheckBox("remember me");
-		    //loginTable.setWidget(2, 1, rememberMeCB);
 		    
 		    final Button loginBtn = new Button("Login");
 		    loginBtn.addClickHandler(this);
 		    loginTable.setWidget(2, 1, loginBtn);
-		    
 		}
 		else
 		{
@@ -80,7 +77,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 
 				public void onClick(ClickEvent event) 
 				{
-					MainPanel.getInstance().setUser(null);
+					//MainPanel.getInstance().setUser(null);
 					refresh();
 				}
 				
@@ -108,10 +105,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 				{
 						public void onFailure(Throwable caught) 
 						{
-							// Show the RPC error message to the user
-							DialogBox dialogBox = new DialogBox();	
-							dialogBox.setText("Remote Procedure Call - Failure");
-							dialogBox.center();
+							Window.alert("Could not connect to server, please contact the system administrator");
 						}
 	
 						public void onSuccess(ArrayList<ProjectDTO> result) 
@@ -142,7 +136,7 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 					@Override
 					public void onClick(ClickEvent event) {
 						int selection = Integer.parseInt(projectList.getValue(projectList.getSelectedIndex()));
-						HierarchyPanel.getInstance().setProject(projects.get(selection));
+						projectMed.setProject(projects.get(selection));
 					}
 					
 				});
@@ -156,13 +150,6 @@ public class UserPanel extends HorizontalPanel implements ClickHandler
 		
 	}
 	
-	private TextBox userNameTB;
-	private PasswordTextBox passwordTB;
-	//private CheckBox rememberMeCB;
-	private FlexTable loginTable;
-	private ListBox projectList;
-	private UserDTO u;
-	private ArrayList<ProjectDTO> projects;
 	
 	
 	

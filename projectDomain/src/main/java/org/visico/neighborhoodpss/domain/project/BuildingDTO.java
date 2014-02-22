@@ -1,9 +1,11 @@
 package org.visico.neighborhoodpss.domain.project;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -25,7 +27,7 @@ public class BuildingDTO implements Cloneable, IsSerializable
 	private int id;
 	private double area;
 	private List<GeoPointDTO> points = new ArrayList<GeoPointDTO>();
-	private List<BuildingDataDTO> data = new ArrayList<BuildingDataDTO>();
+	private Map<BuildingDataTypeDTO, BuildingDataDTO> data = new HashMap<BuildingDataTypeDTO, BuildingDataDTO>();
 	
 	public BuildingDTO()
 	{
@@ -47,8 +49,8 @@ public class BuildingDTO implements Cloneable, IsSerializable
 			this.getPoints().add(new GeoPointDTO(b));
 		}
 		
-		for (BuildingDataDTO dt : toCopy.getData())
-			this.getData().add(new BuildingDataDTO(dt));
+		for (Entry<BuildingDataTypeDTO, BuildingDataDTO> dt : toCopy.getData().entrySet())
+			this.getData().put(dt.getKey(), new BuildingDataDTO(dt.getValue()));
 		
 	}
 	
@@ -91,11 +93,11 @@ public class BuildingDTO implements Cloneable, IsSerializable
 		this.id = id;
 	}
 
-	public List<BuildingDataDTO> getData() {
+	public Map<BuildingDataTypeDTO, BuildingDataDTO> getData() {
 		return data;
 	}
 
-	public void setData(List<BuildingDataDTO> data) {
+	public void setData(Map<BuildingDataTypeDTO, BuildingDataDTO> data) {
 		this.data = data;
 	}
 	
