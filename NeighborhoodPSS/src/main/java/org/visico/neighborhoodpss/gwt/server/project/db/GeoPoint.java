@@ -46,7 +46,6 @@ public class GeoPoint implements Serializable
 		this.setLongitude(pt.getLongitude());
 	}
 	
-	
 	public int getId() {
 		return id;
 	}

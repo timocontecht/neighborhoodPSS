@@ -24,7 +24,13 @@
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">true</property>
         
-		
+		<!-- hibernate.cfg.xml -->
+		<property name="c3p0.min_size">5</property>
+		<property name="c3p0.max_size">20</property>
+		<property name="c3p0.timeout">1800</property>
+		<property name="c3p0.max_statements">50</property>
+		<!-- no "connection.pool_size" entry! -->
+        
 		<!--  Mapping files -->
 		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.Scenario"/>
 		<mapping class = "org.visico.neighborhoodpss.gwt.server.project.db.Building"/>

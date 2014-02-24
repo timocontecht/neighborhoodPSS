@@ -39,4 +39,5 @@ public class BuildingDataDTO implements Cloneable, IsSerializable {
 		this.value = value;
 	}
 	
+	
 }

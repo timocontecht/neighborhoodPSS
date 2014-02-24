@@ -21,7 +21,7 @@ from USER;
 
 create view tc_realm_groups as
 select
-	USER.name as username
+	USER.name as username,
 	'user' as groupname
 from USER;
 

@@ -1,7 +1,6 @@
 package org.visico.neighborhoodpss.domain.project;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -10,7 +9,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ProjectDTO  implements Cloneable, IsSerializable
 {
-
 
 	private int id;
 	private String name;

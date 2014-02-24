@@ -38,8 +38,7 @@ public class Building implements Serializable
 	@GeneratedValue
 	private int id;
 	
-	@Column
-	private String industry;
+	
 	@Transient
 	private double area;
 	
@@ -70,7 +69,7 @@ public class Building implements Serializable
 		}
 		
 		this.setPoints(pts);
-		this.setType(b.getType());
+	
 		
 	}
 
@@ -97,13 +96,7 @@ public class Building implements Serializable
 		this.points = points;
 	}
 
-	public String getType() {
-		return industry;
-	}
-
-	public void setType(String type) {
-		this.industry = type;
-	}
+	
 
 	public double getArea() {
 		return area;
@@ -140,7 +133,6 @@ public class Building implements Serializable
 		{
 			dto_object = new BuildingDTO();
 			dto_object.setId(this.getId());
-			dto_object.setType(this.getType());
 			dto_object.setArea(this.getArea());
 			
 			for (GeoPoint p : points)

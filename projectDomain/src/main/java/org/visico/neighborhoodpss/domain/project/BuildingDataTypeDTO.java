@@ -72,7 +72,6 @@ public class BuildingDataTypeDTO implements Cloneable, IsSerializable {
 	}
 
 	
-
 	@Override
 	public int hashCode() {
 		int hashCode = 31 * (name !=null ? name.hashCode() : 0);

@@ -29,7 +29,7 @@ import org.visico.neighborhoodpss.pssprojectrest.ProjectRestService;
 public class ProjectRestServiceTest extends JerseyTest{
 	
 		
-	 protected Application configure()
+	/* protected Application configure()
 	 {
 		 return new ResourceConfig(ProjectRestService.class);
 	 }
@@ -42,7 +42,7 @@ public class ProjectRestServiceTest extends JerseyTest{
 	 }
 	 
 	 @Test
-	 public void addProjectTest() {
+	 public void saveProjectTest() {
 		ProjectDTO project = new ProjectDTO();
 		project.setName("Test");
 		GenericEntity<ProjectDTO> entity = new GenericEntity<ProjectDTO>(project) { };
@@ -61,6 +61,16 @@ public class ProjectRestServiceTest extends JerseyTest{
 	     assertEquals(user.getName(), "User 1");
         
 	 }
+	 
+	 @Test
+	 public void addProjectTest() {
+		 Invocation invocation = target("project/add").queryParam("name", "Test1")
+				 .queryParam("latitude", "52.366612")
+				 .queryParam("longitude", "6.644061")
+				 .request().buildGet();
+			Integer responseMsg = invocation.invoke(Integer.class);
+	        assertNotNull(responseMsg);
+	 }*/
 	 
 	 /*@Test
 	 // this test does not work as it is not possible to inject a security context with the grizley server

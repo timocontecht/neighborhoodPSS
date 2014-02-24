@@ -24,8 +24,6 @@ import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.domain.project.UserDTO;
 
 
-
-
 @Entity
 @Table(name="PROJECT")
 public class Project implements Cloneable, Serializable

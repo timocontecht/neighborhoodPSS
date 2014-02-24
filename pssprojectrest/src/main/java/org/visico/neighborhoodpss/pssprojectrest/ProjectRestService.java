@@ -22,10 +22,10 @@ import javax.ws.rs.core.SecurityContext;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectNameDTO;
 import org.visico.neighborhoodpss.domain.project.UserDTO;
-
 import org.visico.neighborhoodpss.pssprojectrest.db.HibernateUtil;
 import org.visico.neighborhoodpss.pssprojectrest.db.Project;
 import org.visico.neighborhoodpss.pssprojectrest.db.User;
@@ -45,18 +45,30 @@ public class ProjectRestService {
     @RolesAllowed({"user"})
     public ProjectDTO getProject(@Context SecurityContext sc, @QueryParam("id") Integer id) {
     	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
-	    Query q = session.createQuery("from Project p where id = :id");
-	    q.setInteger("id", id);
-	    Project p = (Project) q.uniqueResult();
-	    if (p != null  )
+    	Transaction tx = null;
+	    try  
 	    {
-	    	ProjectDTO dto_object = p.getDto_object();
-		    session.getTransaction().commit();
-	    	return dto_object;
+	    	tx = session.beginTransaction();
+		    Query q = session.createQuery("from Project p where id = :id");
+		    q.setInteger("id", id);
+		    Project p = (Project) q.uniqueResult();
+		    if (p != null  )
+		    {
+		    	ProjectDTO dto_object = p.getDto_object();
+			    tx.commit();
+		    	return dto_object;
+		    }
+		    else
+		    {
+		    	tx.commit();
+		    	return null;
+		    }
 	    }
-	    else
+	    catch (Exception e)
+	    {
+	    	if (tx != null) tx.rollback();
 	    	return null;
+	    }	      
     }
    
     @GET @Path("/loadProjects")
@@ -65,15 +77,26 @@ public class ProjectRestService {
     public Response getProjectList(@Context SecurityContext sc)
     {
     	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
-	    Query q = session.createQuery("from Project p join fetch p.users u where u.name = :name");
-	    String name = sc.getUserPrincipal().getName();
-	    q.setString("name", name);
-	    ArrayList<Project> p = (ArrayList<Project>) q.list();
-	    ArrayList<ProjectDTO> projects = Project.getDTOList(p); 
-	    final GenericEntity<ArrayList<ProjectDTO>> entity = new GenericEntity<ArrayList<ProjectDTO>>(projects) { };
-	    session.getTransaction().commit();
-	    return Response.ok(entity).build();
+    	Transaction tx = null;
+	    try  
+	    {
+	    	tx = session.beginTransaction();
+	    
+		    Query q = session.createQuery("from Project p join fetch p.users u where u.name = :name");
+		    String name = sc.getUserPrincipal().getName();
+		    q.setString("name", name);
+		    ArrayList<Project> p = (ArrayList<Project>) q.list();
+		    ArrayList<ProjectDTO> projects = Project.getDTOList(p); 
+		    final GenericEntity<ArrayList<ProjectDTO>> entity = new GenericEntity<ArrayList<ProjectDTO>>(projects) { };
+		    tx.commit();
+		    return Response.ok(entity).build();
+	    }
+	    catch (Exception e)
+	    {
+	    	if (tx != null) tx.rollback();
+	    	return null;
+	    }
+	   
     }
     
     @GET @Path("/names")
@@ -82,27 +105,38 @@ public class ProjectRestService {
     public Response getProjectNames(@Context SecurityContext sc)
     {
     	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
-	    Query q = session.createQuery("from Project p join fetch p.users u where u.name = :name");
-	   
-	    String name = sc.getUserPrincipal().getName();
-	    q.setString("name", name);
-	    ArrayList<Project> p = (ArrayList<Project>) q.list();
-	    
-	    // set up the hash map and return it
-	    ArrayList<ProjectNameDTO> projectNames = new ArrayList<ProjectNameDTO>();
-	    for (Project project : p)
+    	Transaction tx = null;
+	    try  
 	    {
-	    	ProjectNameDTO n = new ProjectNameDTO();
-	    	n.setDb_id(project.getId());
-	    	n.setName(project.getName());
-	    	projectNames.add(n);
+	    	tx = session.beginTransaction();
+	    
+		    Query q = session.createQuery("from Project p join fetch p.users u where u.name = :name");
+		   
+		    String name = sc.getUserPrincipal().getName();
+		    q.setString("name", name);
+		    ArrayList<Project> p = (ArrayList<Project>) q.list();
+		    
+		    // set up the hash map and return it
+		    ArrayList<ProjectNameDTO> projectNames = new ArrayList<ProjectNameDTO>();
+		    for (Project project : p)
+		    {
+		    	ProjectNameDTO n = new ProjectNameDTO();
+		    	n.setDb_id(project.getId());
+		    	n.setName(project.getName());
+		    	projectNames.add(n);
+		    }
+		    
+		    final GenericEntity<ArrayList<ProjectNameDTO>> entity = 
+		    		new GenericEntity<ArrayList<ProjectNameDTO>>(projectNames) { };
+		    tx.commit();
+	    	return Response.ok(entity).build();
+	    }
+	    catch (Exception e)
+	    {
+	    	if (tx != null) tx.rollback();
+	    	return null;
 	    }
 	    
-	    final GenericEntity<ArrayList<ProjectNameDTO>> entity = 
-	    		new GenericEntity<ArrayList<ProjectNameDTO>>(projectNames) { };
-	    session.getTransaction().commit();
-    	return Response.ok(entity).build();
     }
     
     @POST @Path("/saveProject")
@@ -110,22 +144,33 @@ public class ProjectRestService {
     @RolesAllowed({"user"})
     public ProjectDTO saveProject(@Context SecurityContext sc, ProjectDTO projectdto)
     {
-    	Project project = new Project(projectdto);
     	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
+    	Transaction tx = null;
 	    
-	    try
-		{
-			session.saveOrUpdate(project);
-			project.update_dtoIds();
-		}
-		catch (NonUniqueObjectException e) 
-		{
-			session.merge(project);
-		}
+    	try  
+    	{
+	    	Project project = new Project(projectdto);
+		    tx = session.beginTransaction();
+		    
+		    try
+			{
+				session.saveOrUpdate(project);
+				project.update_dtoIds();
+			}
+			catch (NonUniqueObjectException e) 
+			{
+				session.merge(project);
+			}
 		
-		session.getTransaction().commit();
-		return projectdto;
+			tx.commit();
+			return projectdto;
+    	}
+    	catch (Exception e)
+	    {
+	    	if (tx != null) tx.rollback();
+	    	return null;
+	    }
+	   
     }
     
     @GET @Path("/login")
@@ -135,18 +180,61 @@ public class ProjectRestService {
     		@QueryParam("pass") String pass)
     {
     	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    session.beginTransaction();
-	    Query q = session.createQuery("from User u where u.name = :name");
-	    q.setString("name", user);
-	    User u = (User) q.uniqueResult();
+    	Transaction tx = null;
 	    
-	    if (u != null && u.getPassword().equals(pass) )
+    	try  
+    	{
+    		tx = session.beginTransaction();
+    	
+		    Query q = session.createQuery("from User u where u.name = :name");
+		    q.setString("name", user);
+		    User u = (User) q.uniqueResult();
+		    
+		    if (u != null && u.getPassword().equals(pass) )
+		    {
+		    	UserDTO dto_object = u.getDto_object();
+		    	tx.commit();
+		    	return dto_object;
+		    }
+		    else
+		    {
+		    	tx.commit();
+		    	return null;
+		    }
+    	}
+    	catch (Exception e)
 	    {
-	    	UserDTO dto_object = u.getDto_object();
-	    	session.getTransaction().commit();
-	    	return dto_object;
-	    }
-	    else
+	    	if (tx != null) tx.rollback();
 	    	return null;
+	    }
+    }
+    
+    @GET @Path("/add")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"user"})
+    public Integer addProject(@Context SecurityContext sc, @QueryParam("name") String name, 
+    		@QueryParam("latitude") double lat, @QueryParam("longitude") double lon)
+    {
+    	Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+    	Transaction tx = null;
+	    
+    	try  
+    	{
+    		Project p = new Project();
+    		p.setName(name);
+    		p.setLongitude(lon);
+    		p.setLatitude(lat);
+    		
+    		tx = session.beginTransaction();
+    		Integer id = (Integer)session.save(p);
+    		tx.commit();
+    		return id;
+		    
+    	}
+    	catch (Exception e)
+	    {
+	    	if (tx != null) tx.rollback();
+	    	return null;
+	    }
     }
 }
