@@ -7,6 +7,7 @@ public class BuildingDataDTO implements Cloneable, IsSerializable {
 	private int id;
 	private BuildingDataTypeDTO type;
 	private String value;
+	private BuildingDTO building;
 	
 	public BuildingDataDTO()  {
 		
@@ -19,6 +20,16 @@ public class BuildingDataDTO implements Cloneable, IsSerializable {
 		this.setValue(toCopy.getValue());
 	}
 	
+	
+	
+	public BuildingDTO getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(BuildingDTO building) {
+		this.building = building;
+	}
+
 	public int getId() {
 		return id;
 	}
