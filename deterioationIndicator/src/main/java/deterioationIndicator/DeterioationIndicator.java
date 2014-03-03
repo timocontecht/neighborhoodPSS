@@ -1,16 +1,19 @@
 package deterioationIndicator;
 
+
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.plugin.IndicatorPlugin;
+import org.visico.neighborhoodpss.plugin.buildingvisualization.BuildingVisualization;
+import org.visico.neighborhoodpss.plugin.buildingvisualization.BuildingVisualizationList;
 
-import delaunay_triangulation.Delaunay_Triangulation;
-import delaunay_triangulation.Point_dt;
-import delaunay_triangulation.Triangle_dt;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 
 /**
@@ -18,7 +21,7 @@ import delaunay_triangulation.Triangle_dt;
  *
  */
 public class DeterioationIndicator extends IndicatorPlugin {
-	private static int timesteps = 20;
+	private static int TIME_STEPS = 1;
 	private static double threshold = 0.99;
 	
 	ScenarioDTO scenario;
@@ -33,13 +36,63 @@ public class DeterioationIndicator extends IndicatorPlugin {
 	}
 	
 	private void generateOutput() {
-		// TODO Auto-generated method stub
+		// create the jaxb class
+		BuildingVisualizationList xmlListClass = new BuildingVisualizationList();
+		for (BuildingNode b : graph.nodes)
+		{
+			BuildingVisualization viz = new BuildingVisualization();
+			viz.setBuildingID(b.getBuilding().getId());
+			viz.setColor(getConditionDisplayColor(b.getCondition()));
+			xmlListClass.getBuilding().add(viz);
+		}
+		
+		try  {
+			// marshall the class
+			File file = new File("DeterioationVizualisations.xml");
+			
+			JAXBContext jaxbContext = JAXBContext.newInstance(BuildingVisualizationList.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+	 
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	 
+			jaxbMarshaller.marshal(xmlListClass, file);
+			jaxbMarshaller.marshal(xmlListClass, System.out);
+		}
+		catch(Exception ex)  {
+			ex.printStackTrace();
+		}
 		
 	}
 
+	private String getConditionDisplayColor(int condition) {
+		String color;
+		switch(condition)  {
+			case 1:
+				color = "#40FF00";
+				break;
+			case 2:
+				color = "#FFFF00";
+				break;
+			case 3:
+				color = "#FF8000";
+				break;
+			case 4:
+				color = "#FF0000";
+				break;
+			case 5:
+				color = "#3B0B0B";
+				break;
+			default:
+				color = "#FFFFFF";
+		}
+		
+		return color;
+	}
+
 	private void propagateDeterioation() {
-		// TODO Auto-generated method stub
-		// network deterioation algorithm 
+		for (int i=0; i< TIME_STEPS; i++)
+			deterioate();
 	}
 	
 	
@@ -48,7 +101,7 @@ public class DeterioationIndicator extends IndicatorPlugin {
 		return graph.nodes;
 	}
 
-	private void createGraph() {
+	public void createGraph() {
 		
 		for (BuildingDTO b : scenario.getBuildingDTOs())  {
 			BuildingNode node = new BuildingNode(b);
@@ -58,7 +111,6 @@ public class DeterioationIndicator extends IndicatorPlugin {
 	}
 
 	
-
 	/**
 	 * 
 	 * @return an double array of size 4  with the min and max coordinates
