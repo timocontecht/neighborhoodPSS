@@ -48,7 +48,7 @@ public class DeterioationIndicator extends IndicatorPlugin {
 		
 		try  {
 			// marshall the class
-			File file = new File("DeterioationVizualisations.xml");
+			File file = new File("Deterioation_"+ scenario.getId() + ".xml");
 			
 			JAXBContext jaxbContext = JAXBContext.newInstance(BuildingVisualizationList.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -85,8 +85,7 @@ public class DeterioationIndicator extends IndicatorPlugin {
 				break;
 			default:
 				color = "#FFFFFF";
-		}
-		
+		}	
 		return color;
 	}
 
