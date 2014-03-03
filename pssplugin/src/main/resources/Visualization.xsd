@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.visico.org/neighborhoodpss/plugin/BuildingVisualization" 
+xmlns:tns="http://www.visico.org/neighborhoodpss/plugin/BuildingVisualization" 
+elementFormDefault="qualified">
+
+
+    <complexType name="BuildingVisualization">
+    	<sequence>
+    		<element name="BuildingID" type="int"></element>
+    		<element name="Color" type="string"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="BuildingVisualizationList">
+    	<sequence maxOccurs="unbounded" minOccurs="0">
+    		<element name="Building" type="tns:BuildingVisualization"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="Buildings" type="tns:BuildingVisualizationList"></element>
+
+</schema>
