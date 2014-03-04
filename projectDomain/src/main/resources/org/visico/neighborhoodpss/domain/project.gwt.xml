@@ -1,0 +1,4 @@
+<module>
+  <inherits name='org.visico.neighborhoodpss.domain.project'/>
+  <source path="project"></source>
+</module> 
