@@ -7,9 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -62,11 +65,25 @@ public class IndicatorManager {
 			if (p.getName().equals(indicatorName))  {
 				// initialize class
 				System.out.println("Will load file from " + pathToIndicator + "/" + p.getJar());
-				File jarfile = new File(pathToIndicator + "/" + p.getJar());
-				URL jarfileurl = new URL("jar", "","file:" + jarfile.getAbsolutePath()+"!/");
-				System.out.println("Tried to load file from " + jarfileurl.getPath());
-				URLClassLoader cl = URLClassLoader.newInstance(new URL[]{jarfileurl}, parentCL);
-				Class<IndicatorPlugin> indPlugClass = (Class<IndicatorPlugin>) cl.loadClass(p.getClassName());
+				JarFile jarfile = new JarFile(pathToIndicator);
+				Enumeration e = jarfile.entries();
+				
+				URL[] urls = { new URL("jar:file" + pathToIndicator +"!/") };
+				
+				URLClassLoader cl = URLClassLoader.newInstance(urls);
+				
+				 while (e.hasMoreElements()) {
+		                JarEntry je = (JarEntry) e.nextElement();
+		                if(je.isDirectory() || !je.getName().endsWith(".class")){
+		                    continue;
+		                }
+		                // -6 because of .class
+		                String className = je.getName().substring(0,je.getName().length()-6);
+		                className = className.replace('/', '.');
+		                Class c = cl.loadClass(className);
+		            }
+				
+				Class<? extends IndicatorPlugin> indPlugClass =  IndicatorPlugin cl..getClass();
 				IndicatorPlugin indPlug = indPlugClass.newInstance();
 				indPlug.setPluginInfo(p);
 				
