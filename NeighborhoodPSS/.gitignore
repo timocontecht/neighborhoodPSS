@@ -1,0 +1,10 @@
+/target
+/.classpath
+/.project
+/war
+/.gwt
+/.google_apis
+/.settings
+/configurationtest
+/gwt-unitCache
+
