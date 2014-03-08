@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -17,4 +18,5 @@ public interface IndicatorServiceAsync {
 	void activateIndicator (ProjectDTO project, String indicatorName, AsyncCallback<String> asyncCallback);
 	void deactivateIndicator (ProjectDTO project, String indicatorName, AsyncCallback<String> asyncCallback);
 	void buildingDataTypes (ProjectDTO project, AsyncCallback<Set<String>> asyncCallback);
+	void caluclateIndicator (ScenarioDTO scenario, IndicatorDTO indicatorDTO, AsyncCallback<String> asyncCallback);
 }

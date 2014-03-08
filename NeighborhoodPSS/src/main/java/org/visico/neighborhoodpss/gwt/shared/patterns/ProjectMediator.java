@@ -15,6 +15,7 @@ import org.visico.neighborhoodpss.gwt.client.HierarchyPanel;
 import org.visico.neighborhoodpss.gwt.client.IndicatorSelectionPanel;
 import org.visico.neighborhoodpss.gwt.client.IndicatorService;
 import org.visico.neighborhoodpss.gwt.client.IndicatorServiceAsync;
+import org.visico.neighborhoodpss.gwt.client.IndicatorTable;
 import org.visico.neighborhoodpss.gwt.client.IndicatorWidget;
 import org.visico.neighborhoodpss.gwt.client.MainTab;
 import org.visico.neighborhoodpss.gwt.client.ScenarioPanel;
@@ -23,29 +24,35 @@ import org.visico.neighborhoodpss.gwt.client.ScenarioServiceAsync;
 import org.visico.neighborhoodpss.gwt.client.ScenarioTree;
 import org.visico.neighborhoodpss.gwt.client.UserPanel;
 import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
+import org.visico.neighborhoodpss.plugin.IndicatorPlugin;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Grid;
 
 
 public class ProjectMediator {
 	
-	IndicatorServiceAsync service = GWT.create(IndicatorService.class);
-	IndicatorSelectionPanel indicatorSelectionPanel;
-	BuildingTable buildingTable;
-	HierarchyPanel hierarchyPanel;
-	MainTab mainPanel;
-	UserPanel userPanel;
+	private IndicatorServiceAsync indicatorService = GWT.create(IndicatorService.class);
+	private ScenarioServiceAsync scenarioService = GWT.create(ScenarioService.class);
 	
-	HashMap<String, IndicatorWidget> indicatorWidgets = new HashMap<String, IndicatorWidget>();
-	HashMap<String, IndicatorDTO> allIndicators = new HashMap<String, IndicatorDTO>();
-	HashMap<ScenarioEditMediator, ScenarioPanel> scenarioPanels = new HashMap<ScenarioEditMediator, ScenarioPanel>();
-	Set<BuildingDataTypeDTO> buildingDataTypes = new HashSet<BuildingDataTypeDTO>();
+	private IndicatorSelectionPanel indicatorSelectionPanel;
+	private BuildingTable buildingTable;
+	private HierarchyPanel hierarchyPanel;
+	private IndicatorTable indicatorTable;
+	private MainTab mainPanel;
+	private UserPanel userPanel;
+	
+	private HashMap<String, IndicatorWidget> indicatorWidgets = new HashMap<String, IndicatorWidget>();
+	private HashMap<String, IndicatorDTO> allIndicators = new HashMap<String, IndicatorDTO>();
+	private HashMap<ScenarioEditMediator, ScenarioPanel> scenarioPanels = new HashMap<ScenarioEditMediator, ScenarioPanel>();
+	private Set<BuildingDataTypeDTO> buildingDataTypes = new HashSet<BuildingDataTypeDTO>();
 	
 	
 
 	private ProjectDTO project;
+	
 	
 	public ProjectMediator()  {
 		
@@ -61,6 +68,12 @@ public class ProjectMediator {
 		hierarchyPanel.drawHierarchyPanel();
 		drawScenarioHierarchy(); 
 	}
+
+	
+	public HashMap<String, IndicatorDTO> getAllIndicators() {
+		return allIndicators;
+	}
+
 
 	public Set<BuildingDataTypeDTO> getBuildingDataTypes() {
 		return buildingDataTypes;
@@ -85,6 +98,11 @@ public class ProjectMediator {
 
 	public void registerUserPanel(UserPanel userPanel) {
 		this.userPanel = userPanel;
+	}
+	
+	public void registerIndicatorTable(IndicatorTable indTable) {
+		this.indicatorTable = indTable;
+		indTable.addIndicators(allIndicators.keySet());
 		
 	}
 	
@@ -116,12 +134,16 @@ public class ProjectMediator {
 					indicatorWidgets.put(ind.getName(), wid);
 					indicatorSelectionPanel.addIndicatorWidget(wid);
 					allIndicators.put(ind.getName(), ind);
+					
+					for (ScenarioEditMediator scenarioMed : scenarioPanels.keySet())  {
+						scenarioMed.updateIndicators();
+					}
 				}
 				setAdditionalBuildingData();
 			}	
 		};
 		
-		service.getIndicatorList(getProject(), callback);
+		indicatorService.getIndicatorList(getProject(), callback);
 	}
 	
 	private void addDataToBuildings(ScenarioDTO scenario, BuildingDataTypeDTO dt) {
@@ -156,7 +178,7 @@ public class ProjectMediator {
 				addExistingIndicators();
 			}
 		};
-		service.activateIndicator(getProject(), indicatorName, callback);
+		indicatorService.activateIndicator(getProject(), indicatorName, callback);
 	}
 
 
@@ -176,7 +198,7 @@ public class ProjectMediator {
 						addExistingIndicators();
 					}
 				};
-				service.deactivateIndicator(getProject(), indicatorName, callback);
+				indicatorService.deactivateIndicator(getProject(), indicatorName, callback);
 	}
 	
 	public void addParentScenario(String parentName) {
@@ -228,7 +250,7 @@ public class ProjectMediator {
 		setAdditionalBuildingData();
 		project.setBuildingDataTypes(buildingDataTypes);
 		
-		ScenarioServiceAsync service = GWT.create(ScenarioService.class);
+		
 		
 		AsyncCallback<ProjectDTO> callback = new AsyncCallback<ProjectDTO>()
 		{
@@ -253,7 +275,7 @@ public class ProjectMediator {
 			
 		};
 		
-		service.saveProject(this.getProject(), callback);
+		scenarioService.saveProject(this.getProject(), callback);
 	}
 
 	private void synchronizeScenarioPanels()  {
@@ -286,4 +308,11 @@ public class ProjectMediator {
 	public double getLongitude() {
 		return project.getLongitude();
 	}
+
+
+	public IndicatorDTO getIndicatorDTO(String title) {
+		return allIndicators.get(title);
+	}
+
+
 }

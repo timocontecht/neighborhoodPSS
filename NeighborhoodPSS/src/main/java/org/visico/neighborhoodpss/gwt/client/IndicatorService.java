@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -20,4 +21,5 @@ public interface IndicatorService extends RemoteService
 	String activateIndicator (ProjectDTO project, String indicatorName);
 	String deactivateIndicator (ProjectDTO project, String indicatorName);
 	Set<String> buildingDataTypes (ProjectDTO project);
+	String caluclateIndicator (ScenarioDTO scenario, IndicatorDTO indicator);
 }

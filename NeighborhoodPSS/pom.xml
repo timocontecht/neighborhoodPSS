@@ -37,7 +37,7 @@
             <configuration>
               <module>org.visico.neighborhoodpss.gwt.NeighborhoodPSS</module>
               <compileSourcesArtifacts>
-        		<artifact>org.visico.neighborhoodpss.domain.project:projectDomain</artifact>
+                  <artifact>org.visico.neighborhoodpss.domain.project:projectDomain</artifact>
       		  </compileSourcesArtifacts>
             </configuration>
             <goals>

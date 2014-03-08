@@ -16,11 +16,17 @@ import org.visico.neighborhoodpss.gwt.client.BuildingTable;
 import org.visico.neighborhoodpss.gwt.client.ChangeAddDataDlg;
 import org.visico.neighborhoodpss.gwt.client.EditMapPanel;
 import org.visico.neighborhoodpss.gwt.client.HierarchyPanel;
+import org.visico.neighborhoodpss.gwt.client.IndicatorService;
+import org.visico.neighborhoodpss.gwt.client.IndicatorServiceAsync;
+import org.visico.neighborhoodpss.gwt.client.IndicatorTable;
+import org.visico.neighborhoodpss.gwt.client.IndicatorWidget;
 import org.visico.neighborhoodpss.gwt.client.Map;
 import org.visico.neighborhoodpss.gwt.client.NetworkEdge;
 import org.visico.neighborhoodpss.gwt.client.NetworkTable;
 import org.visico.neighborhoodpss.gwt.client.NodeMarker;
 import org.visico.neighborhoodpss.gwt.client.ScenarioPanel;
+import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
+import org.visico.neighborhoodpss.plugin.IndicatorPlugin;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
@@ -33,10 +39,13 @@ import org.visico.neighborhoodpss.domain.project.NodeDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
 import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -44,6 +53,8 @@ import com.google.gwt.user.client.ui.TextBox;
 
 
 public class ScenarioEditMediator {
+	IndicatorServiceAsync indicatorService = GWT.create(IndicatorService.class);
+	
 	ScenarioDTO scenario;
 	ProjectMediator projectMed;
 	
@@ -53,6 +64,7 @@ public class ScenarioEditMediator {
 	private BuildingTable buildingTable;
 	private ChangeAddDataDlg changeAddDataDlg;
 	private ScenarioPanel scenarioPanel;
+	private IndicatorTable indicatorTable;
 	
 	NetworkDTO selectedNetwork = null;
 	Set<NetworkDTO> visibleNetworks = new HashSet<NetworkDTO>();
@@ -67,6 +79,7 @@ public class ScenarioEditMediator {
 	double outflow;
 	double capacity;
 	private Set<Overlay> selected = new HashSet<Overlay>();
+	
 	
 	
 	
@@ -174,6 +187,11 @@ public class ScenarioEditMediator {
 		insertBuildingsInTable();
 	}
 
+	public void registerIndicatorTable(IndicatorTable indTable) {
+		this.indicatorTable = indTable;
+		indTable.addIndicators(projectMed.getAllIndicators().keySet());
+	}
+	
 	private void insertBuildingsInTable() {
 		Grid buildingGrid = buildingTable.getBuildingGrid();
 		buildingGrid.clear();
@@ -545,4 +563,31 @@ public class ScenarioEditMediator {
 	public ScenarioDTO getScenario()  {
 		return scenario;
 	}
+
+	public void calculateIndicator(String title) {
+		AsyncCallback<String> callback = new AsyncCallback<String>()
+		{
+
+			@Override
+			public void onFailure(Throwable caught) 
+			{
+				Window.alert("Could not lookup indicators - contact your system administrator");
+			}
+
+			@Override
+			public void onSuccess(String result) 
+			{
+				Window.alert(result);
+			}	
+		};
+		
+		indicatorService.caluclateIndicator(scenario, projectMed.getIndicatorDTO(title), callback);
+	}
+
+	public void updateIndicators() {
+		indicatorTable.addIndicators(projectMed.getAllIndicators().keySet());
+		insertBuildingsInTable();
+	}
+
+	
 }

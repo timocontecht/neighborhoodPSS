@@ -19,7 +19,6 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>4.2.8.Final</version>
 		</dependency>
-      
     	<dependency>
         	<groupId>org.hibernate.javax.persistence</groupId>
         	<artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -30,5 +29,26 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
 		</dependency>      
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency> 
+		<dependency>
+		     <groupId>org.visico.neighborhoodpss.domain.project</groupId>
+		     <artifactId>projectDomain</artifactId>
+		     <version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		     <groupId>org.visico.neighborhoodpss</groupId>
+		     <artifactId>pssplugin</artifactId>
+		     <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.5.1</version>
+            <scope>provided</scope>
+	    </dependency>
   </dependencies>
 </project>

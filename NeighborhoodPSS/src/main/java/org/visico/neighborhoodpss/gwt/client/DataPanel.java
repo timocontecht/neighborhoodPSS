@@ -19,8 +19,11 @@ public class DataPanel extends TabPanel
 		buildingTable = new BuildingTable(indMed, sceMed);
 		sceMed.registerBuildingTable(buildingTable);
 		add(buildingTable, "Buildings");
-	    
-
+		indicatorTable = new IndicatorTable(indMed, sceMed);
+		indMed.registerIndicatorTable(indicatorTable);
+		sceMed.registerIndicatorTable(indicatorTable);
+		add(indicatorTable, "Indicators");
+		
 	    // Show the 'bar' tab initially.
 	    selectTab(0);
 	}
@@ -31,5 +34,6 @@ public class DataPanel extends TabPanel
 	}
 	
 	BuildingTable buildingTable;
+	IndicatorTable indicatorTable;
 	ScenarioPanel scenarioPanel;
 }

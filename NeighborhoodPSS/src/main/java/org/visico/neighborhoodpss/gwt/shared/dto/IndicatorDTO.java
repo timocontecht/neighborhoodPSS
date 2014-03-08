@@ -13,6 +13,7 @@ public class IndicatorDTO implements IsSerializable {
 	String description;
 	String author;
 	String version;
+	String className;
 	private boolean activated;
 	
 	Set<BuildingDataTypeDTO> buildingDataTypes = new HashSet<BuildingDataTypeDTO>();
@@ -22,11 +23,12 @@ public class IndicatorDTO implements IsSerializable {
 		
 	}
 	
-	public IndicatorDTO(String name, String description, String author, String version) {
+	public IndicatorDTO(String name, String description, String author, String version, String className) {
 		this.name = name;
 		this.description = description;
 		this.author = author;
 		this.version = version;
+		this.className = className;
 	}
 
 	public String getName() {
@@ -76,6 +78,14 @@ public class IndicatorDTO implements IsSerializable {
 
 	public void setBuildingDataTypes(Set<BuildingDataTypeDTO> buildingDataTypes) {
 		this.buildingDataTypes = buildingDataTypes;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 	
 	

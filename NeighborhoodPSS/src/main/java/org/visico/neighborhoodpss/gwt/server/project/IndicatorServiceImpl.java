@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
+import org.visico.neighborhoodpss.domain.project.ScenarioDTO;
 import org.visico.neighborhoodpss.gwt.client.IndicatorService;
 import org.visico.neighborhoodpss.gwt.shared.dto.IndicatorDTO;
 import org.visico.neighborhoodpss.plugin.IndicatorManager;
@@ -41,7 +42,7 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 		for (Plugin indInfo : manager.availableIndicators(getServletContext().getRealPath("/WEB-INF/" + pathToIndicators)))
 		{
 			IndicatorDTO indicatordto = new IndicatorDTO(indInfo.getName(),
-					indInfo.getDescription(), indInfo.getAuthor(), indInfo.getVersion());
+					indInfo.getDescription(), indInfo.getAuthor(), indInfo.getVersion(), indInfo.getClassName());
 			
 			for (BuildingProperty bp : indInfo.getData().getBuildingProperty() )
 			{
@@ -101,5 +102,27 @@ public class IndicatorServiceImpl extends RemoteServiceServlet implements
 			manager = new IndicatorManager(project);
 		
 		return manager.getBuildingDataTypes();
+	}
+
+	@Override
+	public String caluclateIndicator(ScenarioDTO scenario, IndicatorDTO ind) {
+		try {
+			if (manager == null)
+				return "No indicator manager set for this project";
+		
+			for (String indStr : manager.getPlugins().keySet())  {
+				if (indStr.equals(ind.getClassName()))  {
+					manager.getPlugins().get(indStr).calculate(scenario);
+					return "Indicator " + ind.getName() + " calculated!";
+				}
+			}
+		
+			return "Indicator " + ind.getName() + " not activated!";
+		}
+	    catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Indicator " + ind.getName() + " calculation failed!";
+	    }
 	}
 }
