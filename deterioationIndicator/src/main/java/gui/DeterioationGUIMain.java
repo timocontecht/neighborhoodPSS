@@ -19,13 +19,15 @@ import javax.swing.JPanel;
 
 
 
+
+
+import org.visico.neighborhoodpss.deterioationindicator.BuildingEdge;
+import org.visico.neighborhoodpss.deterioationindicator.BuildingGraph;
+import org.visico.neighborhoodpss.deterioationindicator.BuildingNode;
+import org.visico.neighborhoodpss.deterioationindicator.DeterioationIndicator;
 import org.visico.neighborhoodpss.domain.project.GeoPointDTO;
 
 import delaunay_triangulation.Triangle_dt;
-import deterioationIndicator.BuildingEdge;
-import deterioationIndicator.BuildingGraph;
-import deterioationIndicator.BuildingNode;
-import deterioationIndicator.DeterioationIndicator;
 
 
 
