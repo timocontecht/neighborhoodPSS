@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
+import org.visico.neighborhoodpss.deterioationindicator.DeterioationIndicator;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataDTO;
 import org.visico.neighborhoodpss.domain.project.BuildingDataTypeDTO;
@@ -49,7 +50,7 @@ public class VisualizeTest {
 	    	session.close();
 	    
 	    }
-	    
+	/*    
 	    // set the extra data value
 	    BuildingDataTypeDTO type = new BuildingDataTypeDTO();
 	    type.setName("Condition");
@@ -83,14 +84,16 @@ public class VisualizeTest {
 	    	data.put(type, data_dto);
 	    	b.setData(data);
 	    	i++;
-	    }	
+	    }*/	
 	}
 	
 	@Test
 	public void visualizeIndicator()  {
 		// Run the GUI codes on the Event-Dispatching thread for thread safety
 		final DeterioationIndicator indicator = new DeterioationIndicator();
-    	indicator.calculate(scenario);
+		indicator.setScenario(scenario);
+		indicator.createGraph();
+    	
     	                                               
     	DeterioationGUIMain main = new DeterioationGUIMain(indicator); // Let the constructor do the job
     	main.setVisible(true);

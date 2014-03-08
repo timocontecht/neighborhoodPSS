@@ -12,6 +12,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
+import org.visico.neighborhoodpss.deterioationindicator.BuildingNode;
+import org.visico.neighborhoodpss.deterioationindicator.DeterioationIndicator;
 import org.visico.neighborhoodpss.domain.project.BuildingDTO;
 import org.visico.neighborhoodpss.domain.project.GeoPointDTO;
 import org.visico.neighborhoodpss.domain.project.ProjectDTO;
